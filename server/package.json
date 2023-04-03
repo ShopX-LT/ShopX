@@ -1,0 +1,22 @@
+{
+  "name": "shopx",
+  "version": "1.0.0",
+  "description": "ShopX server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tosvng/ShopX.git"
+  },
+  "keywords": [
+    "shop"
+  ],
+  "author": "Raheem Tiamiyu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tosvng/ShopX/issues"
+  },
+  "homepage": "https://github.com/Tosvng/ShopX#readme"
+}
