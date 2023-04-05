@@ -10,11 +10,12 @@ const StoreSchema = new mongoose.Schema(
       maxLength: 50,
     },
     owner: {
+      //email
       type: String,
       required: true,
       trim: true,
     },
-    admin: [String],
+    admin: [String], // email
     products: [{ type: Schema.Types.ObjectId, ref: "Item" }],
     categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
     orders: [{ type: Schema.Types.ObjectId, ref: "Orders" }],
@@ -82,6 +83,19 @@ StoreSchema.pre("save", function (next) {
   this.owner = this.owner.toLowerCase(); // convert owner to lowercase
 
   next();
+});
+StoreSchema.post("findOne", function (result) {
+  if (result) {
+    if (result.name) {
+      result.name = result.name.toLowerCase(); // convert name to lowercase
+    }
+    if (result.owner) {
+      result.owner = result.owner.toLowerCase(); // convert owner to lowercase
+    }
+    if (result.admin) {
+      result.admin = result.admin.map((interest) => interest.toLowerCase()); // convert admins array to lowercase
+    }
+  }
 });
 
 module.exports = mongoose.model("Store", StoreSchema);
