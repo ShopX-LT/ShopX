@@ -3,6 +3,9 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 
+// ROUTES
+const adminRoutes = require("./routes/admin");
+
 function makeApp(database) {
   dotenv.config();
   const app = express();
@@ -12,6 +15,7 @@ function makeApp(database) {
   app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
   //ROUTES
+  app.use("/admin", adminRoutes);
   app.use("/", (req, res) => {
     res.status(200).json({ message: "Hello" });
   });
