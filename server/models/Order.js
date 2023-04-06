@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OrderSchema = new mongoose.Schema(
@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema(
     },
     itemsOrdered: [
       {
-        itemId: { type: Schema.Types.ObjectId, ref: "Item" },
+        itemId: { type: Schema.Types.ObjectId, ref: 'Item' },
         title: String,
         quantity: Number,
         price: Number,
@@ -21,8 +21,8 @@ const OrderSchema = new mongoose.Schema(
     store: String,
     status: {
       type: String,
-      enum: ["cancelled", "delivered", "in transit", "pending"],
-      default: "pending",
+      enum: ['cancelled', 'delivered', 'in transit', 'pending'],
+      default: 'pending',
     },
     total: Number,
     subTotal: Number,
@@ -43,4 +43,4 @@ const OrderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model('Order', OrderSchema);

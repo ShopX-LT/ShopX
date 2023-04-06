@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StoreSchema = new mongoose.Schema(
@@ -16,14 +16,14 @@ const StoreSchema = new mongoose.Schema(
       trim: true,
     },
     admin: [String], // email
-    products: [{ type: Schema.Types.ObjectId, ref: "Item" }],
-    categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
-    orders: [{ type: Schema.Types.ObjectId, ref: "Orders" }],
-    payoutHistory: [{ type: Schema.Types.ObjectId, ref: "Payout" }],
+    products: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
+    categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Orders' }],
+    payoutHistory: [{ type: Schema.Types.ObjectId, ref: 'Payout' }],
     keywords: [String],
     startDate: Date,
     isActive: Boolean,
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     itemTemplate: [String],
 
     wallet: {
@@ -78,13 +78,13 @@ const StoreSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-StoreSchema.pre("save", function (next) {
+StoreSchema.pre('save', function (next) {
   this.name = this.name.toLowerCase(); // convert name to lowercase
   this.owner = this.owner.toLowerCase(); // convert owner to lowercase
 
   next();
 });
-StoreSchema.post("findOne", function (result) {
+StoreSchema.post('findOne', function (result) {
   if (result) {
     if (result.name) {
       result.name = result.name.toLowerCase(); // convert name to lowercase
@@ -98,4 +98,4 @@ StoreSchema.post("findOne", function (result) {
   }
 });
 
-module.exports = mongoose.model("Store", StoreSchema);
+module.exports = mongoose.model('Store', StoreSchema);

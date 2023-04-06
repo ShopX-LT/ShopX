@@ -1,5 +1,5 @@
-const User = require("../../models/User");
-const Store = require("../../models/Store");
+const User = require('../../models/User');
+const Store = require('../../models/Store');
 
 // Create a new user
 const createUser = async (email, password) => {

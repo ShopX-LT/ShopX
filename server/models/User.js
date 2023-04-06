@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema(
@@ -27,19 +27,19 @@ const UserSchema = new mongoose.Schema(
     phone_no: Number,
     orderlist: [
       {
-        orderId: { type: Schema.Types.ObjectId, ref: "Order" },
+        orderId: { type: Schema.Types.ObjectId, ref: 'Order' },
         store: String,
       },
     ],
     wishlist: [
       {
-        itemId: { type: Schema.Types.ObjectId, ref: "Item" },
+        itemId: { type: Schema.Types.ObjectId, ref: 'Item' },
         store: String,
       },
     ],
     cart: [
       {
-        itemId: { type: Schema.Types.ObjectId, ref: "Item" },
+        itemId: { type: Schema.Types.ObjectId, ref: 'Item' },
         quantity: Number,
         store: String,
       },
@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema(
     },
     viewed: [
       {
-        itemId: { type: Schema.Types.ObjectId, ref: "Item" },
+        itemId: { type: Schema.Types.ObjectId, ref: 'Item' },
         store: String,
       },
     ],
@@ -59,18 +59,18 @@ const UserSchema = new mongoose.Schema(
   { timestamp: true }
 );
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre('save', function (next) {
   this.email = this.email.toLowerCase(); // convert email to lowercase
   next();
 });
-UserSchema.post("findOne", function (result) {
+UserSchema.post('findOne', function (result) {
   if (result) {
     if (result.email) {
       result.email = result.email.toLowerCase(); // convert email to lowercase
     }
   }
 });
-UserSchema.post("find", function (result) {
+UserSchema.post('find', function (result) {
   if (result) {
     if (result.email) {
       result.email = result.email.toLowerCase(); // convert email to lowercase
@@ -78,4 +78,4 @@ UserSchema.post("find", function (result) {
   }
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);

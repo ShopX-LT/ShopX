@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const PayoutSchema = new mongoose.Schema(
   {
@@ -12,4 +12,4 @@ const PayoutSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Payout", PayoutSchema);
+module.exports = mongoose.model('Payout', PayoutSchema);
