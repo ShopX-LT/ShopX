@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ItemSchema = new mongoose.Schema({
@@ -31,7 +31,7 @@ const ItemSchema = new mongoose.Schema({
     default: 0,
     trim: true,
   },
-  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 
   //STATISTICS
   views: [Number],
@@ -39,4 +39,4 @@ const ItemSchema = new mongoose.Schema({
   likes: Number,
 });
 
-module.exports = mongoose.model("Item", ItemSchema);
+module.exports = mongoose.model('Item', ItemSchema);
