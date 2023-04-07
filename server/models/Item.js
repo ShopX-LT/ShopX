@@ -35,7 +35,7 @@ const ItemSchema = new mongoose.Schema({
 
   //STATISTICS
   views: [Number],
-  viewsWeeklyHistory: [Numbers],
+  viewsWeeklyHistory: [Number],
   likes: Number,
 });
 
