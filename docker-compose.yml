@@ -1,18 +1,24 @@
 services:
-  server:
-    environment:
-      - PORT =
-      - MONGO_URL =
-      - PROD_MONGO_URL =
-      - JWT_SECRET =
-      - PAYSTACK_KEY =
-      - BUCKET_NAME =
-      - BUCKET_REGION =
-      - ACCESS_KEY =
-      - SECRET_ACCESS_KEY =
+  nginx:
     build:
-      context: ./server
-      dockerfile: ./Dockerfile
-    image: shopx/shop-express-backend:latest
+      dockerfile: Dockerfile
+      context: ./nginx
     ports:
-      - "3001:3001"
+      - "80:80"
+  dashboard:
+    build:
+      dockerfile: Dockerfile
+      context: ./dashboard
+    # ports:
+    #   - "5000:3000"
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    environment:
+      - PORT = 3001
+      - MONGO_URL = oo
+      - PROD_MONGO_URL = pp
+      - JWT_SECRET = pp
+    # ports:
+    #   - "3001:3001"

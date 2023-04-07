@@ -1,13 +1,13 @@
 FROM node:18.15.0-buster
 
-WORKDIR /ShopX/server
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm ci 
 
 COPY . .
 
-RUN npm install -g npm@9.6.2
-
-RUN npm i 
-
-EXPOSE 3030
+EXPOSE 3001
 
 CMD ["node", "server.js"]

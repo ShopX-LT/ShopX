@@ -1,21 +1,17 @@
 FROM node:18.15.0-buster as build
 
-WORKDIR /code
+WORKDIR /app
 
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package*.json .
 
-RUN npm ci --production
+RUN npm ci 
 
 COPY . .
 
 RUN npm run build
 
-# NGINX webSeRVER
-FROM nginx:1.2-alpine as production
+FROM nginx
 
-COPY --from=build /code/build /usr/share/nginx/html
-
-EXPOSE 4000
-
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html
