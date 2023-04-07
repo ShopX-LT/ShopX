@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 // ROUTES
 const adminRoutes = require('./routes/admin');
+const categoryRoutes = require('./routes/category');
+const itemRoutes = require('./routes/item');
 
 function makeApp(database) {
   dotenv.config();
@@ -15,7 +17,10 @@ function makeApp(database) {
   app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 
   //ROUTES
-  app.use('/admin', adminRoutes);
+  app.use('/api/admin', adminRoutes);
+  app.use('/api/category', categoryRoutes);
+  app.use('/api/item', itemRoutes);
+
   app.use('/', (req, res) => {
     res.status(200).json({ message: 'Hello' });
   });
@@ -27,6 +32,7 @@ function makeApp(database) {
   });
 
   database.set('strictQuery', true);
+  console.log('Connected to Database');
   return app;
 }
 

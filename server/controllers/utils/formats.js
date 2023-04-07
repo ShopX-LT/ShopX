@@ -2,6 +2,24 @@ const formatUser = (user) => {
   return { email: user.email };
 };
 
+const formatCategory = (category) => {
+  return { id: category.id, name: category.name };
+};
+
+const formatItem = (item) => {
+  return {
+    id: item._id,
+    title: item.title,
+    price: item.price,
+    category: item.category,
+    imagePath: item.imagePath,
+    amount: item.amount,
+    discount: item.discount,
+    quantity: item.quantity,
+    displayPrice: item.price * (1 - item.discount / 100),
+  };
+};
+
 const formatStore = (store) => {
   return {
     name: store.name,
@@ -32,4 +50,6 @@ const formatStore = (store) => {
 module.exports = {
   formatUser,
   formatStore,
+  formatCategory,
+  formatItem,
 };

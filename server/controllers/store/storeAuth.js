@@ -43,7 +43,12 @@ const signUp = async (req, res) => {
       store: newStore.name,
     };
     //create the token
-    const token = jwt.sign(verification, process.env.JWT_SECRET);
+    let token;
+    try {
+      token = jwt.sign(verification, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error(error);
+    }
     // formate for the frontend
     const formattedAdmin = formatUser(user);
     const formattedStore = formatStore(newStore);
@@ -84,7 +89,12 @@ const signIn = async (req, res) => {
       admin: admin.email,
       store: store.name,
     };
-    const token = jwt.sign(verification, process.env.JWT_SECRET);
+    let token;
+    try {
+      token = jwt.sign(verification, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error(error);
+    }
     const formattedAdmin = formatUser(admin);
     const formattedStore = formatStore(store);
     res.status(200).json({ token, formattedAdmin, formattedStore });
