@@ -1,6 +1,6 @@
-const User = require("../../models/User");
-const { createUser } = require("../utils/objectCreators");
-const { formatUser } = require("../utils/formats");
+const User = require('../../models/User');
+const { createUser } = require('../utils/objectCreators');
+const { formatUser } = require('../utils/formats');
 
 const signUp = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ const signUp = async (req, res) => {
     //check if the user already has an account
     let user = await User.findOne({ email: email });
     if (user) {
-      return res.status(400).json({ message: "Email already in use." });
+      return res.status(400).json({ message: 'Email already in use.' });
     }
     const newUser = createUser(email, password);
     const verification = {
@@ -22,6 +22,6 @@ const signUp = async (req, res) => {
     res.status(200).json({ token, formattedUser });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal error" });
+    return res.status(500).json({ message: 'Internal error' });
   }
 };
