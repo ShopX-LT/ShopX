@@ -3,9 +3,8 @@ const User = require('../models/User');
 const handleRefreshToken = async (req, res) => {
   try {
     const cookies = req.cookies;
-    const cookieRefreshToken = cookies.refreshToken;
-
     if (!cookies?.refreshToken) return res.sendStatus(401);
+    const cookieRefreshToken = cookies.refreshToken;
     //verify the user exists and has a refresh token
     const admin = await User.findOne({ adminRefreshToken: cookieRefreshToken });
     if (!admin)

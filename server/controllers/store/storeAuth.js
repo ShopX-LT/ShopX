@@ -72,7 +72,7 @@ const handleSignIn = async (req, res) => {
     }
 
     // check that the user is an admin for that store
-    if (!store.includes(email.toLowerCase())) {
+    if (!store.admin.includes(email.toLowerCase())) {
       return res.status(400).json({ message: 'Invalid user' });
     }
     // get the user
@@ -120,7 +120,7 @@ const setRefreshToken = (verification, res) => {
     res.cookie('refreshToken', token, {
       httpOnly: true,
       sameSite: 'None',
-      secure: true,
+      // secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
   } catch (error) {

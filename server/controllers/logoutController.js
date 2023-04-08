@@ -11,9 +11,9 @@ const handleLogout = async (req, res) => {
       res.clearCookie('refreshToken', {
         httpOnly: true,
         sameSite: 'None',
-        secure: true,
+        // secure: true,
       });
-      return res.sendStatus(204);
+      return res.status(204).json({});
     }
     //cleare token
     admin.adminRefreshToken = '';
@@ -23,6 +23,7 @@ const handleLogout = async (req, res) => {
       sameSite: 'None',
       secure: true,
     });
+    res.sendStatus(204);
   } catch (error) {
     return res.sendStatus(500);
   }
