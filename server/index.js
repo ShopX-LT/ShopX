@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 // ROUTES
 const adminRoutes = require('./routes/admin');
 const categoryRoutes = require('./routes/category');
 const itemRoutes = require('./routes/item');
-const refreshRoutes = require('./routes/refresh');
 
 function makeApp(database) {
   dotenv.config();
