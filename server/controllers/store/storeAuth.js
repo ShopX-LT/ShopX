@@ -6,7 +6,7 @@ const { createStore, createUser } = require('../utils/objectCreators');
 const { formatStore, formatUser } = require('../utils/formats');
 
 // CREATE A NEW STORE
-const signUp = async (req, res) => {
+const handleSignUp = async (req, res) => {
   try {
     // Extract body info
     const { email, storeName, password } = req.body;
@@ -43,12 +43,12 @@ const signUp = async (req, res) => {
       store: newStore.name,
     };
     //create the token
-    let token;
-    try {
-      token = jwt.sign(verification, process.env.JWT_SECRET);
-    } catch (error) {
-      console.error(error);
+    const token = createToken(verification);
+    if (!token) {
+      return res.status(500).json({ message: 'Internal error' });
     }
+    setRefreshToken(verification, res);
+
     // formate for the frontend
     const formattedAdmin = formatUser(user);
     const formattedStore = formatStore(newStore);
@@ -61,7 +61,7 @@ const signUp = async (req, res) => {
 };
 
 //LOGIN
-const signIn = async (req, res) => {
+const handleSignIn = async (req, res) => {
   try {
     const { storeName, email, password } = req.body;
 
@@ -89,12 +89,12 @@ const signIn = async (req, res) => {
       admin: admin.email,
       store: store.name,
     };
-    let token;
-    try {
-      token = jwt.sign(verification, process.env.JWT_SECRET);
-    } catch (error) {
-      console.error(error);
+    // create token
+    const token = createToken(verification);
+    if (!token) {
+      return res.status(500).json({ message: 'Internal error' });
     }
+    setRefreshToken(verification, res);
     const formattedAdmin = formatUser(admin);
     const formattedStore = formatStore(store);
     res.status(200).json({ token, formattedAdmin, formattedStore });
@@ -104,7 +104,31 @@ const signIn = async (req, res) => {
   }
 };
 
+const createToken = (verification) => {
+  let token;
+  try {
+    token = jwt.sign(verification, process.env.JWT_SECRET, { expiresIn: '15m' });
+  } catch (error) {
+    console.error(error);
+  }
+  return token;
+};
+const setRefreshToken = (verification, res) => {
+  let token;
+  try {
+    token = jwt.sign(verification, process.env.JWT_REFRESH_SECRET, { expiresIn: '1d' });
+    res.cookie('refreshToken', token, {
+      httpOnly: true,
+      sameSite: 'None',
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
-  signUp: signUp,
-  signIn: signIn,
+  handleSignUp: handleSignUp,
+  handleSignIn: handleSignIn,
 };
