@@ -64,7 +64,6 @@ const handleSignUp = async (req, res) => {
 const handleSignIn = async (req, res) => {
   try {
     const { storeName, email, password } = req.body;
-
     //get the store and check if it exists
     const store = await Store.findOne({ name: storeName });
     if (store === null) {
@@ -97,6 +96,7 @@ const handleSignIn = async (req, res) => {
     setRefreshToken(verification, res);
     const formattedAdmin = formatUser(admin);
     const formattedStore = formatStore(store);
+
     res.status(200).json({ token, formattedAdmin, formattedStore });
   } catch (error) {
     console.error(error);
@@ -120,7 +120,7 @@ const setRefreshToken = (verification, res) => {
     res.cookie('refreshToken', token, {
       httpOnly: true,
       sameSite: 'None',
-      // secure: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
   } catch (error) {
