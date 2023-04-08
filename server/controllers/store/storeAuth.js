@@ -64,7 +64,7 @@ const handleSignUp = async (req, res) => {
 const handleSignIn = async (req, res) => {
   try {
     const { storeName, email, password } = req.body;
-
+    console.log(storeName);
     //get the store and check if it exists
     const store = await Store.findOne({ name: storeName });
     if (store === null) {
@@ -120,7 +120,7 @@ const setRefreshToken = (verification, res) => {
     res.cookie('refreshToken', token, {
       httpOnly: true,
       sameSite: 'None',
-      // secure: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
   } catch (error) {

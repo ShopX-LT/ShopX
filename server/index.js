@@ -8,11 +8,14 @@ const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/admin');
 const categoryRoutes = require('./routes/category');
 const itemRoutes = require('./routes/item');
+const corsOptions = require('./config/corsOption');
+const credentials = require('./middleware/credentials');
 
 function makeApp(database) {
   dotenv.config();
   const app = express();
-  app.use(cors());
+  app.use(credentials);
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(express.urlencoded({ limit: '30mb', extended: true }));
   app.use(cookieParser());

@@ -30,7 +30,6 @@ const handleRefreshToken = async (req, res) => {
       });
       res.status(200).json({ token });
     } catch (error) {
-      console.error(error);
       console.log('Invalid refresh token');
       return res.sendStatus(401);
     }
