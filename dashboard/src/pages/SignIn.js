@@ -57,15 +57,11 @@ const SignIn = () => {
       const admin = res?.data?.formattedAdmin;
       const store = res?.data?.formattedStore?.name;
       setAuth({ store, admin, token });
-
-      //   localStorage.setItem(`${res.data.formattedAdmin.store}admintoken`, res.data.token);
-      //   localStorage.setItem('store', res.data.formattedAdmin.store);
-
       navigate(from, { replace: true });
     } catch (error) {
+      console.log(error);
       if (!error?.response) {
         alert('No server response');
-        console.log(error);
       } else {
         alert(error.response.data.message);
       }

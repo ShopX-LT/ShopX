@@ -9,6 +9,8 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+
 // CONTEXT
 import useAuth from './hooks/useAuth';
 
@@ -19,6 +21,8 @@ export default function Router() {
   const location = useLocation();
   const routes = useRoutes([
     { path: 'signin', element: <SignIn /> },
+    { path: 'signup', element: <SignUp /> },
+
     {
       path: '/dashboard',
       element: auth?.token ? <DashboardLayout /> : <Navigate to="/signin" state={{ from: location }} replace />,
@@ -30,10 +34,7 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
       ],
     },
-    {
-      path: 'login',
-      element: <SignIn />,
-    },
+
     {
       element: <SimpleLayout />,
       children: [
