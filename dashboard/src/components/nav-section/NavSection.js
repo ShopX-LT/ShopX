@@ -4,6 +4,8 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import { Box, List, ListItemText } from '@mui/material';
 //
 import { StyledNavItem, StyledNavItemIcon } from './styles';
+//
+import Iconify from '../iconify';
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +46,10 @@ function NavItem({ item }) {
         },
       }}
     >
-      <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+      <StyledNavItemIcon>
+        {' '}
+        <Iconify icon={icon} width={20} height={20} />
+      </StyledNavItemIcon>
 
       <ListItemText disableTypography primary={title} />
 
