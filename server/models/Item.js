@@ -37,6 +37,7 @@ const ItemSchema = new mongoose.Schema({
   views: [Number],
   viewsWeeklyHistory: [Number],
   likes: Number,
+  viewIpAddresses: [String],
 });
 
 module.exports = mongoose.model('Item', ItemSchema);
