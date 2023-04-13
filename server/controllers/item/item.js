@@ -1,7 +1,3 @@
-// MODELS
-const Store = require('../../models/Store');
-const Item = require('../../models/Item');
-const { formatItem } = require('../utils/formats');
 const {
   // ITEM INTERACTORS
   createItemInteractor,

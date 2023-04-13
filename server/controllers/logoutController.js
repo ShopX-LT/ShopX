@@ -4,7 +4,7 @@ const {
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../Interactors/index');
-const persistence = require('../../persistence/index');
+const persistence = require('../persistence/index');
 
 const handleLogout = async (req, res) => {
   try {

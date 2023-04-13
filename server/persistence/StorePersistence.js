@@ -25,7 +25,8 @@ const getStoreByNameAndEmail = async ({ storeName, email }) => {
 
 const addCategoryToStore = async ({ store, categoryId }) => {
   store['categories'].push(categoryId);
-  const store = await store.save();
+  await store.save();
+  return;
 };
 
 module.exports = {

@@ -13,14 +13,14 @@ const createCategoryInteractor = async (
   }
 
   //   create the category
-  const category = await createCategory({
+  const newCategory = await createCategory({
     name: category,
     storeName: store.name,
     creatorsEmail: email,
   });
 
   //   add the category to the store
-  await addCategoryToStore({ store, categoryId: category._id });
+  await addCategoryToStore({ store, categoryId: newCategory._id });
 
   const formattedCategories = store['categories'].map((category) => {
     return formatCategory(category);

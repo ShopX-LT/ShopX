@@ -2,8 +2,7 @@ const { createStoreInteractor, storeLogin } = require('./StoreInteractor');
 const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
 const { createItemInteractor, getQueryItemsInteractor } = require('./ItemInteractor');
 const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
-const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } =
-  require('./TokenInteractor').default;
+const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
 
 module.exports = {

@@ -18,7 +18,7 @@ const createItem = async ({ title, price, store, description, discount, category
   return item;
 };
 
-const getItemsByQuery = async ({ query }) => {
+const getItemsByQuery = async ({ query, store }) => {
   const { category } = query;
   const items = await Item.find({
     store: store,
