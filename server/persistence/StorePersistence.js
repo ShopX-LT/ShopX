@@ -29,9 +29,16 @@ const addCategoryToStore = async ({ store, categoryId }) => {
   return;
 };
 
+const addFieldToStore = async ({ store, field }) => {
+  store.itemTemplate.push(field);
+  await store.save();
+  return;
+};
+
 module.exports = {
   createStore,
   getStoreByName,
   getStoreByNameAndEmail,
   addCategoryToStore,
+  addFieldToStore,
 };

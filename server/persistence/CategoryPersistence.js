@@ -11,6 +11,12 @@ const createCategory = async ({ name, storeName, creatorsEmail }) => {
   return category;
 };
 
+const getManyCategories = async ({ categories }) => {
+  const result = await Category.find({ _id: { $in: categories } });
+  return result;
+};
+
 module.exports = {
   createCategory,
+  getManyCategories,
 };

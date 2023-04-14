@@ -1,6 +1,7 @@
 const {
   // CATEGORY INTERACRORS
   createCategoryInteractor,
+  getAllCategoriesInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
@@ -12,10 +13,7 @@ const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
     const { admin, store } = req.auth;
-    const categories = await createCategoryInteractor(
-      { persistence },
-      { storeName: store, email: admin, category: name }
-    );
+    const categories = await createCategoryInteractor(persistence, { storeName: store, email: admin, category: name });
     res.status(201).json({ categories });
   } catch (error) {
     console.error(error);
@@ -27,7 +25,7 @@ const createCategory = async (req, res) => {
 const getCategory = async (req, res) => {
   try {
     const { admin, store } = req.auth;
-    const categories = await getAllCategoriesInteractor({ persistence }, { storeName: store, email: admin });
+    const categories = await getAllCategoriesInteractor(persistence, { storeName: store, email: admin });
 
     return res.status(200).json(categories);
   } catch (error) {

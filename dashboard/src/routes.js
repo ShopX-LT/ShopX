@@ -29,8 +29,8 @@ export default function Router() {
 
     {
       path: '/dashboard',
-      // element: auth?.token ? <DashboardLayout /> : <Navigate to="/signin" state={{ from: location }} replace />,
-      element: <DashboardLayout />,
+      element: auth?.token ? <DashboardLayout /> : <Navigate to="/signin" state={{ from: location }} replace />,
+      // element: <DashboardLayout />,
 
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },

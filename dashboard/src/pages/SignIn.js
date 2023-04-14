@@ -40,7 +40,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const SIGNIN_URL = 'api/admin/signin';
+  const SIGNIN_URL = '/api/admin/signin';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
