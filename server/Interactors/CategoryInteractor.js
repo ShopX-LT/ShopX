@@ -29,16 +29,18 @@ const createCategoryInteractor = async (
   return formattedCategories;
 };
 
-const getAllCategoriesInteractor = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
+const getAllCategoriesInteractor = async ({ getStoreByNameAndEmail, getManyCategories }, { storeName, email }) => {
   // find the store
   const store = await getStoreByNameAndEmail({ storeName, email });
   if (!store) {
     throw new Error('Invalid store');
   }
+  const categories = await getManyCategories({ categories: store['categories'] });
   //   only send relevant fields
-  const formattedCategories = store['categories'].map((category) => {
+  const formattedCategories = categories.map((category) => {
     return formatCategory(category);
   });
+
   return formattedCategories;
 };
 

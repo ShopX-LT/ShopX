@@ -11,7 +11,7 @@ const persistence = require('../persistence/index');
 const handleRefreshToken = async (req, res) => {
   try {
     const cookies = req.cookies;
-    const token = await adminRefreshTokenInteractor({ persistence }, { jwt, cookies });
+    const token = await adminRefreshTokenInteractor(persistence, { jwt, cookies });
     res.status(200).json({ token });
   } catch (error) {
     console.log(error);

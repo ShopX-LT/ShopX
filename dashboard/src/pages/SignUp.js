@@ -37,7 +37,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const SIGNUP_URL = 'api/admin/signup';
+  const SIGNUP_URL = '/signup';
 
   const handleSubmit = async (event) => {
     event.preventDefault();

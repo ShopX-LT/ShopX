@@ -26,7 +26,7 @@ const upload = multer({
 const router = express.Router();
 
 // STORE ONLY ROUTES
-router.post('/create', verifyToken, upload.array('images', 6), createItem);
+router.post('/create', verifyToken, upload.array('images'), createItem);
 // router.get('/store/:id', verifyToken, getItem);
 router.get('/store/items', verifyToken, getAllItems);
 // router.put('/store/update', verifyToken, updateItem);

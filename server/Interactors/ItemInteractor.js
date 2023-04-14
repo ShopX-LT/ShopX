@@ -2,9 +2,15 @@ const createItemInteractor = async (
   { createItem, getStoreByName, saveImagesToS3Bucket },
   { title, price, store, description, discount, category, images, quantity, reviews }
 ) => {
-  const validStore = await validateStore(store);
+  const validStore = await validateStore(getStoreByName, store);
+  // images.map((item) => {
+  //   console.log(item);
+  // });
 
   const savedImages = await saveImagesToS3Bucket(images);
+  if (!savedImages) {
+    throw new Error('Error saving images');
+  }
   const item = await createItem({
     title,
     price,
@@ -21,8 +27,8 @@ const createItemInteractor = async (
   return formattedItem;
 };
 
-const getQueryItemsInteractor = async ({ getItemsByQuery }, { store, query }) => {
-  const validStore = await validateStore(store);
+const getQueryItemsInteractor = async ({ getItemsByQuery, getStoreByName }, { store, query }) => {
+  const validStore = await validateStore(getStoreByName, store);
   const items = await getItemsByQuery({ query, store: validStore });
   const formattedItems = items.map((item) => {
     return formatItem(item);
@@ -30,8 +36,8 @@ const getQueryItemsInteractor = async ({ getItemsByQuery }, { store, query }) =>
   return formattedItems;
 };
 
-const validateStore = async (store) => {
-  const validStore = await getStoreByName(store);
+const validateStore = async (getStoreByName, store) => {
+  const validStore = await getStoreByName({ storeName: store });
   if (!validStore) {
     throw new Error(`Invalid store`);
   }

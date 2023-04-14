@@ -19,11 +19,10 @@ const handleSignIn = async (req, res) => {
   try {
     // Extract body info
     const { email, storeName, password } = req.body;
-
     // Get the store
-    const store = await storeLogin({ persistence }, { storeName });
+    const store = await storeLogin(persistence, { storeName, email });
 
-    const admin = await userLogin({ persistence }, { email, password });
+    const admin = await userLogin(persistence, { email, password });
 
     // set the refresh and access tokens
     const tokens = generateTokensInteractor(
@@ -45,10 +44,10 @@ const handleSignUp = async (req, res) => {
     const { storeName, email, password } = req.body;
 
     // Create a new user or verify the current user
-    const admin = await getOrCreateUserInteractor({ persistence }, { email, password });
+    const admin = await getOrCreateUserInteractor(persistence, { email, password });
 
     // create the store
-    const store = await createStoreInteractor({ persistence }, { storeName, email });
+    const store = await createStoreInteractor(persistence, { storeName, email });
 
     // set the refresh and access tokens
     const tokens = generateTokensInteractor(

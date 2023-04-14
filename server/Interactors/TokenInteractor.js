@@ -30,7 +30,7 @@ const generateTokensInteractor = ({ tokenizer }, { adminEmail, storeName, res })
   const token = tokenizer.sign(verification, process.env.JWT_SECRET, { expiresIn: '15m' });
 
   //   REFRESH TOKEN
-  setRefreshToken(verification, res);
+  setRefreshToken(tokenizer, verification, res);
   return token;
 };
 

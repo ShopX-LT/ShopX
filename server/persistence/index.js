@@ -1,7 +1,13 @@
-const { createStore, getStoreByName, getStoreByNameAndEmail, addCategoryToStore } = require('./StorePersistence');
+const {
+  createStore,
+  getStoreByName,
+  getStoreByNameAndEmail,
+  addCategoryToStore,
+  addFieldToStore,
+} = require('./StorePersistence');
 const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
 const { createItem, getItemsByQuery } = require('./ItemPersistence');
-const { createCategory } = require('./CategoryPersistence');
+const { createCategory, getManyCategories } = require('./CategoryPersistence');
 const { saveImagesToS3Bucket } = require('./AWSPersistence');
 const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
 
@@ -11,6 +17,7 @@ module.exports = {
   getStoreByName,
   getStoreByNameAndEmail,
   addCategoryToStore,
+  addFieldToStore,
 
   // USER PERSISTENCE
   createUser,
@@ -23,6 +30,7 @@ module.exports = {
 
   // CATEGORY PERSISTENCE
   createCategory,
+  getManyCategories,
 
   //AWS PERSISTENCE
   saveImagesToS3Bucket,

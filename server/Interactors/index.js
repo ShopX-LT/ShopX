@@ -1,4 +1,9 @@
-const { createStoreInteractor, storeLogin } = require('./StoreInteractor');
+const {
+  createStoreInteractor,
+  storeLogin,
+  addFieldToStoreInteractor,
+  getFieldFromStoreInteractor,
+} = require('./StoreInteractor');
 const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
 const { createItemInteractor, getQueryItemsInteractor } = require('./ItemInteractor');
 const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
@@ -9,6 +14,8 @@ module.exports = {
   // STORE INTERACRORS
   createStoreInteractor,
   storeLogin,
+  addFieldToStoreInteractor,
+  getFieldFromStoreInteractor,
   // USER INTERACTORS
   getOrCreateUserInteractor,
   userLogin,

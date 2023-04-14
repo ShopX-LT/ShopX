@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 /* Returs an array of image names
 For each image file, appened uuid to the file name, and push the new name the images array, use an array to store all the commands that need to be sent to s3 and use promise.all to send it all at once*/
 const saveImagesToS3Bucket = async (files) => {
+  // console.log(files[0]);
   const bucketName = process.env.BUCKET_NAME;
   const bucketRegion = process.env.BUCKET_REGION;
   const accessKey = process.env.ACCESS_KEY;
@@ -21,8 +22,10 @@ const saveImagesToS3Bucket = async (files) => {
   const commands = []; //commands that will be sent synchronously
 
   files.map((file) => {
-    const { fieldName } = file; //extract the file name
-    const filename = `${uuidv4()}-${fieldName}`;
+    const { originalname } = file; //extract the file name
+    const filename = `${uuidv4()}-${originalname.replace(/\.[^.]+$/, '')}`;
+    console.log(filename);
+
     const params = {
       Bucket: bucketName,
       Key: filename,

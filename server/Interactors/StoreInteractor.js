@@ -19,6 +19,23 @@ const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
   return formattedStore;
 };
 
+const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { storeName, field }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) {
+    throw new Error('Invalid store');
+  }
+  await addFieldToStore({ store, field });
+  return store.itemTemplate;
+};
+
+const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) {
+    throw new Error('Invalid store');
+  }
+  return store.itemTemplate;
+};
+
 const formatStore = (store) => {
   return {
     name: store?.name,
@@ -50,4 +67,6 @@ const formatStore = (store) => {
 module.exports = {
   createStoreInteractor,
   storeLogin,
+  addFieldToStoreInteractor,
+  getFieldFromStoreInteractor,
 };
