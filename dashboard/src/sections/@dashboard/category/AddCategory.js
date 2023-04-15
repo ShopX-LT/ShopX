@@ -1,34 +1,7 @@
-import {
-  Box,
-  Stack,
-  Button,
-  TextField,
-  Typography,
-  Paper,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  Divider,
-  Container,
-  Grid,
-} from '@mui/material';
-import { Field, FieldArray, Formik } from 'formik';
+import { Box, Button, TextField, Grid } from '@mui/material';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-import React, { useEffect, useRef, useState } from 'react';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { compose } from '@mui/system';
-import axios from 'axios';
-
-const store = localStorage.getItem('store');
-const token = localStorage.getItem(`${store}admintoken`);
-const config = {
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  },
-};
+import React from 'react';
 
 const itemShema = Yup.object().shape({
   name: Yup.string().required('required'),
