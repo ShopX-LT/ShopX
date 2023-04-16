@@ -1,5 +1,5 @@
-const index = require("./index");
-const mongoose = require("mongoose");
+const index = require('./index');
+const mongoose = require('mongoose');
 
 // MONGOOSE SETUP
 const app = index.makeApp(mongoose);
