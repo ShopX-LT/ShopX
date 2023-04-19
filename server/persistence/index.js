@@ -1,3 +1,15 @@
+/**
+ * This module exports functions for interacting with various data persistence layers.
+ * Functions for interacting with store, user, item, category, and image data are included.
+ * @module Persistence
+ * @property {function} createStore - creates a new store
+ * @property {function} getStoreByName - retrieves a store by name
+ * @property {function} getStoreByNameAndEmail - retrieves a store by name and email
+ * @property {function} addCategoryToStore - adds a category to a store
+ * @property {function} addFieldToStore - adds a field to a store
+ * @property {function} createUser - creates a new user
+ * @property {function} getUser - retrieves a user by email
+ */
 const {
   createStore,
   getStoreByName,
