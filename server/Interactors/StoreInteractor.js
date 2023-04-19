@@ -1,3 +1,12 @@
+/**
+ * Creates a new store interactor with the given store name and email.
+ * @param {Object} persistence.getStore - A function that retrieves a store object from the database.
+ * @param {Object} persistence.createStore - A function that creates a new store object in the database.
+ * @param {string} storeName - The name of the store to create.
+ * @param {string} email - The email associated with the store.
+ * @returns An object containing the newly created store object.
+ * @throws An error if the store already exists.
+ */
 const createStoreInteractor = async ({ getStore, createStore }, { storeName, email }) => {
   // check if the store name already exists
   const store = await getStore({ storeName });
@@ -10,6 +19,14 @@ const createStoreInteractor = async ({ getStore, createStore }, { storeName, ema
   return { formattedStore };
 };
 
+/**
+ * Stores the login information for a given store and email.
+ * @param {function} persistence.getStoreByNameAndEmail - A function that retrieves a store by name and email.
+ * @param {object} storeName - The name of the store to log in to.
+ * @param {string} email - The email address to use for logging in.
+ * @returns {object} - The formatted store object.
+ * @throws {Error} - If the store is invalid.
+ */
 const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
   const store = await getStoreByNameAndEmail({ storeName, email });
   if (!store) {
@@ -19,6 +36,15 @@ const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
   return formattedStore;
 };
 
+/**
+ * Adds a field to a store and returns the updated item template.
+ * @param {Object} persistence.addFieldToStore - The function that adds a field to a store.
+ * @param {Object} persistence.getStoreByName - The function that retrieves a store by name.
+ * @param {string} persistence.storeName - The name of the store to add the field to.
+ * @param {Object} persistence.field - The field to add to the store.
+ * @returns {Object} The updated item template of the store.
+ * @throws {Error} If the store name is invalid.
+ */
 const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { storeName, field }) => {
   const store = await getStoreByName({ storeName });
   if (!store) {
@@ -28,6 +54,15 @@ const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { 
   return store.itemTemplate;
 };
 
+/**
+ * Retrieves the item template field from the store with the given name.
+ * @param {object} persistence - An object containing the getStoreByName function.
+ * @param {function} persistence.getStoreByName - A function that retrieves a store by name.
+ * @param {object} param1 - An object containing the name of the store to retrieve.
+ * @param {string} param1.storeName - The name of the store to retrieve.
+ * @returns The item template field of the store with the given name.
+ * @throws An error if the store with the given name does not exist.
+ */
 const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) => {
   const store = await getStoreByName({ storeName });
   if (!store) {

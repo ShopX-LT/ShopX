@@ -1,9 +1,18 @@
+/**
+ * Saves an array of image files to an S3 bucket using the AWS SDK.
+ * @param {Array} files - An array of image files to be saved to the S3 bucket.
+ * @returns {Array} - An array of the filenames of the saved images.
+ */
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
-/* Returs an array of image names
-For each image file, appened uuid to the file name, and push the new name the images array, use an array to store all the commands that need to be sent to s3 and use promise.all to send it all at once*/
+
+/**
+ * Saves the given files to an S3 bucket specified in the environment variables.
+ * @param {Array} files - An array of files to save to the S3 bucket.
+ * @returns {Array} - An array of the filenames of the saved images.
+ * @throws {Error} - If there is an issue with the S3 client or the provided files.
+ */
 const saveImagesToS3Bucket = async (files) => {
-  // console.log(files[0]);
   const bucketName = process.env.BUCKET_NAME;
   const bucketRegion = process.env.BUCKET_REGION;
   const accessKey = process.env.ACCESS_KEY;

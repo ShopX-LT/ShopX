@@ -3,18 +3,22 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./nginx
+    image: tosvng/shopx:nginx
     ports:
       - "80:80"
+
   dashboard:
     build:
       dockerfile: Dockerfile
       context: ./dashboard
+    image: tosvng/shopx:dashboard
     # ports:
     #   - "5000:3000"
   server:
     build:
       dockerfile: Dockerfile
       context: ./server
+    image: tosvng/shopx:server
     environment:
       - PORT = 3001
       - MONGO_URL = oo
