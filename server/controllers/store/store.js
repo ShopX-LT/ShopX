@@ -1,12 +1,25 @@
+/**
+ * Contains two functions for handling HTTP requests related to adding and getting fields from a store.
+ * @module FieldHandlers
+ */
 const {
   // STORE INTERACTORS
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
+  //ORDER INTERACTORS
+  getStoreOrdersInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
+/**
+ * Handles the addition of a new field to a store.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns None
+ * @throws {Error} If there is an error adding the field to the store.
+ */
 const handleAddField = async (req, res) => {
   try {
     const { store } = req.auth;
@@ -20,6 +33,12 @@ const handleAddField = async (req, res) => {
   }
 };
 
+/**
+ * Handles a GET request for a field from the store.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns None
+ */
 const handleGetField = async (req, res) => {
   try {
     const { store } = req.auth;
@@ -31,4 +50,15 @@ const handleGetField = async (req, res) => {
   }
 };
 
-module.exports = { handleAddField, handleGetField };
+const handleGetAllOrders = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const orders = await getStoreOrdersInteractor(persistence, { storeName });
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+module.exports = { handleAddField, handleGetField, handleGetAllOrders };

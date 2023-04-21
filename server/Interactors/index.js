@@ -8,17 +8,18 @@
  * @property {function} getOrCreateUserInteractor - A function that gets or creates a user interactor.
  * @property {function}
  */
+const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
+const { createItemInteractor, getQueryItemsInteractor } = require('./ItemInteractor');
+const { handleErrorInteractor } = require('./ErrorInteractor');
+const { getStoreOrdersInteractor } = require('./OrderInteractor');
 const {
   createStoreInteractor,
   storeLogin,
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
 } = require('./StoreInteractor');
-const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
-const { createItemInteractor, getQueryItemsInteractor } = require('./ItemInteractor');
-const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
-const { handleErrorInteractor } = require('./ErrorInteractor');
+const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
 
 module.exports = {
   // STORE INTERACRORS
@@ -35,6 +36,8 @@ module.exports = {
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
+  // ORDER INTERACTORS
+  getStoreOrdersInteractor,
   // TOKEN INTERACTORS
   generateTokensInteractor,
   adminRefreshTokenInteractor,
