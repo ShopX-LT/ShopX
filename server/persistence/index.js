@@ -10,6 +10,9 @@
  * @property {function} createUser - creates a new user
  * @property {function} getUser - retrieves a user by email
  */
+const { createCategory, getManyCategories } = require('./CategoryPersistence');
+const { createItem, getItemsByQuery } = require('./ItemPersistence');
+const { getAllStoreOrders } = require('./OrderPersistence');
 const {
   createStore,
   getStoreByName,
@@ -18,8 +21,7 @@ const {
   addFieldToStore,
 } = require('./StorePersistence');
 const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
-const { createItem, getItemsByQuery } = require('./ItemPersistence');
-const { createCategory, getManyCategories } = require('./CategoryPersistence');
+//
 const { saveImagesToS3Bucket } = require('./AWSPersistence');
 const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
 
@@ -43,6 +45,9 @@ module.exports = {
   // CATEGORY PERSISTENCE
   createCategory,
   getManyCategories,
+
+  // ORDER PERSISTENCE
+  getAllStoreOrders,
 
   //AWS PERSISTENCE
   saveImagesToS3Bucket,
