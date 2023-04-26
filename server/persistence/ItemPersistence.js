@@ -33,6 +33,23 @@ const createItem = async ({ title, price, store, description, discount, category
 };
 
 /**
+ * @param {Array<Object>} inputItemsArray - An object that has the itemId and the quantity ordered
+ */
+
+const getGroupedItems = async (inputItemsArray) => {
+  const items = await Promise.all(
+    inputItemsArray.map((obj) => {
+      Item.findById(obj.item);
+    })
+  );
+  items.forEach((item, index) => {
+    const quantity = inputItemsArray[index].quantity;
+    item.purchasedQuantity = quantity;
+  });
+  return items;
+};
+
+/**
  * Retrieves items from the database based on the given query and store.
  * @param {Object} options - An object containing the query and store to search for items.
  * @param {string} options.query - The query to search for items.
@@ -51,4 +68,5 @@ const getItemsByQuery = async ({ query, store }) => {
 module.exports = {
   createItem,
   getItemsByQuery,
+  getGroupedItems,
 };

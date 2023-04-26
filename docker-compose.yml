@@ -3,7 +3,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./nginx
-    image: tosvng/shopx:nginx
+    image: 149028283089.dkr.ecr.us-east-1.amazonaws.com/shopx:nginx
     ports:
       - "80:80"
 
@@ -11,14 +11,14 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./dashboard
-    image: tosvng/shopx:dashboard
+    image: 149028283089.dkr.ecr.us-east-1.amazonaws.com/shopx:dashboard
     # ports:
     #   - "5000:3000"
   server:
     build:
       dockerfile: Dockerfile
       context: ./server
-    image: tosvng/shopx:server
+    image: 149028283089.dkr.ecr.us-east-1.amazonaws.com/shopx:server
     environment:
       - PORT = 3001
       - MONGO_URL = oo
