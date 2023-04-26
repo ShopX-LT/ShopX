@@ -31,8 +31,17 @@ const createItemInteractor = async (
     reviews,
   });
 
-  const formattedItem = formatItem(item);
+  const formattedItem = formatItemForStore(item);
   return formattedItem;
+};
+
+const getItemInteractor = async ({ getItemById }, { id }, user) => {
+  const rawItem = await getItemById({ id });
+  if (!rawItem) {
+    throw new Error('Item not found');
+  }
+  const item = user ? formatItemForUser(rawItem) : formatItemForStore(rawItem);
+  return item;
 };
 
 /**
@@ -45,12 +54,21 @@ const createItemInteractor = async (
  * @param {Object} query - The query to use to retrieve items.
  * @returns {Array} - An array of formatted items.
  */
-const getQueryItemsInteractor = async ({ getItemsByQuery, getStoreByName }, { store, query }) => {
+const getQueryItemsInteractor = async ({ getItemsByQuery, getStoreByName }, { store, query }, user) => {
   const validStore = await validateStore(getStoreByName, store);
   const items = await getItemsByQuery({ query, store: validStore });
-  const formattedItems = items.map((item) => {
-    return formatItem(item);
-  });
+
+  let formattedItems;
+  if (user) {
+    formattedItems = items.map((item) => {
+      return formatItemForUser(item);
+    });
+  } else {
+    formattedItems = items.map((item) => {
+      return formatItemForStore(item);
+    });
+  }
+
   return formattedItems;
 };
 
@@ -69,21 +87,27 @@ const validateStore = async (getStoreByName, store) => {
   return validStore;
 };
 
+const deleteItemByIdInteractor = async ({ deleteItemById }, { id, storeName }) => {
+  await deleteItemById({ id, storeName });
+};
+
 /**
  * Formats an item object by extracting specific properties and calculating the display price.
- * @param {Object} item - The item object to format.
- * @returns {Object} - An object with the formatted properties.
- * - id: The id of the item.
- * - title: The title of the item.
- * - price: The original price of the item.
- * - category: The category of the item.
- * - imagePath: The path to the image of the item.
- * - amount: The amount of the item.
- * - discount: The discount percentage of the item.
- * - quantity: The quantity of the item.
- * - displayPrice: The price of the item after discount.
  */
-const formatItem = (item) => {
+const formatItemForStore = (item) => {
+  return {
+    id: item?._id,
+    title: item?.title,
+    price: item?.price,
+    category: item?.category,
+    imagePath: item?.imagePath,
+    amount: item?.amount,
+    discount: item?.discount,
+    quantity: item?.quantity,
+    displayPrice: item?.price * (1 - item.discount / 100),
+  };
+};
+const formatItemForUser = (item) => {
   return {
     id: item?._id,
     title: item?.title,
@@ -99,5 +123,7 @@ const formatItem = (item) => {
 
 module.exports = {
   createItemInteractor,
+  getItemInteractor,
   getQueryItemsInteractor,
+  deleteItemByIdInteractor,
 };

@@ -18,6 +18,9 @@ const handleErrorInteractor = ({ error, res }) => {
     case 'Invalid token':
       res.status(400).json({ message: error.message });
       break;
+    case 'Item not found':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Unauthorized Access':
       res.sendStatus(403);
       break;

@@ -32,6 +32,11 @@ const createItem = async ({ title, price, store, description, discount, category
   return item;
 };
 
+const getItemById = async ({ id }) => {
+  const item = await Item.findById(id);
+  return item;
+};
+
 /**
  * @param {Array<Object>} inputItemsArray - An object that has the itemId and the quantity ordered
  */
@@ -65,8 +70,14 @@ const getItemsByQuery = async ({ query, store }) => {
   return items;
 };
 
+const deleteItemById = async ({ id, storeName }) => {
+  await Item.deleteOne({ _id: id, store: storeName });
+};
+
 module.exports = {
   createItem,
   getItemsByQuery,
   getGroupedItems,
+  getItemById,
+  deleteItemById,
 };

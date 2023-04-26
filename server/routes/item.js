@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { createItem, getAllItemsForStore, getItemForUser } = require('../controllers/item/item');
+const { createItem, getAllItemsForStore, getItemForUser, deleteById } = require('../controllers/item/item');
 
 // MIDDLEWARE
 const { verifyToken } = require('../middleware/auth');
@@ -30,7 +30,7 @@ router.post('/create', verifyToken, upload.array('images'), createItem);
 // router.get('/store/:id', verifyToken, getItem);
 router.get('/store/items', verifyToken, getAllItemsForStore);
 // router.put('/store/update', verifyToken, updateItem);
-// router.delete('/store/remove', verifyToken, deleteById);
+router.delete('/store/remove/:id', verifyToken, deleteById);
 router.get('/id/:id', getItemForUser);
 
 module.exports = router;

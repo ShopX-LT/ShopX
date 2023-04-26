@@ -11,7 +11,7 @@
  * @property {function} getUser - retrieves a user by email
  */
 const { createCategory, getManyCategories } = require('./CategoryPersistence');
-const { createItem, getItemsByQuery, getGroupedItems } = require('./ItemPersistence');
+const { createItem, getItemById, getItemsByQuery, getGroupedItems, deleteItemById } = require('./ItemPersistence');
 const { getAllStoreOrders } = require('./OrderPersistence');
 const {
   createStore,
@@ -42,6 +42,8 @@ module.exports = {
   createItem,
   getItemsByQuery,
   getGroupedItems,
+  getItemById,
+  deleteItemById,
 
   // CATEGORY PERSISTENCE
   createCategory,
