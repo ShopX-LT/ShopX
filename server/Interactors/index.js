@@ -18,6 +18,7 @@ const {
 } = require('./ItemInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
 const { getStoreOrdersInteractor } = require('./OrderInteractor');
+const { initTransactionInteractor, verifyPaymentInteractor } = require('./PaystackInteractor');
 const {
   createStoreInteractor,
   storeLogin,
@@ -47,6 +48,9 @@ module.exports = {
   getAllCategoriesInteractor,
   // ORDER INTERACTORS
   getStoreOrdersInteractor,
+  // PAYSTACK INTERACTORS
+  initTransactionInteractor,
+  verifyPaymentInteractor,
   // TOKEN INTERACTORS
   generateTokensInteractor,
   adminRefreshTokenInteractor,

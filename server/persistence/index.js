@@ -18,14 +18,16 @@ const {
   getGroupedItems,
   updateItemById,
   deleteItemById,
+  updateItemQuanity,
 } = require('./ItemPersistence');
-const { getAllStoreOrders } = require('./OrderPersistence');
+const { createOrder, findOrderByReference, getAllStoreOrders } = require('./OrderPersistence');
 const {
   createStore,
   getStoreByName,
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addOrderToStore,
 } = require('./StorePersistence');
 const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
 //
@@ -39,6 +41,7 @@ module.exports = {
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addOrderToStore,
 
   // USER PERSISTENCE
   createUser,
@@ -52,12 +55,15 @@ module.exports = {
   getItemById,
   updateItemById,
   deleteItemById,
+  updateItemQuanity,
 
   // CATEGORY PERSISTENCE
   createCategory,
   getManyCategories,
 
   // ORDER PERSISTENCE
+  createOrder,
+  findOrderByReference,
   getAllStoreOrders,
 
   //AWS PERSISTENCE

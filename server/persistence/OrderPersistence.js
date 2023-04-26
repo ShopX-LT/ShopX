@@ -3,6 +3,16 @@
  */
 const Order = require('../models/Order');
 
+const createOrder = async ({ details }) => {
+  const newOrder = new Order(details);
+  await newOrder.save();
+  return newOrder;
+};
+
+const findOrderByReference = async ({ reference }) => {
+  return await Order.findOne({ reference });
+};
+
 /**
  * Finds all the orders made to a store.
  * @param {Object} options - An object containing the store name.
@@ -15,5 +25,7 @@ const getAllStoreOrders = async ({ storeName }) => {
 };
 
 module.exports = {
+  createOrder,
+  findOrderByReference,
   getAllStoreOrders,
 };

@@ -21,6 +21,15 @@ const handleErrorInteractor = ({ error, res }) => {
     case 'Item not found':
       res.status(400).json({ message: error.message });
       break;
+    case 'Payment failed':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'Duplicate payment':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'Failed to create order':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Unauthorized Access':
       res.sendStatus(403);
       break;

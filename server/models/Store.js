@@ -27,7 +27,7 @@ const StoreSchema = new mongoose.Schema(
     itemTemplate: [String],
 
     wallet: {
-      type: String,
+      type: Number,
     },
     // SETTINGS
     settings: {

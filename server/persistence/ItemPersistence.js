@@ -79,11 +79,24 @@ const deleteItemById = async ({ id, storeName }) => {
   await Item.deleteOne({ _id: id, store: storeName });
 };
 
+const updateItemQuanity = async ({ order }) => {
+  await Promise.all(
+    order.itemsOrdered.map(async (item) => {
+      const itemToUpdate = await Item.findById(item.itemId);
+      itemToUpdate.quantity -= item.quantity;
+      await itemToUpdate.save();
+    })
+  );
+
+  return;
+};
+
 module.exports = {
   createItem,
   getItemsByQuery,
   getGroupedItems,
   getItemById,
   updateItemById,
+  updateItemQuanity,
   deleteItemById,
 };

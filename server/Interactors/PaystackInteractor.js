@@ -77,8 +77,42 @@ const initTransactionInteractor = async (
   return url;
 };
 
-const verifyPaymentInteractor = async ({ createOrderInteractor, verifyPayment }, { reference }) => {};
+const verifyPaymentInteractor = async (
+  { createOrder, verifyPayment, findOrderByReference, getStoreByName, addOrderToStore, updateItemQuanity },
+  { reference }
+) => {
+  const paymentDetails = await verifyPayment({ reference });
+  if (paymentDetails.status !== 'success') {
+    throw new Error('Payment failed');
+  }
+  // Check if it is a duplicate verification
+  const duplicate = await findOrderByReference({ reference });
+  if (duplicate) {
+    throw new Error('Duplicate payment');
+  }
+  // Create order
+  const orderDetails = paymentDetails['metadata']['custom_fields'][0];
+  orderDetails['reference'] = paymentDetails['reference'];
+  orderDetails['ip_address'] = paymentDetails['ip_address'];
+  orderDetails['fees'] = paymentDetails['fees'];
+  const order = await createOrder({ details: orderDetails });
+  if (!order) {
+    // reverse payment
+    throw new Error('Failed to create order');
+  }
+
+  // Add order to store
+  const store = await getStoreByName({ storeName: order.store });
+  if (!store) {
+    throw new Error('Invalid store');
+  }
+  await addOrderToStore({ store, order });
+
+  // update the items
+  await updateItemQuanity({ order });
+};
 
 module.exports = {
   initTransactionInteractor,
+  verifyPaymentInteractor,
 };
