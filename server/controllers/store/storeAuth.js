@@ -17,6 +17,7 @@ const persistence = require('../../persistence/index');
 // LOG INTO A STORE
 const handleSignIn = async (req, res) => {
   try {
+    console.log(req);
     // Extract body info
     const { email, storeName, password } = req.body;
     // Get the store

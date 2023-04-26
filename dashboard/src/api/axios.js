@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_SERVER_URL_LOCAL;
+const BASE_URL = 'http://shopxlb-256928536.us-east-1.elb.amazonaws.com:3001';
 export default axios.create({
   baseURL: BASE_URL,
 });
