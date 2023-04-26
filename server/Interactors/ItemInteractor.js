@@ -87,6 +87,15 @@ const validateStore = async (getStoreByName, store) => {
   return validStore;
 };
 
+const updateItemByIdInteractor = async ({ updateItemById }, { id, storeName, updatedItem }) => {
+  const newItem = await updateItemById({ id, storeName, updatedItem });
+  if (!newItem) {
+    throw new Error('Item not found');
+  }
+  const formattedItem = formatItemForStore(newItem);
+  return formattedItem;
+};
+
 const deleteItemByIdInteractor = async ({ deleteItemById }, { id, storeName }) => {
   await deleteItemById({ id, storeName });
 };
@@ -125,5 +134,6 @@ module.exports = {
   createItemInteractor,
   getItemInteractor,
   getQueryItemsInteractor,
+  updateItemByIdInteractor,
   deleteItemByIdInteractor,
 };

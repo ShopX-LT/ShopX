@@ -70,6 +70,11 @@ const getItemsByQuery = async ({ query, store }) => {
   return items;
 };
 
+const updateItemById = async ({ id, storeName, updatedItem }) => {
+  const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, true);
+  return item;
+};
+
 const deleteItemById = async ({ id, storeName }) => {
   await Item.deleteOne({ _id: id, store: storeName });
 };
@@ -79,5 +84,6 @@ module.exports = {
   getItemsByQuery,
   getGroupedItems,
   getItemById,
+  updateItemById,
   deleteItemById,
 };

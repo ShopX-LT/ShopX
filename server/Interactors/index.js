@@ -13,6 +13,7 @@ const {
   createItemInteractor,
   getItemInteractor,
   getQueryItemsInteractor,
+  updateItemByIdInteractor,
   deleteItemByIdInteractor,
 } = require('./ItemInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
@@ -39,6 +40,7 @@ module.exports = {
   createItemInteractor,
   getItemInteractor,
   getQueryItemsInteractor,
+  updateItemByIdInteractor,
   deleteItemByIdInteractor,
   // CATEGORY INTERCATORS
   createCategoryInteractor,

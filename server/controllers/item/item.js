@@ -3,6 +3,7 @@ const {
   createItemInteractor,
   getItemInteractor,
   getQueryItemsInteractor,
+  updateItemByIdInteractor,
   deleteItemByIdInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
@@ -42,6 +43,18 @@ const getItemForUser = async (req, res) => {
   }
 };
 
+const updateItemById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { store } = req.auth;
+    const updatedItem = req.body;
+    const item = updateItemByIdInteractor(persistence, { id, storeName: store, updatedItem });
+    res.status(201).send(item);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
 const deleteById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -58,5 +71,6 @@ module.exports = {
   createItem,
   getAllItemsForStore,
   getItemForUser,
+  updateItemById,
   deleteById,
 };
