@@ -4,7 +4,6 @@ const POST_FIELD_URL = '/api/admin/field';
 export async function getFields(axiosPrivate) {
   try {
     const response = await axiosPrivate.get(GET_FIELD_URL);
-    console.log(response.data.fields);
     return response.data.fields;
   } catch (error) {
     console.error(error);

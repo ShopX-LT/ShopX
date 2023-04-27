@@ -1,7 +1,10 @@
+const TOKEN_EXPIRES_TIME = '15m';
+const REFRESH_TOKEN_EXPIRES_TIME = '180m';
+
 //   REFRESH TOKEN FUNCTION
 const setRefreshToken = (tokenizer, verification, res) => {
   let token;
-  token = tokenizer.sign(verification, process.env.JWT_REFRESH_SECRET, { expiresIn: '1d' });
+  token = tokenizer.sign(verification, process.env.JWT_REFRESH_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_TIME });
   res.cookie('refreshToken', token, {
     httpOnly: true,
     sameSite: 'None',
@@ -27,7 +30,7 @@ const generateTokensInteractor = ({ tokenizer }, { adminEmail, storeName, res })
     admin: adminEmail,
     store: storeName,
   };
-  const token = tokenizer.sign(verification, process.env.JWT_SECRET, { expiresIn: '15m' });
+  const token = tokenizer.sign(verification, process.env.JWT_SECRET, { expiresIn: TOKEN_EXPIRES_TIME });
 
   //   REFRESH TOKEN
   setRefreshToken(tokenizer, verification, res);
@@ -51,8 +54,9 @@ const adminRefreshTokenInteractor = async ({ getUserByAdminToken }, { tokenizer,
     store: cookieDetails.store,
   };
   const token = tokenizer.sign(verification, process.env.JWT_SECRET, {
-    expiresIn: '15m',
+    expiresIn: TOKEN_EXPIRES_TIME,
   });
+
   return token;
 };
 
