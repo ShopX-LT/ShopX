@@ -14,7 +14,7 @@ const initiateTransaction = async ({ body }) => {
 
 const verifyPayment = async ({ reference }) => {
   const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, headers);
-  return response.data.data.status;
+  return response.data.data;
 };
 module.exports = {
   initiateTransaction,

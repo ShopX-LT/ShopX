@@ -71,10 +71,22 @@ const addFieldToStore = async ({ store, field }) => {
   return;
 };
 
+const addOrderToStore = async ({ store, order }) => {
+  store.orders.push(order._id);
+  order.itemsOrdered.map((item) => {
+    store.totalSales += item.quantity;
+  });
+  store.totalEarning += order.total * 0.9;
+  store.wallet += order.total * 0.9;
+
+  await store.save();
+};
+
 module.exports = {
   createStore,
   getStoreByName,
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addOrderToStore,
 };

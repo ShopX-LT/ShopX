@@ -32,6 +32,11 @@ const createItem = async ({ title, price, store, description, discount, category
   return item;
 };
 
+const getItemById = async ({ id }) => {
+  const item = await Item.findById(id);
+  return item;
+};
+
 /**
  * @param {Array<Object>} inputItemsArray - An object that has the itemId and the quantity ordered
  */
@@ -65,8 +70,33 @@ const getItemsByQuery = async ({ query, store }) => {
   return items;
 };
 
+const updateItemById = async ({ id, storeName, updatedItem }) => {
+  const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, true);
+  return item;
+};
+
+const deleteItemById = async ({ id, storeName }) => {
+  await Item.deleteOne({ _id: id, store: storeName });
+};
+
+const updateItemQuanity = async ({ order }) => {
+  await Promise.all(
+    order.itemsOrdered.map(async (item) => {
+      const itemToUpdate = await Item.findById(item.itemId);
+      itemToUpdate.quantity -= item.quantity;
+      await itemToUpdate.save();
+    })
+  );
+
+  return;
+};
+
 module.exports = {
   createItem,
   getItemsByQuery,
   getGroupedItems,
+  getItemById,
+  updateItemById,
+  updateItemQuanity,
+  deleteItemById,
 };

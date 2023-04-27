@@ -9,9 +9,16 @@
  * @property {function}
  */
 const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
-const { createItemInteractor, getQueryItemsInteractor } = require('./ItemInteractor');
+const {
+  createItemInteractor,
+  getItemInteractor,
+  getQueryItemsInteractor,
+  updateItemByIdInteractor,
+  deleteItemByIdInteractor,
+} = require('./ItemInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
 const { getStoreOrdersInteractor } = require('./OrderInteractor');
+const { initTransactionInteractor, verifyPaymentInteractor } = require('./PaystackInteractor');
 const {
   createStoreInteractor,
   storeLogin,
@@ -32,12 +39,18 @@ module.exports = {
   userLogin,
   //ITEM INTERACTORS
   createItemInteractor,
+  getItemInteractor,
   getQueryItemsInteractor,
+  updateItemByIdInteractor,
+  deleteItemByIdInteractor,
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
   // ORDER INTERACTORS
   getStoreOrdersInteractor,
+  // PAYSTACK INTERACTORS
+  initTransactionInteractor,
+  verifyPaymentInteractor,
   // TOKEN INTERACTORS
   generateTokensInteractor,
   adminRefreshTokenInteractor,
