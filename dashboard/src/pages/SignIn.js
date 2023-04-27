@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // MUI
 import {
@@ -36,11 +37,18 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
   const SIGNIN_URL = '/api/admin/signin';
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+  useEffect(() => {
+    localStorage.setItem('persist', persist);
+  }, [persist]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,8 +62,8 @@ const SignIn = () => {
       const res = await axios.post(SIGNIN_URL, obj, { withCredentials: true });
 
       const token = res?.data?.token;
-      const admin = res?.data?.formattedAdmin;
-      const store = res?.data?.formattedStore?.name;
+      const admin = res?.data?.admin.email;
+      const store = res?.data?.store?.name;
       setAuth({ store, admin, token });
       navigate(from, { replace: true });
     } catch (error) {
@@ -131,7 +139,10 @@ const SignIn = () => {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+              <FormControlLabel
+                control={<Checkbox value={persist} onChange={togglePersist} color="primary" />}
+                label="Remember me"
+              />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>

@@ -1,5 +1,5 @@
 const handleErrorInteractor = ({ error, res }) => {
-  switch (error.message) {
+  switch (error?.message) {
     case 'Credential is incorrect. Use your account password':
       res.status(400).json({ message: error.message });
       break;

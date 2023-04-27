@@ -188,7 +188,7 @@ const AddProductPage = () => {
                       </MenuItem>
                       {categories.map((category) => {
                         return (
-                          <MenuItem key={category._id} value={category.name} sx={{ textTransform: 'capitalize' }}>
+                          <MenuItem key={category.name} value={category.name} sx={{ textTransform: 'capitalize' }}>
                             <Checkbox checked={values.category.indexOf(category.name) > -1} />
                             <ListItemText primary={category.name} />
                           </MenuItem>
@@ -232,7 +232,7 @@ const AddProductPage = () => {
                 </Grid>
                 {storeFields.map((val, index) => {
                   return (
-                    <Grid key={index} item xs={12} md={6}>
+                    <Grid key={val} item xs={12} md={6}>
                       <TextField
                         label={val}
                         name={val}
@@ -285,10 +285,8 @@ const AddProductPage = () => {
                 </Dropzone>
                 <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
                   {values.images.map((image, index) => {
-                    // console.log(index);
-                    // console.log(img.name);
                     return (
-                      <Box key={index}>
+                      <Box key={image.name}>
                         <img src={URL.createObjectURL(image)} alt={image.name} width={200} height={200} />
                         <Box
                           sx={{
@@ -301,7 +299,6 @@ const AddProductPage = () => {
                           <Typography>{image.name}</Typography>
                           <IconButton
                             onClick={() => {
-                              console.log(index);
                               const newFiles = [...productImages];
                               newFiles.splice(index, 1);
                               setProductImages(newFiles);

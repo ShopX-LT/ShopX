@@ -14,7 +14,6 @@ const OrdersPage = () => {
 
   const retreiveOrders = async () => {
     const response = await getOrders(axiosPrivate);
-    console.log(response);
     if (!response) {
       setOrders([]);
       return;
@@ -40,8 +39,8 @@ const OrdersPage = () => {
             <Table>
               <OrderListHead />
               <TableBody>
-                {orders.map((order) => {
-                  return <OrderCard order={order} />;
+                {orders.map((order, index) => {
+                  return <OrderCard key={index} order={order} />;
                 })}
               </TableBody>
             </Table>

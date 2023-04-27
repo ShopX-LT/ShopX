@@ -46,7 +46,6 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  console.log(array);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -152,7 +151,7 @@ const CategoriesPage = () => {
                   {filteredCategory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { _id, name } = row;
                     return (
-                      <TableRow hover key={_id} tabIndex={-1}>
+                      <TableRow hover key={name} tabIndex={-1}>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
                             <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>
