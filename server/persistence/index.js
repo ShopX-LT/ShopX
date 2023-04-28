@@ -21,6 +21,8 @@ const {
   updateItemQuanity,
 } = require('./ItemPersistence');
 const { createOrder, findOrderByReference, getAllStoreOrders } = require('./OrderPersistence');
+const { createPayout } = require('./PayoutPersistence');
+const { initiateTransaction, verifyPayment, getBanks, createRecipient, transferOut } = require('./PaystackPersistence');
 const {
   createStore,
   getStoreByName,
@@ -28,6 +30,7 @@ const {
   addCategoryToStore,
   addFieldToStore,
   addOrderToStore,
+  editStoreWallet,
 } = require('./StorePersistence');
 const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
 //
@@ -42,6 +45,7 @@ module.exports = {
   addCategoryToStore,
   addFieldToStore,
   addOrderToStore,
+  editStoreWallet,
 
   // USER PERSISTENCE
   createUser,
@@ -65,6 +69,16 @@ module.exports = {
   createOrder,
   findOrderByReference,
   getAllStoreOrders,
+
+  // PAYSTACK PERSISTENCE
+  initiateTransaction,
+  verifyPayment,
+  getBanks,
+  createRecipient,
+  transferOut,
+
+  // PAYOUT PERSISTENCE
+  createPayout,
 
   //AWS PERSISTENCE
   saveImagesToS3Bucket,

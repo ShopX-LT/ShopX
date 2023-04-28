@@ -82,6 +82,16 @@ const addOrderToStore = async ({ store, order }) => {
   await store.save();
 };
 
+const editStoreWallet = async ({ store, amount }) => {
+  try {
+    store.wallet += amount;
+    await store.save();
+    return;
+  } catch (error) {
+    console.error('EditStoreWallet: ', error);
+  }
+};
+
 module.exports = {
   createStore,
   getStoreByName,
@@ -89,4 +99,5 @@ module.exports = {
   addCategoryToStore,
   addFieldToStore,
   addOrderToStore,
+  editStoreWallet,
 };

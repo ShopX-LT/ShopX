@@ -10,6 +10,9 @@ const {
   getStoreOrdersInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
+  // PAYSTACK INTERACTORS
+  payoutInteractor,
+  getBanksInteractors,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
@@ -61,4 +64,26 @@ const handleGetAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { handleAddField, handleGetField, handleGetAllOrders };
+const handleGetBankList = async (req, res) => {
+  try {
+    const banks = await getBanksInteractors(persistence);
+    return res.status(200).json({ banks });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+const handlePayout = async (req, res) => {
+  try {
+    const { name, account_number, bank } = req.body;
+    const { store, admin } = req.auth; //check if admin is part of store employees
+    const payout = await payoutInteractor(persistence, { storeName: store, name, account_number, bank, admin });
+    res.status(200).json({ payout });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+module.exports = { handleAddField, handleGetField, handleGetAllOrders, handlePayout, handleGetBankList };

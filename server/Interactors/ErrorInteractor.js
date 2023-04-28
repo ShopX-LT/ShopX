@@ -30,6 +30,12 @@ const handleErrorInteractor = ({ error, res }) => {
     case 'Failed to create order':
       res.status(400).json({ message: error.message });
       break;
+    case 'Invalid account details':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'Something went wrong':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Unauthorized Access':
       res.sendStatus(403);
       break;
