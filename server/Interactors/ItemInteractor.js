@@ -22,7 +22,7 @@ const createItemInteractor = async (
   const item = await createItem({
     title,
     price,
-    store: validStore,
+    store: validStore.name,
     description,
     discount,
     category,
@@ -35,12 +35,14 @@ const createItemInteractor = async (
   return formattedItem;
 };
 
-const getItemInteractor = async ({ getItemById }, { id }, user) => {
+const getItemInteractor = async ({ getItemById, getImagesUrlFromS3Buscket }, { id }, user) => {
   const rawItem = await getItemById({ id });
+  const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.imagePath });
   if (!rawItem) {
     throw new Error('Item not found');
   }
   const item = user ? formatItemForUser(rawItem) : formatItemForStore(rawItem);
+  item['imagesUrl'] = imagesUrl;
   return item;
 };
 
@@ -54,9 +56,14 @@ const getItemInteractor = async ({ getItemById }, { id }, user) => {
  * @param {Object} query - The query to use to retrieve items.
  * @returns {Array} - An array of formatted items.
  */
-const getQueryItemsInteractor = async ({ getItemsByQuery, getStoreByName }, { store, query }, user) => {
+const getQueryItemsInteractor = async (
+  { getItemsByQuery, getStoreByName, getImagesUrlFromS3Buscket },
+  { store, query },
+  user
+) => {
   const validStore = await validateStore(getStoreByName, store);
   const items = await getItemsByQuery({ query, store: validStore });
+  const imagesUrl = await getImagesUrlFromS3Buscket({ images: items.imagePath });
 
   let formattedItems;
   if (user) {
@@ -68,6 +75,7 @@ const getQueryItemsInteractor = async ({ getItemsByQuery, getStoreByName }, { st
       return formatItemForStore(item);
     });
   }
+  formattedItems['imagesUrl'] = imagesUrl;
 
   return formattedItems;
 };
