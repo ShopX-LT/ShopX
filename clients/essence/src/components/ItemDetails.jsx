@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../style";
+import { fCurrency } from "../utils/formatNumber";
 
 const ItemDetails = ({ name, about, price }) => {
   return (
@@ -8,7 +9,7 @@ const ItemDetails = ({ name, about, price }) => {
         <h1 className={`${styles.heading2}`}>{name}</h1>
         <p className={`${styles.paragraph}`}>{about}</p>
       </div>
-      <div className={`${styles.paragraph}`}>{price}</div>
+      <div className={`${styles.paragraph}`}>{fCurrency(price)}</div>
     </div>
   );
 };
