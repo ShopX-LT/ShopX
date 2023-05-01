@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const BASE_URL = 'http://shopxlb-256928536.us-east-1.elb.amazonaws.com:3001';
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://shopxlb-256928536.us-east-1.elb.amazonaws.com:3001';
+// const BASE_URL = 'http://localhost:3001';
 export default axios.create({
   baseURL: BASE_URL,
 });
