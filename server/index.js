@@ -1,4 +1,7 @@
 const express = require('express');
+const morgan = require('morgan');
+const fs = require('fs');
+var path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
@@ -18,6 +21,12 @@ function makeApp(database) {
   app.use(cors(corsOptions));
   // app.use(cors());
   app.use(express.json());
+  // log all requests to access.log
+  app.use(
+    morgan('common', {
+      stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
+    })
+  );
   app.use(express.urlencoded({ limit: '30mb', extended: true }));
   app.use(cookieParser());
   app.use(bodyParser.json({ limit: '30mb', extended: true }));
