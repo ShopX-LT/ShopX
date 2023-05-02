@@ -37,7 +37,7 @@ const createItemInteractor = async (
 
 const getItemInteractor = async ({ getItemById, getImagesUrlFromS3Buscket }, { id }, user) => {
   const rawItem = await getItemById({ id });
-  const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.imagePath });
+  const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.images });
   if (!rawItem) {
     throw new Error('Item not found');
   }
@@ -62,8 +62,7 @@ const getQueryItemsInteractor = async (
   user
 ) => {
   const validStore = await validateStore(getStoreByName, store);
-  const items = await getItemsByQuery({ query, store: validStore });
-  const imagesUrl = await getImagesUrlFromS3Buscket({ images: items.imagePath });
+  const items = await getItemsByQuery({ query, store: validStore.name });
 
   let formattedItems;
   if (user) {
@@ -75,9 +74,21 @@ const getQueryItemsInteractor = async (
       return formatItemForStore(item);
     });
   }
-  formattedItems['imagesUrl'] = imagesUrl;
+  // formattedItems['imagesUrl'] = imagesUrl;
+  // formattedItems.map(async (item) => {
+  //   const urls = await getImagesUrlFromS3Buscket({ images: item.images });
+  //   item.imagesUrl = urls;
+  // });
+  const itemsWithImageUrlPromises = formattedItems.map((item) => {
+    return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
+      item.imagesUrl = urls;
+      return item;
+    });
+  });
+  const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
+  console.log(itemsWithImageUrl);
 
-  return formattedItems;
+  return itemsWithImageUrl;
 };
 
 /**
@@ -117,7 +128,7 @@ const formatItemForStore = (item) => {
     title: item?.title,
     price: item?.price,
     category: item?.category,
-    imagePath: item?.imagePath,
+    images: item?.images,
     amount: item?.amount,
     discount: item?.discount,
     quantity: item?.quantity,
@@ -130,7 +141,7 @@ const formatItemForUser = (item) => {
     title: item?.title,
     price: item?.price,
     category: item?.category,
-    imagePath: item?.imagePath,
+    images: item?.images,
     amount: item?.amount,
     discount: item?.discount,
     quantity: item?.quantity,

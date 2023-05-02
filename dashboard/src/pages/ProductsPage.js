@@ -16,8 +16,9 @@ export default function ProductsPage() {
   const [openFilter, setOpenFilter] = useState(false);
 
   useEffect(() => {
-    const retrieveProducts = () => {
-      const response = getAllItems(axiosPrivate);
+    const retrieveProducts = async () => {
+      const response = await getAllItems(axiosPrivate);
+      console.log(response);
       if (!response) {
         setProducts([]);
         return;

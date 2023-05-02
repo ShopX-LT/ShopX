@@ -79,7 +79,6 @@ const getImagesUrlFromS3Buscket = async ({ images }) => {
   const bucketRegion = process.env.BUCKET_REGION;
   const accessKey = process.env.ACCESS_KEY;
   const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-  console.log(bucketRegion, bucketName);
 
   const s3 = new S3Client({
     credentials: {
@@ -98,6 +97,7 @@ const getImagesUrlFromS3Buscket = async ({ images }) => {
       return getSignedUrl(s3, getObjectCommand, { expiresIn: 900 });
     })
   );
+  return imagesUrl;
 };
 
 module.exports = {
