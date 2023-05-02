@@ -31,7 +31,7 @@ const {
 } = require('./StorePersistence');
 const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
 //
-const { saveImagesToS3Bucket } = require('./AWSPersistence');
+const { saveImagesToS3Bucket, getImagesUrlFromS3Buscket } = require('./AWSPersistence');
 const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
 
 module.exports = {
@@ -68,6 +68,7 @@ module.exports = {
 
   //AWS PERSISTENCE
   saveImagesToS3Bucket,
+  getImagesUrlFromS3Buscket,
 
   // ENCRYPTION PERSISTENCE
   verifyPassword,
