@@ -5,10 +5,10 @@ const StyleContext = createContext({});
 
 export const StyleProvider = ({ children }) => {
   const [style, setStyle] = useState(defaultStyle);
-  console.log(style);
+  const [store, setStore] = useState({ store: "tshop" });
 
   return (
-    <StyleContext.Provider value={{ style, setStyle }}>
+    <StyleContext.Provider value={{ style, setStyle, store, setStore }}>
       {children}
     </StyleContext.Provider>
   );

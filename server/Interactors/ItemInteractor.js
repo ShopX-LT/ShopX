@@ -37,9 +37,12 @@ const createItemInteractor = async (
 
 const getItemInteractor = async ({ getItemById, getImagesUrlFromS3Buscket }, { id }, user) => {
   const rawItem = await getItemById({ id });
-  const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.images });
   if (!rawItem) {
     throw new Error('Item not found');
+  }
+  const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.images });
+  if (!imagesUrl) {
+    throw new Error('Error retrieving Images');
   }
   const item = user ? formatItemForUser(rawItem) : formatItemForStore(rawItem);
   item['imagesUrl'] = imagesUrl;
@@ -74,11 +77,7 @@ const getQueryItemsInteractor = async (
       return formatItemForStore(item);
     });
   }
-  // formattedItems['imagesUrl'] = imagesUrl;
-  // formattedItems.map(async (item) => {
-  //   const urls = await getImagesUrlFromS3Buscket({ images: item.images });
-  //   item.imagesUrl = urls;
-  // });
+
   const itemsWithImageUrlPromises = formattedItems.map((item) => {
     return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
       item.imagesUrl = urls;
@@ -106,12 +105,21 @@ const validateStore = async (getStoreByName, store) => {
   return validStore;
 };
 
-const updateItemByIdInteractor = async ({ updateItemById }, { id, storeName, updatedItem }) => {
+const updateItemByIdInteractor = async (
+  { updateItemById, getImagesUrlFromS3Buscket },
+  { id, storeName, updatedItem }
+) => {
   const newItem = await updateItemById({ id, storeName, updatedItem });
   if (!newItem) {
     throw new Error('Item not found');
   }
+  const imagesUrl = await getImagesUrlFromS3Buscket({ images: newItem.images });
+  if (!imagesUrl) {
+    throw new Error('Error retrieving Images');
+  }
   const formattedItem = formatItemForStore(newItem);
+  formattedItem['imagesUrl'] = imagesUrl;
+
   return formattedItem;
 };
 

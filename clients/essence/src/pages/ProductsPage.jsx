@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Item from "../components/Item";
 import PillButton from "../components/PillButton";
-import { useState } from "react";
+import { getAllItems } from "../services/ItemService";
 
 const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("chain");
+  const [items, setItems] = useState([]);
+
   const changeCategory = (category) => {
     setSelectedCategory(category);
   };
 
+  useEffect(() => {
+    const retrieveItems = async () => {
+      const response = await getAllItems();
+      if (!response) {
+        setItems([]);
+        return;
+      }
+      setItems(response);
+    };
+    retrieveItems();
+  }, []);
   const categories = [
     { id: "1ca", name: "chain" },
     { id: "2ca", name: "necklace" },
@@ -31,11 +44,16 @@ const ProductsPage = () => {
       </div>
 
       <div className=" flex flex-row flex-wrap  justify-center sm:gap-[30px] gap-[20px]">
-        <Item name={"Essence Chain"} description={"Chain"} price={"#1050"} />
-        <Item name={"Essence Chain"} description={"Chain"} price={"#1050"} />
-        <Item name={"Essence Chain"} description={"Chain"} price={"#1050"} />
-        <Item name={"Essence Chain"} description={"Chain"} price={"#1050"} />
-        <Item name={"Essence Chain"} description={"Chain"} price={"#1050"} />
+        {items.map((item) => (
+          <Item
+            key={item.id}
+            name={item.title}
+            description={""}
+            price={item.price}
+            id={item.id}
+            image={item.imagesUrl[0]}
+          />
+        ))}
       </div>
     </div>
   );
