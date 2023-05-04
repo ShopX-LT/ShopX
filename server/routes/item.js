@@ -4,6 +4,7 @@ const {
   createItem,
   getAllItemsForStore,
   getItemForUser,
+  getAllItemsForUser,
   deleteById,
   updateItemById,
 } = require('../controllers/item/item');
@@ -38,6 +39,9 @@ router.get('/store/items', verifyToken, getAllItemsForStore);
 router.put('/store/update/:id', verifyToken, updateItemById);
 router.delete('/store/remove/:id', verifyToken, deleteById);
 
-router.get('/id/:id', getItemForUser);
+//
+router.get('/user/items', getAllItemsForUser);
+
+router.get('/user/id/:id', getItemForUser);
 
 module.exports = router;

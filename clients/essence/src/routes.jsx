@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import ProductsPage from "./pages/ProductsPage";
 
 export default function Router({ styles }) {
-  console.log(styles);
   const routes = useRoutes([
     { path: "/", element: <Home styles={styles} />, index: true },
     { path: "/home", element: <Home styles={styles} /> },

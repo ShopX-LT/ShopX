@@ -43,6 +43,18 @@ const getItemForUser = async (req, res) => {
   }
 };
 
+const getAllItemsForUser = async (req, res) => {
+  try {
+    console.log(req.header('store'));
+    const store = req.header('store');
+    const items = await getQueryItemsInteractor(persistence, { store: store, query: req.query }, true);
+    return res.status(200).json({ items });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 const updateItemById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -73,4 +85,5 @@ module.exports = {
   getItemForUser,
   updateItemById,
   deleteById,
+  getAllItemsForUser,
 };
