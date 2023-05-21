@@ -42,15 +42,20 @@ const getItemById = async ({ id }) => {
  */
 
 const getGroupedItems = async (inputItemsArray) => {
-  const items = await Promise.all(
+  const rawItems = await Promise.all(
     inputItemsArray.map((obj) => {
-      Item.findById(obj.item);
+      return Item.findById(obj.itemId);
     })
   );
-  items.forEach((item, index) => {
+
+  const items = rawItems.map((item, index) => {
     const quantity = inputItemsArray[index].quantity;
-    item.purchasedQuantity = quantity;
+    const dirtyItem = { ...item };
+    const cleanItem = dirtyItem._doc;
+    const updatedItem = { ...cleanItem, purchasedQuantity: quantity };
+    return updatedItem;
   });
+
   return items;
 };
 
