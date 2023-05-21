@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import styles from "../style";
+import React, { useEffect, useState } from "react";
 import Cart from "./Cart";
+import useStyle from "../hooks/useStyle";
+import { useDispatch, useSelector } from "react-redux";
+import CartPanel from "./CartPanel";
 
 const navLinks = [
   { id: "home", title: "Home" },
@@ -11,7 +13,10 @@ const navItemStyle =
   "cursor-pointer hover:text-dimBlack text-[16px] font-poppins font-normal";
 
 const Navbar = ({ page }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { style } = useStyle();
+  const isCartOpen = useSelector((state) => state.isCartOpen);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div>
       <nav
@@ -25,6 +30,8 @@ const Navbar = ({ page }) => {
               className={`mr-[40px] hover:-translate-y-px  ${navItemStyle} ${
                 navItem.id === page ? "border-b-[1px] border-b-black" : ""
               }`}
+              role="button"
+              tabIndex={0}
             >
               <a href={`/${navItem.id}`}>{navItem.title}</a>
             </li>
@@ -37,20 +44,22 @@ const Navbar = ({ page }) => {
         <div className="sm:hidden flex flex-1 justify-end items-center">
           <p
             onClick={() => {
-              setIsOpen((prev) => !prev);
+              setIsMenuOpen((prev) => !prev);
             }}
             className="cursor-pointer"
           >
-            {isOpen ? "close" : "open"}
+            {isMenuOpen ? "close menu" : "open menu"}
           </p>
           <div
             className={`${
-              isOpen ? "flex" : "hidden"
-            } bg-dirt-white py-6 absolute top-20 right-5 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+              isMenuOpen ? "flex" : "hidden"
+            } bg-dirt-white py-6 absolute top-20 right-5 mx-4 my-2 min-w-[140px] rounded-xl sidebar `}
           >
             <ul className="list-none flex flex-col items-center  flex-1 px-3">
               {navLinks.map((navItem, index) => (
                 <div
+                  role="button"
+                  tabIndex={0}
                   key={navItem.id}
                   className={`${
                     index !== navLinks.length - 1 ? "mb-[30px]" : "mb-0"
@@ -70,11 +79,7 @@ const Navbar = ({ page }) => {
           </div>
         </div>
       </nav>
-      <div className="relative flex justify-end">
-        <div className="fixed right-0 z-40 h-full w-[300px] bg-slate-600 drop-shadow-xl ">
-          ss
-        </div>
-      </div>
+      {isCartOpen && <CartPanel />}
     </div>
   );
 };

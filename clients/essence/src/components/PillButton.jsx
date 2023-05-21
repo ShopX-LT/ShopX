@@ -15,14 +15,12 @@ const PillButton = ({ text, isSelected, changeCategory }) => {
   };
 
   return (
-    <div>
-      <button
-        className={`${shape} ${isSelected ? selected : notSelected} ${hover}`}
-        onClick={handleOnClick}
-      >
-        {text}
-      </button>
-    </div>
+    <button
+      className={`${shape} ${isSelected ? selected : notSelected} ${hover}`}
+      onClick={handleOnClick}
+    >
+      {text}
+    </button>
   );
 };
 

@@ -32,7 +32,7 @@ const CheckoutItem = ({ id, quantity }) => {
   }, []);
 
   return (
-    <div className="p-2 flex flex-row justify-between items-center rounded-md shadow-md border-2 ">
+    <div className="sidebar p-2 flex flex-row justify-between items-center rounded-md shadow-md border-2 border-black my-2">
       <div className="flex flex-row justify-start items-center gap-6">
         {/* <img
           src={item?.imagesUrl[0]}
