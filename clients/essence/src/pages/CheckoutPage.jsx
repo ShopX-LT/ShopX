@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button, Box } from "@mui/material";
 import axios from "../api/axios";
 import useStyle from "../hooks/useStyle";
-import CheckoutItem from "../components/CheckoutItem";
 import { createOrder } from "../services/checkoutService";
 import { fCurrency } from "../utils/formatNumber";
 import { clearCart } from "../state";
+import CartList from "../components/CartList";
 
 const CheckoutPage = () => {
   const { style } = useStyle();
@@ -33,20 +33,11 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="flex sm:flex-row flex-col bg-white min-h-[100vh]">
-      <div className="flex flex-col p-6 pt-12 w-full  ">
-        <h1>Items</h1>
-        <p className={`${style.heading2} my-6 flex justify-end`}>
-          Total: {fCurrency(total)}
-        </p>
-        {cart.map((item) => (
-          <CheckoutItem
-            key={item.itemId}
-            id={item.itemId}
-            quantity={item.quantity}
-          />
-        ))}
-        {/* <CheckoutItem style={style} /> */}
+    <div className="flex sm:flex-row flex-col  bg-white min-h-[100vh]">
+      <div className="w-full">
+        <h1 className={`${style.heading1}`}>Items</h1>
+        <p className={`${style.heading2} my-6`}>Total: {fCurrency(total)}</p>
+        <CartList custom_styles={"p-6 pt-12"} />
       </div>
       <div className="flex flex-col p-6 w-full  shadow-[0_0px_25px_-15px_rgba(0,0,0,0.6)]">
         <h1 className={`${style.heading1}`}>Shipping Details</h1>
