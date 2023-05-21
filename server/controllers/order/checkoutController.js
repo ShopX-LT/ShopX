@@ -10,6 +10,7 @@ const persistence = require('../../persistence/index');
 const handleCheckout = async (req, res) => {
   try {
     const { items, userDetails } = req.body;
+
     const url = await initTransactionInteractor(persistence, { items, userDetails });
     res.status(200).json({ url });
   } catch (error) {

@@ -33,7 +33,7 @@ const Hero = () => {
           className="long-item flex bg-cover items-end px-2 py-2 rounded-[8px] min-h-[350px] box-shadow w-[250px]"
           style={{ backgroundImage: `url(${es_chain})` }}
         >
-          <ItemDetails name={"Essence Ring"} about={"Ring"} price={"#750"} />
+          <ItemDetails name={"Essence Ring"} about={"Ring"} price={750} />
         </div>
 
         {/* STACKED ITEMS */}
@@ -41,13 +41,13 @@ const Hero = () => {
           className="md:flex  hidden  bg-cover  items-end px-2 py-2 rounded-[8px] min-h-[200px] box-shadow w-[250px]"
           style={{ backgroundImage: `url(${es_chain})` }}
         >
-          <ItemDetails name={"Essence Chain"} about={"Chain"} price={"#1050"} />
+          <ItemDetails name={"Essence Chain"} about={"Chain"} price={1050} />
         </div>
         <div
           className="md:flex hidden bg-cover items-end px-2 py-2 rounded-[8px] min-h-[200px] box-shadow w-[250px]"
           style={{ backgroundImage: `url(${es_chain})` }}
         >
-          <ItemDetails name={"Essence Chain"} about={"Chain"} price={"#1050"} />
+          <ItemDetails name={"Essence Chain"} about={"Chain"} price={1050} />
         </div>
       </div>
     </section>

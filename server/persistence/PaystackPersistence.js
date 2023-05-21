@@ -1,6 +1,9 @@
 const Paystack = require('paystack');
 const axios = require('axios');
-const paystackKey = new Paystack(process.env.PAYSTACK_KEY);
+const dotenv = require('dotenv');
+dotenv.config();
+
+const paystackKey = process.env.PAYSTACK_KEY;
 const headers = {
   headers: { Authorization: `Bearer ${paystackKey}` },
 };

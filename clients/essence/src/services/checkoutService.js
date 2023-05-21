@@ -6,7 +6,10 @@ const VERIFY_PAYMENT_URL = "/api/order/verify-payment";
 export async function createOrder(cart, form) {
   try {
     const body = { items: cart, userDetails: form };
+    console.log(body);
     const response = await axios.post(CREATE_ORDER_URL, body);
+    console.log(response);
+
     return response.data.url;
   } catch (error) {
     console.log(error);

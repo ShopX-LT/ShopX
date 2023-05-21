@@ -76,8 +76,8 @@ const addOrderToStore = async ({ store, order }) => {
   order.itemsOrdered.map((item) => {
     store.totalSales += item.quantity;
   });
-  store.totalEarning += order.total * 0.9;
-  store.wallet += order.total * 0.9;
+  store.totalEarning += parseInt(order.total) * 0.9;
+  store.wallet += parseInt(order.total) * 0.9;
 
   await store.save();
 };
