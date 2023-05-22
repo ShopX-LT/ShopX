@@ -27,6 +27,12 @@ const handleErrorInteractor = ({ error, res }) => {
     case 'Duplicate payment':
       res.status(400).json({ message: error.message });
       break;
+    case 'Error saving new category':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'Error creating new category':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Failed to create order':
       res.status(400).json({ message: error.message });
       break;

@@ -7,23 +7,6 @@ const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/clien
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { v4: uuidv4 } = require('uuid');
 
-// const createS3Client = () => {
-//   const bucketName = process.env.BUCKET_NAME;
-//   const bucketRegion = process.env.BUCKET_REGION;
-//   const accessKey = process.env.ACCESS_KEY;
-//   const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-//   console.log(bucketRegion, bucketName);
-
-//   const s3 = new S3Client({
-//     credentials: {
-//       accessKeyId: accessKey,
-//       secretAccessKey: secretAccessKey,
-//     },
-//     region: bucketRegion,
-//   });
-//   return s3;
-// };
-
 /**
  * Saves the given files to an S3 bucket specified in the environment variables.
  * @param {Array} files - An array of files to save to the S3 bucket.
@@ -69,7 +52,7 @@ const saveImagesToS3Bucket = async (files) => {
     );
     return images;
   } catch (error) {
-    console.error(error);
+    console.error('AWS Persistence error in saveImagesToS3Bucket()', error);
     return null;
   }
 };
@@ -101,7 +84,7 @@ const getImagesUrlFromS3Buscket = async ({ images }) => {
 
     return imagesUrl;
   } catch (error) {
-    console.error(error);
+    console.error('AWS Persistence error in getImagesUrlFromS3Buscket()', error);
     return null;
   }
 };

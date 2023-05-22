@@ -13,14 +13,19 @@ const Category = require('../models/Category');
  * @returns {Promise<Category>} A promise that resolves to the newly created category object.
  */
 const createCategory = async ({ name, storeName, creatorsEmail }) => {
-  const newCategory = new Category({
-    name: name,
-    store: storeName,
-    creatorsEmail: creatorsEmail,
-  });
+  try {
+    const newCategory = new Category({
+      name: name,
+      store: storeName,
+      creatorsEmail: creatorsEmail,
+    });
 
-  const category = await newCategory.save();
-  return category;
+    const category = await newCategory.save();
+    return category;
+  } catch (error) {
+    console.error('Category Persistence error in createCategory()', error);
+    return null;
+  }
 };
 
 /**
@@ -29,8 +34,13 @@ const createCategory = async ({ name, storeName, creatorsEmail }) => {
  * @returns {Promise<Category>} A promise that resolves to an array of category objects.
  */
 const getManyCategories = async ({ categories }) => {
-  const result = await Category.find({ _id: { $in: categories } });
-  return result;
+  try {
+    const result = await Category.find({ _id: { $in: categories } });
+    return result;
+  } catch (error) {
+    console.error('Category Persistence error in getManyCategories()', error);
+    return null;
+  }
 };
 
 module.exports = {
