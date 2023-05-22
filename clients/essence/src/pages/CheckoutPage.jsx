@@ -34,7 +34,7 @@ const CheckoutPage = () => {
 
   return (
     <div className="flex sm:flex-row flex-col  bg-white min-h-[100vh]">
-      <div className="w-full">
+      <div className="w-full p-6">
         <h1 className={`${style.heading1}`}>Items</h1>
         <p className={`${style.heading2} my-6`}>Total: {fCurrency(total)}</p>
         <CartList custom_styles={"p-6 pt-12"} />
