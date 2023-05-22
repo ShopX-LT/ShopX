@@ -34,11 +34,13 @@ const CheckoutItem = ({ id, quantity }) => {
   return (
     <div className="sidebar p-2 flex flex-row justify-between items-center rounded-md shadow-md border-2 border-black my-2">
       <div className="flex flex-row justify-start items-center gap-6">
-        {/* <img
-          src={item?.imagesUrl[0]}
-          alt={`${item.title} image`}
-          className="rounded w-[100px] h-[100px]"
-        /> */}
+        {item && item?.imagesUrl && item?.imagesUrl.length > 0 && (
+          <img
+            src={item?.imagesUrl[0]}
+            alt={`${item.title} image`}
+            className="rounded w-[100px] h-[100px]"
+          />
+        )}
         <div className="flex flex-col gap-3">
           <p className={`${style.heading2}`}>{item.title}</p>
           <div className="flex flex-row gap-3">
