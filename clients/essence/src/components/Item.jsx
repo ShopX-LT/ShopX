@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ItemDetails from "./ItemDetails";
@@ -12,7 +13,7 @@ const Item = ({ image, id, name, description, price, discount }) => {
   return (
     <div className="flex flex-col">
       <div
-        className="flex bg-cover items-end px-2 py-2 rounded-[8px] w-[300px] h-[350px] box-shadow "
+        className="flex bg-cover items-end px-2 py-2 rounded-[8px] w-[300px] h-[350px] box-shadow hover:drop-shadow-lg"
         style={{ backgroundImage: `url(${image})` }}
       >
         <ItemDetails
@@ -35,6 +36,8 @@ const Item = ({ image, id, name, description, price, discount }) => {
             dispatch(
               addToCart({ itemId: id, price: discountedPrice, quantity: 1 })
             );
+
+            toast.success("Added to cart");
           }}
           aria-label="Add to cart"
         >
