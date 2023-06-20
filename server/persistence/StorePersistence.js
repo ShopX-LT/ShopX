@@ -11,15 +11,20 @@ const Store = require('../models/Store');
  * @returns {Promise<Store>} A promise that resolves to the newly created store object.
  */
 const createStore = async ({ storeName, email }) => {
-  const newStore = new Store({
-    name: storeName,
-    owner: email,
-    startDate: Date.now(),
-    subscribers: [{ user: email, from: Date.now() }],
-  });
-  newStore.admin.push(email);
-  const store = await newStore.save();
-  return store;
+  try {
+    const newStore = new Store({
+      name: storeName,
+      owner: email,
+      startDate: Date.now(),
+      subscribers: [{ user: email, from: Date.now() }],
+    });
+    newStore.admin.push(email);
+    const store = await newStore.save();
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in createStore()', error);
+    return null;
+  }
 };
 
 /**
@@ -29,8 +34,13 @@ const createStore = async ({ storeName, email }) => {
  * @returns {Promise<Store>} A promise that resolves to the store object if found, or null if not found.
  */
 const getStoreByName = async ({ storeName }) => {
-  const store = await Store.findOne({ name: storeName });
-  return store;
+  try {
+    const store = await Store.findOne({ name: storeName });
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in getStoreByName()', error);
+    return null;
+  }
 };
 
 /**
@@ -41,8 +51,13 @@ const getStoreByName = async ({ storeName }) => {
  * @returns {Promise<Store>} A promise that resolves to the store object if found, or null if not found.
  */
 const getStoreByNameAndEmail = async ({ storeName, email }) => {
-  const store = await Store.findOne({ name: storeName, admin: { $in: [email.toLowerCase()] } });
-  return store;
+  try {
+    const store = await Store.findOne({ name: storeName, admin: { $in: [email.toLowerCase()] } });
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in getStoreByNameAndEmail()', error);
+    return null;
+  }
 };
 
 /**
@@ -53,9 +68,14 @@ const getStoreByNameAndEmail = async ({ storeName, email }) => {
  * @returns None
  */
 const addCategoryToStore = async ({ store, categoryId }) => {
-  store['categories'].push(categoryId);
-  await store.save();
-  return;
+  try {
+    store['categories'].push(categoryId);
+    await store.save();
+    return true;
+  } catch (error) {
+    console.error('Store Persistence error in addCategoryToStore()', error);
+    return null;
+  }
 };
 
 /**
@@ -66,20 +86,30 @@ const addCategoryToStore = async ({ store, categoryId }) => {
  * @returns None
  */
 const addFieldToStore = async ({ store, field }) => {
-  store.itemTemplate.push(field);
-  await store.save();
-  return;
+  try {
+    store.itemTemplate.push(field);
+    await store.save();
+    return;
+  } catch (error) {
+    console.error('Store Persistence error in addFieldToStore()', error);
+    return null;
+  }
 };
 
 const addOrderToStore = async ({ store, order }) => {
-  store.orders.push(order._id);
-  order.itemsOrdered.map((item) => {
-    store.totalSales += item.quantity;
-  });
-  store.totalEarning += parseInt(order.total) * 0.9;
-  store.wallet += parseInt(order.total) * 0.9;
+  try {
+    store.orders.push(order._id);
+    order.itemsOrdered.map((item) => {
+      store.totalSales += item.quantity;
+    });
+    store.totalEarning += parseInt(order.total) * 0.9;
+    store.wallet += parseInt(order.total) * 0.9;
 
-  await store.save();
+    await store.save();
+  } catch (error) {
+    console.error('Store Persistence error in addOrderToStore()', error);
+    return null;
+  }
 };
 
 module.exports = {

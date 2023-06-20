@@ -12,12 +12,17 @@ const User = require('../models/User');
  * @returns {Promise<User>} A promise that resolves with the newly created user object.
  */
 const createUser = async ({ email, password }) => {
-  const user = new User({
-    email,
-    password,
-  });
+  try {
+    const user = new User({
+      email,
+      password,
+    });
 
-  return await user.save();
+    return await user.save();
+  } catch (error) {
+    console.error('User Persistence error in createUser()', error);
+    return null;
+  }
 };
 
 /**
@@ -27,8 +32,13 @@ const createUser = async ({ email, password }) => {
  * @returns {Promise<User>} A promise that resolves to the user object if found, or null if not found.
  */
 const getUser = async ({ email }) => {
-  const user = await User.findOne({ email });
-  return user;
+  try {
+    const user = await User.findOne({ email });
+    return user;
+  } catch (error) {
+    console.error('User Persistence error in getUser()', error);
+    return null;
+  }
 };
 
 /**
@@ -37,8 +47,13 @@ const getUser = async ({ email }) => {
  * @returns {Promise<User>} A promise that resolves with the user object if found, or null if not found.
  */
 const getUserByAdminToken = async ({ adminRefreshToken }) => {
-  const user = await User.findOne({ adminRefreshToken: adminRefreshToken });
-  return user;
+  try {
+    const user = await User.findOne({ adminRefreshToken: adminRefreshToken });
+    return user;
+  } catch (error) {
+    console.error('User Persistence error in getUserByAdminToken()', error);
+    return null;
+  }
 };
 
 module.exports = { createUser, getUser, getUserByAdminToken };

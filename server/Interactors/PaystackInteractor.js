@@ -80,7 +80,7 @@ const initTransactionInteractor = async (
   //   get the store
   const store = await getStoreByName({ storeName: dereferencedItems[0].store });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
 
   const body = buildPayload({
@@ -106,9 +106,8 @@ const verifyPaymentInteractor = async (
   }
   // Check if it is a duplicate verification
   const duplicate = await findOrderByReference({ reference });
-  if (duplicate) {
-    throw new Error('Duplicate payment');
-  }
+  if (duplicate) return Promise.reject(new Error('Duplicate payment'));
+
   // Create order
   const orderDetails = paymentDetails['metadata']['custom_fields'][0];
   orderDetails['reference'] = paymentDetails['reference'];
@@ -117,13 +116,13 @@ const verifyPaymentInteractor = async (
   const order = await createOrder({ details: orderDetails });
   if (!order) {
     // reverse payment
-    throw new Error('Failed to create order');
+    return Promise.reject(new Error('Failed to create order'));
   }
 
   // Add order to store
   const store = await getStoreByName({ storeName: order.store });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
   await addOrderToStore({ store, order });
 

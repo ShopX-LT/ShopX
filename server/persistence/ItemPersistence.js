@@ -17,24 +17,34 @@ const Item = require('../models/Item');
  *
  */
 const createItem = async ({ title, price, store, description, discount, category, images, quantity, reviews }) => {
-  const newItem = new Item({
-    title,
-    price,
-    store,
-    description,
-    discount,
-    category,
-    images,
-    quantity,
-    reviews,
-  });
-  const item = await newItem.save();
-  return item;
+  try {
+    const newItem = new Item({
+      title,
+      price,
+      store,
+      description,
+      discount,
+      category,
+      images,
+      quantity,
+      reviews,
+    });
+    const item = await newItem.save();
+    return item;
+  } catch (error) {
+    console.error('Item Persistence error in createItem()', error);
+    return null;
+  }
 };
 
 const getItemById = async ({ id }) => {
-  const item = await Item.findById(id);
-  return item;
+  try {
+    const item = await Item.findById(id);
+    return item;
+  } catch (error) {
+    console.error('Item Persistence error in getItemById()', error);
+    return null;
+  }
 };
 
 /**
@@ -42,21 +52,26 @@ const getItemById = async ({ id }) => {
  */
 
 const getGroupedItems = async (inputItemsArray) => {
-  const rawItems = await Promise.all(
-    inputItemsArray.map((obj) => {
-      return Item.findById(obj.itemId);
-    })
-  );
+  try {
+    const rawItems = await Promise.all(
+      inputItemsArray.map((obj) => {
+        return Item.findById(obj.itemId);
+      })
+    );
 
-  const items = rawItems.map((item, index) => {
-    const quantity = inputItemsArray[index].quantity;
-    const dirtyItem = { ...item };
-    const cleanItem = dirtyItem._doc;
-    const updatedItem = { ...cleanItem, purchasedQuantity: quantity };
-    return updatedItem;
-  });
+    const items = rawItems.map((item, index) => {
+      const quantity = inputItemsArray[index]?.quantity || 0;
+      const dirtyItem = { ...item };
+      const cleanItem = dirtyItem._doc;
+      const updatedItem = { ...cleanItem, purchasedQuantity: quantity };
+      return updatedItem;
+    });
 
-  return items;
+    return items;
+  } catch (error) {
+    console.error('Item Persistence error in getGroupedItems()', error);
+    return null;
+  }
 };
 
 /**
@@ -67,33 +82,53 @@ const getGroupedItems = async (inputItemsArray) => {
  * @returns {Promise<Array<Item>>} - A promise that resolves to an array of items that match the query and store.
  */
 const getItemsByQuery = async ({ query, store }) => {
-  const { category } = query;
-  const items = await Item.find({
-    store: store,
-    category: category ? { $in: [category] } : { $exists: true, $ne: [] },
-  }).exec();
-  return items;
+  try {
+    const { category } = query;
+    const items = await Item.find({
+      store: store,
+      category: category ? { $in: [category] } : { $exists: true, $ne: [] },
+    }).exec();
+    return items;
+  } catch (error) {
+    console.error('Item Persistence error in getItemsByQuery()', error);
+    return null;
+  }
 };
 
 const updateItemById = async ({ id, storeName, updatedItem }) => {
-  const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, true);
-  return item;
+  try {
+    const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, true);
+    return item;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemById()', error);
+    return null;
+  }
 };
 
 const deleteItemById = async ({ id, storeName }) => {
-  await Item.deleteOne({ _id: id, store: storeName });
+  try {
+    await Item.deleteOne({ _id: id, store: storeName });
+  } catch (error) {
+    console.error('Item Persistence error in deleteItemById()', error);
+    return null;
+  }
 };
 
 const updateItemQuanity = async ({ order }) => {
-  await Promise.all(
-    order.itemsOrdered.map(async (item) => {
-      const itemToUpdate = await Item.findById(item.itemId);
-      itemToUpdate.quantity -= item.quantity;
-      await itemToUpdate.save();
-    })
-  );
+  try {
+    await Promise.all(
+      order.itemsOrdered.map(async (item) => {
+        const itemToUpdate = await Item.findById(item.itemId);
+        itemToUpdate.quantity -= item.quantity;
+        await itemToUpdate.save();
+      })
+    );
 
-  return;
+    return;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemQuanity()', error);
+    return null;
+  }
 };
 
 module.exports = {

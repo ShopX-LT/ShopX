@@ -14,35 +14,40 @@ const createItemInteractor = async (
   { createItem, getStoreByName, saveImagesToS3Bucket },
   { title, price, store, description, discount, category, images, quantity, reviews }
 ) => {
-  const validStore = await validateStore(getStoreByName, store);
-  const savedImages = await saveImagesToS3Bucket(images);
-  if (!savedImages) {
-    throw new Error('Error saving images');
-  }
-  const item = await createItem({
-    title,
-    price,
-    store: validStore.name,
-    description,
-    discount,
-    category,
-    images: savedImages,
-    quantity,
-    reviews,
-  });
+  try {
+    const validStore = await validateStore(getStoreByName, store);
+    const savedImages = await saveImagesToS3Bucket(images);
+    if (!savedImages) {
+      return Promise.reject(new Error('Error saving images'));
+    }
+    const item = await createItem({
+      title,
+      price,
+      store: validStore.name,
+      description,
+      discount,
+      category,
+      images: savedImages,
+      quantity,
+      reviews,
+    });
 
-  const formattedItem = formatItemForStore(item);
-  return formattedItem;
+    const formattedItem = formatItemForStore(item);
+    return formattedItem;
+  } catch (error) {
+    console.log('Item Interact error in createItemInteractor()', error);
+    return null;
+  }
 };
 
 const getItemInteractor = async ({ getItemById, getImagesUrlFromS3Buscket }, { id }, user) => {
   const rawItem = await getItemById({ id });
   if (!rawItem) {
-    throw new Error('Item not found');
+    return Promise.reject(new Error('Item not found'));
   }
   const imagesUrl = await getImagesUrlFromS3Buscket({ images: rawItem.images });
   if (!imagesUrl) {
-    throw new Error('Error retrieving Images');
+    return Promise.reject(new Error('Error retrieving Images'));
   }
   const item = user ? formatItemForUser(rawItem) : formatItemForStore(rawItem);
   item['imagesUrl'] = imagesUrl;
@@ -100,7 +105,7 @@ const getQueryItemsInteractor = async (
 const validateStore = async (getStoreByName, store) => {
   const validStore = await getStoreByName({ storeName: store });
   if (!validStore) {
-    throw new Error(`Invalid store`);
+    return Promise.reject(new Error(`Invalid store`));
   }
   return validStore;
 };
@@ -111,11 +116,11 @@ const updateItemByIdInteractor = async (
 ) => {
   const newItem = await updateItemById({ id, storeName, updatedItem });
   if (!newItem) {
-    throw new Error('Item not found');
+    return Promise.reject(new Error('Item not found'));
   }
   const imagesUrl = await getImagesUrlFromS3Buscket({ images: newItem.images });
   if (!imagesUrl) {
-    throw new Error('Error retrieving Images');
+    return Promise.reject(new Error('Error retrieving Images'));
   }
   const formattedItem = formatItemForStore(newItem);
   formattedItem['imagesUrl'] = imagesUrl;

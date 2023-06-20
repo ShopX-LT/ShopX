@@ -7,17 +7,19 @@ import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } fro
 // mock
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { getAllItems } from '../services/ItemService';
+import APIHandler from '../api/APIHandler';
 
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
   const axiosPrivate = useAxiosPrivate();
+  const apiHandler = new APIHandler();
   const [products, setProducts] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
 
   useEffect(() => {
     const retrieveProducts = async () => {
-      const response = await getAllItems(axiosPrivate);
+      const response = await apiHandler.getAllItems();
       console.log(response);
       if (!response) {
         setProducts([]);

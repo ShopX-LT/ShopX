@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // MUI
 import {
@@ -18,8 +18,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
+import APIHandler from '../api/APIHandler';
 
 function Copyright(props) {
   return (
@@ -37,11 +37,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = () => {
+  const apiHandler = new APIHandler();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const SIGNIN_URL = '/api/admin/signin';
+  const [email, setEmail] = useState('');
+  const [storeName, setStoreName] = useState('');
+  const [password, setPassword] = useState('');
 
   const togglePersist = () => {
     setPersist((prev) => !prev);
@@ -50,28 +53,22 @@ const SignIn = () => {
     localStorage.setItem('persist', persist);
   }, [persist]);
 
+  const formValidation = () => {
+    if (email.includes('<') || email.includes('>')) {
+      alert('Invalid email');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const obj = {
-      email: data.get('email'),
-      password: data.get('password'),
-      storeName: data.get('storeName'),
-    };
-    try {
-      const res = await axios.post(SIGNIN_URL, obj, { withCredentials: true });
+    if (formValidation()) {
+      const { token, admin, store } = await apiHandler.signin({ email, password, storeName });
 
-      const token = res?.data?.token;
-      const admin = res?.data?.admin.email;
-      const store = res?.data?.store?.name;
-      setAuth({ store, admin, token });
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error);
-      if (!error?.response) {
-        alert('No server response');
-      } else {
-        alert(error.response.data.message);
+      if (token) {
+        setAuth({ store, admin, token });
+        navigate(from, { replace: true });
       }
     }
   };
@@ -116,7 +113,9 @@ const SignIn = () => {
                 id="storeName"
                 label="Store Name"
                 name="storeName"
-                autoComplete="storeName"
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+                autoComplete="name"
                 autoFocus
               />
               <TextField
@@ -126,6 +125,8 @@ const SignIn = () => {
                 id="email"
                 label="Email Address"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 autoFocus
               />
@@ -137,6 +138,8 @@ const SignIn = () => {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               <FormControlLabel
