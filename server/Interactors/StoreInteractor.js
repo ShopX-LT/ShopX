@@ -10,9 +10,7 @@
 const createStoreInteractor = async ({ getStore, createStore }, { storeName, email }) => {
   // check if the store name already exists
   const store = await getStore({ storeName });
-  if (store) {
-    throw new Error('Store already exists');
-  }
+  if (store) return Promise.reject(new Error('Store already exists'));
 
   const newStore = await createStore({ storeName, email });
   const formattedStore = formatStore(newStore);
@@ -30,7 +28,7 @@ const createStoreInteractor = async ({ getStore, createStore }, { storeName, ema
 const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
   const store = await getStoreByNameAndEmail({ storeName, email });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
   const formattedStore = formatStore(store);
   return formattedStore;
@@ -47,9 +45,7 @@ const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
  */
 const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { storeName, field }) => {
   const store = await getStoreByName({ storeName });
-  if (!store) {
-    throw new Error('Invalid store');
-  }
+  if (!store) return Promise.reject(new Error('Invalid store'));
   await addFieldToStore({ store, field });
   return store.itemTemplate;
 };
@@ -65,9 +61,7 @@ const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { 
  */
 const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) => {
   const store = await getStoreByName({ storeName });
-  if (!store) {
-    throw new Error('Invalid store');
-  }
+  if (!store) return Promise.reject(new Error('Invalid store'));
   return store.itemTemplate;
 };
 

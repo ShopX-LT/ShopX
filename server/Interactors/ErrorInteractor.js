@@ -1,5 +1,5 @@
-const handleErrorInteractor = ({ error, res }) => {
-  switch (error?.message) {
+const handleErrorInteractor = (error, res) => {
+  switch (error.message) {
     case 'Credential is incorrect. Use your account password':
       res.status(400).json({ message: error.message });
       break;
@@ -9,7 +9,7 @@ const handleErrorInteractor = ({ error, res }) => {
     case 'Invalid store':
       res.status(400).json({ message: error.message });
       break;
-    case 'Invalid password':
+    case 'Invalid Password':
       res.status(400).json({ message: error.message });
       break;
     case 'This User does not exist':

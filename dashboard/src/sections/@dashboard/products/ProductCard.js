@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Button, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
@@ -72,6 +74,14 @@ export default function ShopProductCard({ product }) {
             &nbsp;
             {fCurrency(price)}
           </Typography>
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
+          <Button variant="outlined" color="secondary">
+            <EditIcon />
+          </Button>
+          <Button variant="outlined" color="error">
+            <DeleteIcon />
+          </Button>
         </Stack>
       </Stack>
     </Card>

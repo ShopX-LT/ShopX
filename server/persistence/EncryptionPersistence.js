@@ -22,10 +22,9 @@ const encryptPassword = async (password) => {
  * @returns {boolean} - Returns true if the user input matches the hashed password.
  * @throws {Error} - Throws an error if the user input does not match the hashed password.
  */
-const verifyPassword = ({ password, userInput }) => {
-  const isMatch = bcrypt.compare(password, userInput);
-  if (!isMatch) throw new Error('Invalid password');
-  return true;
+const verifyPassword = async ({ password, userInput }) => {
+  const isMatch = await bcrypt.compare(password, userInput);
+  return isMatch;
 };
 
 module.exports = {

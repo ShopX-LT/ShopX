@@ -126,6 +126,10 @@ const AddProductPage = () => {
     // Send formData object to server to create item.
     await createItem(axiosPrivate, formData);
     onSubmitProps.resetForm();
+    setProductImages((prevState) => {
+      const newState = [];
+      return newState;
+    });
   };
 
   // RETURN

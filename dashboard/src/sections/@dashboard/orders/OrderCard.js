@@ -4,10 +4,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { OrderDetails } from '.';
 import { fDate } from '../../../utils/formatTime';
+import { fCurrency } from '../../../utils/formatNumber';
+import PillDropdownButton from '../../../components/button/DropdownPillButton';
 
 const OrderCard = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
+  console.log(order);
 
   return (
     <>
@@ -21,8 +24,10 @@ const OrderCard = ({ order }) => {
         <TableCell component="th" scope="row">
           {order.orderedBy}
         </TableCell>
-        <TableCell align="left">{order.total}</TableCell>
-        <TableCell align="left">{order.status.toUpperCase()}</TableCell>
+        <TableCell align="left">{fCurrency(order.total)}</TableCell>
+        <TableCell align="left">
+          <PillDropdownButton />
+        </TableCell>
       </TableRow>
       {/* COLLAPSE */}
       <OrderDetails

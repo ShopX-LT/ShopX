@@ -20,10 +20,8 @@ const handleSignIn = async (req, res) => {
     // Extract body info
     const { email, storeName, password } = req.body;
     // Get the store
-    const store = await storeLogin(persistence, { storeName, email });
-
     const admin = await userLogin(persistence, { email, password });
-
+    const store = await storeLogin(persistence, { storeName, email });
     // set the refresh and access tokens
     const tokens = generateTokensInteractor(
       { tokenizer: jwt },
