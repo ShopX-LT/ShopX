@@ -6,11 +6,11 @@ const navConfig = [
     path: '/dashboard/app',
     icon: 'majesticons:analytics',
   },
-  {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: 'mdi:user-circle',
-  },
+  // {
+  //   title: 'user',
+  //   path: '/dashboard/user',
+  //   icon: 'mdi:user-circle',
+  // },
   {
     title: 'products',
     path: '/dashboard/products',
@@ -31,11 +31,11 @@ const navConfig = [
     path: '/dashboard/orders',
     icon: 'ic:baseline-request-quote',
   },
-  {
-    title: 'reviews',
-    path: '/dashboard/reviews',
-    icon: 'material-symbols:reviews',
-  },
+  // {
+  //   title: 'reviews',
+  //   path: '/dashboard/reviews',
+  //   icon: 'material-symbols:reviews',
+  // },
   {
     title: 'payout',
     path: '/dashboard/payout',
