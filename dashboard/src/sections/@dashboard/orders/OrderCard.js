@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconButton, styled, TableCell, TableRow } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -7,7 +7,7 @@ import { fDate } from '../../../utils/formatTime';
 import { fCurrency } from '../../../utils/formatNumber';
 import PillDropdownButton from '../../../components/button/DropdownPillButton';
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
   // console.log(order);
@@ -26,7 +26,7 @@ const OrderCard = ({ order }) => {
         </TableCell>
         <TableCell align="left">{fCurrency(order.total)}</TableCell>
         <TableCell align="left">
-          <PillDropdownButton order={order} status={order.status} />
+          <PillDropdownButton order={order} updateFunction={updateFunction} setUpdatedOrder={setUpdatedOrder} />
         </TableCell>
       </TableRow>
       {/* COLLAPSE */}

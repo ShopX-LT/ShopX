@@ -35,13 +35,13 @@ export default function DashboardAppPage() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Weekly Sales" total={714000} icon={'mdi:money'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'tabler:mood-happy-filled'} />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'clarity:shopping-bag-solid'} />
@@ -51,7 +51,7 @@ export default function DashboardAppPage() {
             <AppWidgetSummary title="Wallet" total={234} color="error" icon={'ion:wallet'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -211,7 +211,7 @@ export default function DashboardAppPage() {
                 { id: '5', label: 'Sprint Showcase' },
               ]}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </>

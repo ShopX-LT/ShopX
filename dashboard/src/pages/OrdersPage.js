@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { murmur3 } from 'murmurhash-js';
 
 import { Container, Card, Stack, Table, TableBody, TableContainer, Typography } from '@mui/material';
 
-import { getOrders } from '../services/OrderService';
+import { getOrders, updateOrder } from '../services/OrderService';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 // components
 import { OrderCard, OrderListHead } from '../sections/@dashboard/orders';
 
+function hashArrayOfOrders(arr) {
+  const concatenatedString = arr.reduce((acc, obj) => acc + JSON.stringify(obj), '');
+
+  return murmur3(concatenatedString).toString();
+}
+
 const OrdersPage = () => {
   const axiosPrivate = useAxiosPrivate();
+
   const [orders, setOrders] = useState([]);
-
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+  const [arrayHash, setArrayHash] = useState('');
+  const [updatedOrder, setUpdatedOrder] = useState();
+  const [firstRender, setFirstRender] = useState(true);
 
-  // click handler to the column header that triggers the sorting functionality. This handler should update the sortConfig state with the new sorting key and direction. If the same column header is clicked again, you can toggle the sorting direction.
+  const checkForUpdate = () => {
+    const newArrayHash = hashArrayOfOrders(orders);
+    if (newArrayHash === arrayHash) {
+      return;
+    }
+    setArrayHash(newArrayHash);
+  };
+
   const handleSort = (key) => {
     let direction = 'asc';
 
@@ -43,9 +60,22 @@ const OrdersPage = () => {
     }
     setOrders(response);
   };
+
   useEffect(() => {
     retreiveOrders();
   }, []);
+
+  useEffect(() => {
+    if (!firstRender) {
+      const updateStatus = async () => {
+        const response = await updateOrder(axiosPrivate, updatedOrder.id, updatedOrder);
+        console.log(updatedOrder);
+      };
+      updateStatus();
+    }
+    setFirstRender(false);
+  }, [arrayHash]);
+
   return (
     <div>
       <Helmet>
@@ -63,7 +93,14 @@ const OrdersPage = () => {
               <OrderListHead handleSort={handleSort} />
               <TableBody>
                 {sortedOrders.map((order) => {
-                  return <OrderCard key={order.id} order={order} />;
+                  return (
+                    <OrderCard
+                      key={order.id}
+                      order={order}
+                      updateFunction={checkForUpdate}
+                      setUpdatedOrder={setUpdatedOrder}
+                    />
+                  );
                 })}
               </TableBody>
             </Table>

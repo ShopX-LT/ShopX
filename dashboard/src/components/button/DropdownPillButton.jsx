@@ -16,32 +16,23 @@ const OPTIONS = {
 
 const StyledButton = styled(Button)(() => ({
   borderRadius: '50px',
+  width: '120px',
 }));
 
-const PillDropdownButton = ({ order, status }) => {
+const PillDropdownButton = ({ order, updateFunction, setUpdatedOrder }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selected, setSelected] = useState(status || 'pending');
-
-  // FIX: useEffect should be moved higher up. If it is here the page will run the useEffect for the number of orders in the store because pillbutton will be created for each.
-  useEffect(() => {
-    const updateStatus = async () => {
-      const updatedOrder = { ...order, status: selected };
-      const response = await updateOrder(axiosPrivate, order.id, updatedOrder);
-      if (!response) {
-        return;
-      }
-      console.log(order);
-    };
-    updateStatus();
-  }, [selected]);
+  const [selected, setSelected] = useState(order.status);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuItemClick = (event, item) => {
+    order.status = item;
+    setUpdatedOrder(order);
+    updateFunction();
     setSelected(item);
     handleClose();
   };
