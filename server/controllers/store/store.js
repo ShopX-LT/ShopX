@@ -8,6 +8,7 @@ const {
   getFieldFromStoreInteractor,
   //ORDER INTERACTORS
   getStoreOrdersInteractor,
+  updateOrderInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
@@ -61,4 +62,18 @@ const handleGetAllOrders = async (req, res) => {
   }
 };
 
-module.exports = { handleAddField, handleGetField, handleGetAllOrders };
+const handleUpdateOrder = async (req, res) => {
+  try {
+    console.log(req.body);
+    const id = req.params.id;
+    const { store } = req.auth;
+    const updatedOrder = req.body;
+    const order = updateOrderInteractor(persistence, { id, storeName: store, updatedOrder });
+    res.status(201).send(order);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+module.exports = { handleAddField, handleGetField, handleGetAllOrders, handleUpdateOrder };

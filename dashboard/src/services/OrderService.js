@@ -1,4 +1,5 @@
 const GET_ORDERS_URL = '/api/admin/order';
+const UPDATE_ORDER_URL = '/api/admin/update-order';
 
 /**
  * Retrieves the orders data from the server using the provided axios instance.
@@ -10,6 +11,17 @@ export async function getOrders(axiosPrivate) {
   try {
     const response = await axiosPrivate.get(GET_ORDERS_URL);
     return response.data.orders;
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+    return null;
+  }
+}
+
+export async function updateOrder(axiosPrivate, id, order) {
+  try {
+    const response = await axiosPrivate.put(`${UPDATE_ORDER_URL}/${id}`, order);
+    return response.data;
   } catch (error) {
     console.error(error);
     alert(error.message);

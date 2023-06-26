@@ -97,7 +97,7 @@ const getItemsByQuery = async ({ query, store }) => {
 
 const updateItemById = async ({ id, storeName, updatedItem }) => {
   try {
-    const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, true);
+    const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, { new: true });
     return item;
   } catch (error) {
     console.error('Item Persistence error in updateItemById()', error);
