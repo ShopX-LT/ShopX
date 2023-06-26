@@ -20,7 +20,7 @@ const {
   deleteItemById,
   updateItemQuanity,
 } = require('./ItemPersistence');
-const { createOrder, findOrderByReference, getAllStoreOrders } = require('./OrderPersistence');
+const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
 const {
   createStore,
   getStoreByName,
@@ -66,6 +66,7 @@ module.exports = {
   createOrder,
   findOrderByReference,
   getAllStoreOrders,
+  updateOrder,
 
   //AWS PERSISTENCE
   saveImagesToS3Bucket,

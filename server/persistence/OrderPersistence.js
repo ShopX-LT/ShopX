@@ -39,8 +39,19 @@ const getAllStoreOrders = async ({ storeName }) => {
   }
 };
 
+const updateOrder = async ({ id, storeName, updatedOrder }) => {
+  try {
+    const order = Order.findOneAndUpdate({ _id: id, store: storeName }, updatedOrder, { new: true });
+    return order;
+  } catch (error) {
+    console.error('Order Persistence error in updateOrder()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createOrder,
   findOrderByReference,
   getAllStoreOrders,
+  updateOrder,
 };

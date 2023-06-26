@@ -10,7 +10,7 @@ import PillDropdownButton from '../../../components/button/DropdownPillButton';
 const OrderCard = ({ order }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
-  console.log(order);
+  // console.log(order);
 
   return (
     <>
@@ -26,7 +26,7 @@ const OrderCard = ({ order }) => {
         </TableCell>
         <TableCell align="left">{fCurrency(order.total)}</TableCell>
         <TableCell align="left">
-          <PillDropdownButton />
+          <PillDropdownButton order={order} status={order.status} />
         </TableCell>
       </TableRow>
       {/* COLLAPSE */}
