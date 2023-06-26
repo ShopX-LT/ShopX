@@ -1,17 +1,34 @@
-import React, { useEffect } from "react";
-import axios from "../api/axios";
+import React, { useState, useEffect } from "react";
 import { verifyPayment } from "../services/checkoutService";
 
 const VerifyPayment = () => {
+  const [firstRender, setFirstRender] = useState(true);
+
   const urlSearchParams = new URLSearchParams(window.location.search);
   const transactionRef = urlSearchParams.get("trxref");
 
   useEffect(() => {
-    const callVerifyayment = async () => {
-      const response = await verifyPayment(transactionRef);
+    const callVerifyPayment = async () => {
+      try {
+        // Check if the backend call has already been made
+        const hasCallBeenMade = sessionStorage.getItem("paymentCallMade");
+
+        if (!hasCallBeenMade) {
+          // Make the backend call only if it hasn't been made before
+          const response = await verifyPayment(transactionRef);
+
+          sessionStorage.setItem("paymentCallMade", "true"); // Set flag in storage
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     };
-    callVerifyayment();
-  }, []);
+
+    if (firstRender) {
+      callVerifyPayment();
+      setFirstRender(false);
+    }
+  }, [firstRender, transactionRef]);
 
   return (
     <div>

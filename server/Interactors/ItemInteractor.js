@@ -90,7 +90,6 @@ const getQueryItemsInteractor = async (
     });
   });
   const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
-  console.log(itemsWithImageUrl);
 
   return itemsWithImageUrl;
 };

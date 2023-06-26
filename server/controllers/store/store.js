@@ -24,7 +24,6 @@ const persistence = require('../../persistence/index');
 const handleAddField = async (req, res) => {
   try {
     const { store } = req.auth;
-    console.log(store);
     const newField = req.body.field;
     const fields = await addFieldToStoreInteractor(persistence, { storeName: store, field: newField });
     res.status(200).json({ fields: fields });
@@ -64,7 +63,6 @@ const handleGetAllOrders = async (req, res) => {
 
 const handleUpdateOrder = async (req, res) => {
   try {
-    console.log(req.body);
     const id = req.params.id;
     const { store } = req.auth;
     const updatedOrder = req.body;
