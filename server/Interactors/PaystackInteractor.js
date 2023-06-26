@@ -32,7 +32,7 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
       custom_fields: [
         {
           orderedBy: email,
-          items: items,
+          itemsOrdered: items,
           subTotal: subTotal / 100,
           total: total / 100,
           isDelivered: false,
@@ -102,7 +102,7 @@ const verifyPaymentInteractor = async (
 ) => {
   const paymentDetails = await verifyPayment({ reference });
   if (paymentDetails.status !== 'success') {
-    throw new Error('Payment failed');
+    return Promise.reject(new Error('Payment failed'));
   }
   // Check if it is a duplicate verification
   const duplicate = await findOrderByReference({ reference });
@@ -113,6 +113,7 @@ const verifyPaymentInteractor = async (
   orderDetails['reference'] = paymentDetails['reference'];
   orderDetails['ip_address'] = paymentDetails['ip_address'];
   orderDetails['fees'] = paymentDetails['fees'];
+  console.log(orderDetails);
   const order = await createOrder({ details: orderDetails });
   if (!order) {
     // reverse payment

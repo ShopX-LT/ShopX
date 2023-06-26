@@ -10,7 +10,6 @@ import PillDropdownButton from '../../../components/button/DropdownPillButton';
 const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
-  // console.log(order);
 
   return (
     <>

@@ -29,6 +29,7 @@ const CheckoutPage = () => {
 
     const response = await createOrder(cart, userDetails);
     dispatch(clearCart());
+
     window.location.href = response;
   };
 

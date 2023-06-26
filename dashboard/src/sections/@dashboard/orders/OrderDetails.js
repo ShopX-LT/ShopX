@@ -3,6 +3,7 @@ import { Box, Collapse, Table, TableBody, TableCell, TableHead, TableRow, Typogr
 
 const header = ['Item', 'Quantity', 'Price', 'Discount', 'Paid'];
 const orderDetails = ({ open, items, subTotal, deliveryFee }) => {
+  console.log(items);
   return (
     <TableRow>
       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
