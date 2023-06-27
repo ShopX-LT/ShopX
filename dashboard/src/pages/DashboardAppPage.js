@@ -63,7 +63,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Item Orders"
+              title="Item sold"
               total={orders || 1}
               color="warning"
               icon={'clarity:shopping-bag-solid'}

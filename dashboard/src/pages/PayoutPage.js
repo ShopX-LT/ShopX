@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,8 +14,10 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
 import { fCurrency } from '../utils/formatNumber';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getBankList, requestPayout } from '../services/PaymentService';
+
 
 const detailsSchema = Yup.object().shape({
   name: Yup.string().required('required'),
@@ -23,58 +26,43 @@ const detailsSchema = Yup.object().shape({
 });
 
 const PayoutPage = () => {
+  const axiosPrivate = useAxiosPrivate();
   const [banks, setBanks] = useState([]);
-  const [balance, setBalance] = useState(0);
+
+  // Initial values
   const initialValues = {
     name: '',
     account_number: '',
     bank: '',
   };
 
-  // const getBanks = async () => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/payout/bank-list`, config);
-  //     const bankNames = response.data.banks;
-  //     setBanks(bankNames);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // const getBalance = async () => {
-  //   try {
-  //     const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/stats`, config);
-  //     const stats = res.data.storeStats;
-  //     setBalance(stats.balance);
-  //   } catch (error) {}
-  // };
+  const bankList = async () => {
+    const banks = await getBankList(axiosPrivate);
+    if (!banks) {
+      setBanks([]);
+      return;
+    }
+    setBanks(banks);
+  };
 
-  // useEffect(() => {
-  //   getBanks();
-  //   getBalance();
-  // }, []);
-
-  // Initial values
+  useEffect(() => {
+    bankList();
+  }, []);
 
   const handleSubmitForm = async (values, onSubmitProps) => {
-    // const formData = {};
-    // for (let value in values) {
-    //   formData[value] = values[value];
-    // }
-    // try {
-    //   const payoutResponse = await axios.post(
-    //     `${process.env.REACT_APP_SERVER_URL}/payout/bank-payout`,
-    //     formData,
-    //     config
-    //   );
-    //   onSubmitProps.resetForm();
-    //   window.location.reload();
-    // } catch (error) {
-    //   if (error.response.data.message === 'Invalid accound details') {
-    //     alert('Invalid accound details');
-    //   } else {
-    //     alert('Something went wrong');
-    //   }
-    // }
+    const formData = new FormData();
+    // Append each form value to the formData object.
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+
+    const payoutResponse = await requestPayout(axiosPrivate, formData);
+    if (!payoutResponse) {
+      alert('Something went wrong. Try again later');
+      return;
+    }
+    onSubmitProps.resetForm();
+
   };
 
   return (
@@ -100,7 +88,6 @@ const PayoutPage = () => {
                 label="Full name"
                 name="name"
                 error={Boolean(touched.name) && Boolean(errors.name)}
-                // validate={validateUserName}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.name}
@@ -110,7 +97,6 @@ const PayoutPage = () => {
                 label="Account number"
                 name="account_number"
                 error={Boolean(touched.account_number) && Boolean(errors.account_number)}
-                // validate={validateUseraccount_number}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.account_number}
@@ -124,14 +110,13 @@ const PayoutPage = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.bank}
-                fullWidth
               >
                 <MenuItem value="">
                   <em>Select your bank</em>
                 </MenuItem>
-                {banks.map((bank, index) => {
+                {banks.map((bank) => {
                   return (
-                    <MenuItem key={index} value={bank}>
+                    <MenuItem key={bank} value={bank}>
                       <ListItemText primary={bank} />
                     </MenuItem>
                   );
@@ -139,7 +124,7 @@ const PayoutPage = () => {
               </Select>
 
               <Button variant="contained" sx={{ mt: 4, mx: 4, width: 'fit-content' }} type="submit">
-                Withdraw &nbsp;{fCurrency(balance)}
+                Withdraw
               </Button>
             </Card>
           </Container>

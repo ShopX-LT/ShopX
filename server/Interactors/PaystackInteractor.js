@@ -131,7 +131,62 @@ const verifyPaymentInteractor = async (
   await updateItemQuanity({ order });
 };
 
+const getBanksInteractors = async ({ getBanks }) => {
+  const banks = await getBanks();
+  const bankNames = Object.keys(banks);
+  return bankNames;
+};
+
+const payoutInteractor = async (
+  { getStoreByName, getBanks, createRecipient, editStoreWallet, transferOut, createPayout },
+  { name, account_number, bank, storeName, admin }
+) => {
+  // verify store
+  const store = await getStoreByName({ storeName: storeName });
+  if (!store) {
+    throw new Error('Invalid store');
+  }
+
+  const banks = await getBanks();
+
+  // create reciepient ------
+  const recipientDetails = {
+    type: 'nuban',
+    name: name,
+    account_number: account_number,
+    bank_code: banks[bank],
+    currency: 'NGN',
+  };
+  const recipientResponse = await createRecipient({ recipientDetails });
+  if (!recipientResponse) {
+    throw new Error('Invalid account details');
+  }
+  const recipientCode = recipientResponse.data.data.recipient_code;
+
+  // do transfer --------
+  const transferDetails = {
+    source: 'balance',
+    amount: store.wallet * 0.05,
+    recipient: recipientCode,
+  };
+  const transferResponse = await transferOut({ transferDetails });
+  if (!transferResponse) {
+    throw new Error('Something went wrong');
+  }
+  const transferData = transferResponse.data.data;
+
+  // update store
+  await editStoreWallet({ store, amount: -1 * store.wallet });
+
+  //create payout---
+  const payout = await createPayout({ details: transferData, storeName: store.name, admin });
+
+  return payout;
+};
+
 module.exports = {
   initTransactionInteractor,
   verifyPaymentInteractor,
+  payoutInteractor,
+  getBanksInteractors,
 };
