@@ -12,8 +12,19 @@ const getStoreOrdersInteractor = async ({ getAllStoreOrders }, { storeName }) =>
   return orders;
 };
 
+const updateOrderInteractor = async ({ updateOrder }, { id, storeName, updatedOrder }) => {
+  const newOrder = await updateOrder({ id, storeName, updatedOrder });
+  if (!newOrder) {
+    return Promise.reject(new Error('Order not found'));
+  }
+  const formattedOrder = formatOrder(newOrder);
+
+  return formattedOrder;
+};
+
 const formatOrder = (order) => {
   return {
+    id: order?._id,
     orderedBy: order?.orderedBy,
     itemsOrdered: order?.itemsOrdered,
     store: order?.store,
@@ -32,4 +43,5 @@ const formatOrder = (order) => {
 
 module.exports = {
   getStoreOrdersInteractor,
+  updateOrderInteractor,
 };

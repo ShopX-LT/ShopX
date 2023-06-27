@@ -1,16 +1,35 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 // components
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
-import PRODUCTS from '../_mock/products';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getAllItems } from '../services/ItemService';
+import APIHandler from '../api/APIHandler';
 
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
+  const axiosPrivate = useAxiosPrivate();
+  const apiHandler = new APIHandler();
+  const [products, setProducts] = useState([]);
   const [openFilter, setOpenFilter] = useState(false);
+
+  useEffect(() => {
+    const retrieveProducts = async () => {
+      const response = await apiHandler.getAllItems();
+      console.log(response);
+      if (!response) {
+        setProducts([]);
+        return;
+      }
+      setProducts(response);
+    };
+
+    retrieveProducts();
+  }, []);
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -42,7 +61,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        <ProductList products={products} />
         <ProductCartWidget />
       </Container>
     </>

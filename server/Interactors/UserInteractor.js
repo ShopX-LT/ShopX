@@ -18,9 +18,10 @@ const userLogin = async ({ getUser, verifyPassword }, { email, password }) => {
   //check if the user already has an account
   let user = await getUser({ email });
   if (!user) {
-    throw new Error(`This User does not exist`);
+    return Promise.reject(new Error(`This User does not exist`));
   }
-  verifyPassword({ password: user.password, userInput: password });
+  const isPasswordValid = await verifyPassword({ password: user.password, userInput: password });
+  // if (!isPasswordValid) return Promise.reject(new Error(`Invalid Password`));
   user = formatUser(user);
   return user;
 };

@@ -4,13 +4,23 @@
 const Order = require('../models/Order');
 
 const createOrder = async ({ details }) => {
-  const newOrder = new Order(details);
-  await newOrder.save();
-  return newOrder;
+  try {
+    const newOrder = new Order(details);
+    await newOrder.save();
+    return newOrder;
+  } catch (error) {
+    console.error('Order Persistence error in createOrder()', error);
+    return null;
+  }
 };
 
 const findOrderByReference = async ({ reference }) => {
-  return await Order.findOne({ reference });
+  try {
+    return await Order.findOne({ reference });
+  } catch (error) {
+    console.error('Order Persistence error in findOrderByReference()', error);
+    return null;
+  }
 };
 
 /**
@@ -20,12 +30,28 @@ const findOrderByReference = async ({ reference }) => {
  * @returns {Promise<Array<Order>>} A promise that resolves to an array of the store orders.
  */
 const getAllStoreOrders = async ({ storeName }) => {
-  const orders = await Order.find({ store: storeName }).exec();
-  return orders;
+  try {
+    const orders = await Order.find({ store: storeName }).exec();
+    return orders;
+  } catch (error) {
+    console.error('Order Persistence error in getAllStoreOrders()', error);
+    return null;
+  }
+};
+
+const updateOrder = async ({ id, storeName, updatedOrder }) => {
+  try {
+    const order = Order.findOneAndUpdate({ _id: id, store: storeName }, updatedOrder, { new: true });
+    return order;
+  } catch (error) {
+    console.error('Order Persistence error in updateOrder()', error);
+    return null;
+  }
 };
 
 module.exports = {
   createOrder,
   findOrderByReference,
   getAllStoreOrders,
+  updateOrder,
 };

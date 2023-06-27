@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Avatar from '@mui/material/Avatar';
@@ -38,28 +38,40 @@ export default function SignUp() {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
   const SIGNUP_URL = '/signup';
+  const [email, setEmail] = useState('');
+  const [storeName, setStoreName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const formValidation = () => {
+    if (email.includes('<') || email.includes('>')) {
+      alert('Invalid email');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const obj = {
-      email: data.get('email'),
-      password: data.get('password'),
-      storeName: data.get('storeName'),
-    };
-    try {
-      const res = await axios.post(SIGNUP_URL, obj, { withCredentials: true });
-      const token = res?.data?.token;
-      const admin = res?.data?.formattedAdmin;
-      const store = res?.data?.formattedStore?.name;
-      setAuth({ store, admin, token });
-      navigate(from, { replace: true });
-    } catch (error) {
-      if (!error?.response) {
-        alert('No server response');
-        console.log(error);
-      } else {
-        alert(error.response.data.message);
+    if (formValidation()) {
+      const obj = {
+        email,
+        password,
+        storeName,
+      };
+      try {
+        const res = await axios.post(SIGNUP_URL, obj, { withCredentials: true });
+        const token = res?.data?.token;
+        const admin = res?.data?.formattedAdmin;
+        const store = res?.data?.formattedStore?.name;
+        setAuth({ store, admin, token });
+        navigate(from, { replace: true });
+      } catch (error) {
+        if (!error?.response) {
+          alert('No server response');
+          console.log(error);
+        } else {
+          alert(error.response.data.message);
+        }
       }
     }
   };
@@ -91,11 +103,22 @@ export default function SignUp() {
                   id="storeName"
                   label="Store Name"
                   name="storeName"
+                  value={storeName}
+                  onChange={(e) => setStoreName(e.target.value)}
                   autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -105,6 +128,8 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                 />
               </Grid>

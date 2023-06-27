@@ -14,7 +14,7 @@ const createCategory = async (req, res) => {
     const { name } = req.body;
     const { admin, store } = req.auth;
     const categories = await createCategoryInteractor(persistence, { storeName: store, email: admin, category: name });
-    res.status(201).json({ categories });
+    res.sendStatus(201);
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);

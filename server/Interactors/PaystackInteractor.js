@@ -9,29 +9,30 @@ const getSubTotal = (items) => {
 
 const massageItems = (items) => {
   const orderItems = items.map((item) => {
-    ({
+    return {
       itemId: item._id,
       title: item.title,
       discount: item.discount,
       price: item.price,
       paid: item.price * (1 - item.discount / 100),
       quantity: item.purchasedQuantity,
-    });
+    };
   });
   return orderItems;
 };
 
 const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) => {
   const { email, address1, address2, city, state, country, notes } = userDetails;
+  const total = subTotal + deliveryFee;
   const body = {
     email: email,
-    amount: subTotal + deliveryFee,
-    callback_url: 'http://localhost:3000/payment-success',
+    amount: total,
+    callback_url: 'http://localhost:5173/process-payment',
     metadata: {
       custom_fields: [
         {
           orderedBy: email,
-          items: items,
+          itemsOrdered: items,
           subTotal: subTotal / 100,
           total: total / 100,
           isDelivered: false,
@@ -48,27 +49,45 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
   return body;
 };
 
+const verifyUserDetails = (userDetails) => {
+  if (
+    userDetails.email === '' ||
+    userDetails.address1 === '' ||
+    userDetails.city === '' ||
+    userDetails.state === '' ||
+    userDetails.country === ''
+  ) {
+    return false;
+  }
+  return true;
+};
+
 const initTransactionInteractor = async (
   { initiateTransaction, getGroupedItems, getStoreByName },
   { items, userDetails }
 ) => {
+  if (items.length <= 0 || !verifyUserDetails(userDetails)) {
+    return 'http://localhost:3001';
+  }
+
   // get the items based of the ids and massage them
   const dereferencedItems = await getGroupedItems(items);
   const massagedItems = massageItems(dereferencedItems);
+
   // get the subtotal
   const subTotal = getSubTotal(dereferencedItems);
 
   //   get the store
   const store = await getStoreByName({ storeName: dereferencedItems[0].store });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
 
   const body = buildPayload({
     userDetails: userDetails,
     items: massagedItems,
     subTotal: subTotal,
-    deliveryFee: store.deliveryFee,
+    deliveryFee: parseInt(store.deliveryFee) || 0,
     storeName: store.name,
   });
 
@@ -83,28 +102,28 @@ const verifyPaymentInteractor = async (
 ) => {
   const paymentDetails = await verifyPayment({ reference });
   if (paymentDetails.status !== 'success') {
-    throw new Error('Payment failed');
+    return Promise.reject(new Error('Payment failed'));
   }
   // Check if it is a duplicate verification
   const duplicate = await findOrderByReference({ reference });
-  if (duplicate) {
-    throw new Error('Duplicate payment');
-  }
+  if (duplicate) return Promise.reject(new Error('Duplicate payment'));
+
   // Create order
   const orderDetails = paymentDetails['metadata']['custom_fields'][0];
   orderDetails['reference'] = paymentDetails['reference'];
   orderDetails['ip_address'] = paymentDetails['ip_address'];
   orderDetails['fees'] = paymentDetails['fees'];
+  console.log(orderDetails);
   const order = await createOrder({ details: orderDetails });
   if (!order) {
     // reverse payment
-    throw new Error('Failed to create order');
+    return Promise.reject(new Error('Failed to create order'));
   }
 
   // Add order to store
   const store = await getStoreByName({ storeName: order.store });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
   await addOrderToStore({ store, order });
 

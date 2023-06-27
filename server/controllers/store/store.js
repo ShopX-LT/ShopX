@@ -6,8 +6,10 @@ const {
   // STORE INTERACTORS
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
+  getStoreStatsInteractor,
   //ORDER INTERACTORS
   getStoreOrdersInteractor,
+  updateOrderInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
   // PAYSTACK INTERACTORS
@@ -26,7 +28,6 @@ const persistence = require('../../persistence/index');
 const handleAddField = async (req, res) => {
   try {
     const { store } = req.auth;
-    console.log(store);
     const newField = req.body.field;
     const fields = await addFieldToStoreInteractor(persistence, { storeName: store, field: newField });
     res.status(200).json({ fields: fields });
@@ -64,6 +65,7 @@ const handleGetAllOrders = async (req, res) => {
   }
 };
 
+
 const handleGetBankList = async (req, res) => {
   try {
     const banks = await getBanksInteractors(persistence);
@@ -72,7 +74,21 @@ const handleGetBankList = async (req, res) => {
     console.log(error);
     handleErrorInteractor(error, res);
   }
+}
+
+const handleUpdateOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { store } = req.auth;
+    const updatedOrder = req.body;
+    const order = await updateOrderInteractor(persistence, { id, storeName: store, updatedOrder });
+    res.status(201).send(order);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
 };
+
 
 const handlePayout = async (req, res) => {
   try {
@@ -86,4 +102,17 @@ const handlePayout = async (req, res) => {
   }
 };
 
-module.exports = { handleAddField, handleGetField, handleGetAllOrders, handlePayout, handleGetBankList };
+const handleGetStoreStats = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const stats = await getStoreStatsInteractor(persistence, { storeName });
+    res.status(200).json({ stats });
+  } catch (error) {
+    console.error(error);
+
+    handleErrorInteractor(error, res);
+  }
+};
+
+
+module.exports = { handleAddField, handleGetField, handleGetAllOrders, handleUpdateOrder, handlePayout, handleGetBankList,handleGetStoreStats };

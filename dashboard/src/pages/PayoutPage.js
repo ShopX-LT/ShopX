@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   Container,
@@ -7,6 +8,7 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -15,6 +17,7 @@ import { Formik } from 'formik';
 import { fCurrency } from '../utils/formatNumber';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { getBankList, requestPayout } from '../services/PaymentService';
+
 
 const detailsSchema = Yup.object().shape({
   name: Yup.string().required('required'),
@@ -59,6 +62,7 @@ const PayoutPage = () => {
       return;
     }
     onSubmitProps.resetForm();
+
   };
 
   return (
@@ -120,7 +124,7 @@ const PayoutPage = () => {
               </Select>
 
               <Button variant="contained" sx={{ mt: 4, mx: 4, width: 'fit-content' }} type="submit">
-                Withdraw &nbsp; {fCurrency(1200)}
+                Withdraw
               </Button>
             </Card>
           </Container>

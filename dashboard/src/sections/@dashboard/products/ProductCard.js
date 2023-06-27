@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Button, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
@@ -25,15 +27,16 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
+  const { title, imagesUrl, price, discount, priceSale } = product;
 
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {status && (
+        {discount === 0 && (
           <Label
             variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
+            color={(discount > 0 && 'error') || 'info'}
+            // color={'info'}
             sx={{
               zIndex: 9,
               top: 16,
@@ -42,21 +45,21 @@ export default function ShopProductCard({ product }) {
               textTransform: 'uppercase',
             }}
           >
-            {status}
+            {discount}%
           </Label>
         )}
-        <StyledProductImg alt={name} src={cover} />
+        <StyledProductImg alt={title} src={imagesUrl[0]} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link color="inherit" underline="hover">
           <Typography variant="subtitle2" noWrap>
-            {name}
+            {title}
           </Typography>
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={colors} />
+          {/* <ColorPreview colors={colors} /> */}
           <Typography variant="subtitle1">
             <Typography
               component="span"
@@ -71,6 +74,14 @@ export default function ShopProductCard({ product }) {
             &nbsp;
             {fCurrency(price)}
           </Typography>
+        </Stack>
+        <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
+          <Button variant="outlined" color="secondary">
+            <EditIcon />
+          </Button>
+          <Button variant="outlined" color="error">
+            <DeleteIcon />
+          </Button>
         </Stack>
       </Stack>
     </Card>

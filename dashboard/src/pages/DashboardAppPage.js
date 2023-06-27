@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
@@ -17,11 +18,28 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getStoreStats } from '../services/StatsService';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const axiosPrivate = useAxiosPrivate();
+
+  const [wallet, setWallet] = useState(0);
+  const [orders, setOrders] = useState(0);
+
+  useEffect(() => {
+    const callGetStoreStats = async () => {
+      const response = await getStoreStats(axiosPrivate);
+      console.log(response);
+      const { totalEarning, totalSales } = response;
+      setWallet(totalEarning);
+      setOrders(totalSales);
+    };
+    callGetStoreStats();
+  }, []);
 
   return (
     <>
@@ -35,28 +53,28 @@ export default function DashboardAppPage() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Weekly Sales" total={714000} icon={'mdi:money'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Items sold" total={1352831} color="info" icon={'tabler:mood-happy-filled'} />
-          </Grid>
+            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'tabler:mood-happy-filled'} />
+          </Grid> */}
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Active Orders"
-              total={1723315}
+              title="Item sold"
+              total={orders || 1}
               color="warning"
               icon={'clarity:shopping-bag-solid'}
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Wallet" total={234} color="error" icon={'ion:wallet'} />
+            <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -216,7 +234,7 @@ export default function DashboardAppPage() {
                 { id: '5', label: 'Sprint Showcase' },
               ]}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </>

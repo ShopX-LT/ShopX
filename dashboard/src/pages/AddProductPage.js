@@ -16,8 +16,10 @@ import {
   ListItemText,
   Checkbox,
   IconButton,
+  OutlinedInput,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Dropzone from 'react-dropzone';
@@ -38,6 +40,10 @@ const itemShema = Yup.object().shape({
   amount: Yup.number(),
   discount: Yup.number(),
 });
+
+function capitalizeArrayStrings(arr) {
+  return arr.map((str) => _.upperFirst(str));
+}
 
 const AddProductPage = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -126,6 +132,10 @@ const AddProductPage = () => {
     // Send formData object to server to create item.
     await createItem(axiosPrivate, formData);
     onSubmitProps.resetForm();
+    setProductImages((prevState) => {
+      const newState = [];
+      return newState;
+    });
   };
 
   // RETURN
@@ -179,6 +189,7 @@ const AddProductPage = () => {
                       labelId="Category"
                       name="category"
                       multiple
+                      renderValue={(selected) => capitalizeArrayStrings(selected).join(', ')}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.category}
