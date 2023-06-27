@@ -6,6 +6,7 @@ const {
   // STORE INTERACTORS
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
+  getStoreStatsInteractor,
   //ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,
@@ -66,7 +67,7 @@ const handleUpdateOrder = async (req, res) => {
     const id = req.params.id;
     const { store } = req.auth;
     const updatedOrder = req.body;
-    const order = updateOrderInteractor(persistence, { id, storeName: store, updatedOrder });
+    const order = await updateOrderInteractor(persistence, { id, storeName: store, updatedOrder });
     res.status(201).send(order);
   } catch (error) {
     console.error(error);
@@ -74,4 +75,15 @@ const handleUpdateOrder = async (req, res) => {
   }
 };
 
-module.exports = { handleAddField, handleGetField, handleGetAllOrders, handleUpdateOrder };
+const handleGetStoreStats = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const stats = await getStoreStatsInteractor(persistence, { storeName });
+    res.status(200).json({ stats });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+module.exports = { handleAddField, handleGetField, handleGetAllOrders, handleUpdateOrder, handleGetStoreStats };

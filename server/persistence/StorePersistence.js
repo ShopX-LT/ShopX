@@ -98,9 +98,11 @@ const addFieldToStore = async ({ store, field }) => {
 
 const addOrderToStore = async ({ store, order }) => {
   try {
+    // console.log(store, order);
     store.orders.push(order._id);
     order.itemsOrdered.map((item) => {
-      store.totalSales += item.quantity;
+      console.log(item);
+      store.totalSales += parseInt(item.quantity);
     });
     store.totalEarning += parseInt(order.total) * 0.9;
     store.wallet += parseInt(order.total) * 0.9;
