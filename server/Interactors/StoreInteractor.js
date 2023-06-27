@@ -7,14 +7,22 @@
  * @returns An object containing the newly created store object.
  * @throws An error if the store already exists.
  */
-const createStoreInteractor = async ({ getStore, createStore }, { storeName, email }) => {
+const createStoreInteractor = async ({ getStoreByName, createStore }, { storeName, email }) => {
   // check if the store name already exists
-  const store = await getStore({ storeName });
+  const store = await getStoreByName({ storeName });
   if (store) return Promise.reject(new Error('Store already exists'));
 
   const newStore = await createStore({ storeName, email });
   const formattedStore = formatStore(newStore);
-  return { formattedStore };
+  return formattedStore;
+};
+
+const getStoreStatsInteractor = async ({ getStoreByName }, { storeName }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) return Promise.reject(new Error('Invalid Store'));
+
+  const formattedStore = formatStore(store);
+  return formattedStore;
 };
 
 /**
@@ -95,6 +103,7 @@ const formatStore = (store) => {
 
 module.exports = {
   createStoreInteractor,
+  getStoreStatsInteractor,
   storeLogin,
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
