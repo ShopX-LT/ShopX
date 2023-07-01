@@ -30,8 +30,8 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { title, imagesUrl, price, discount, priceSale, quantity } = product;
-
+  const { title, imagesUrl, price, discount, quantity } = product;
+  const priceSale = discount === 0 ? 0 : price * (1 - discount / 100);
   const [openFilter, setOpenFilter] = useState(false);
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -71,22 +71,18 @@ export default function ShopProductCard({ product }) {
           </Typography>
         </Link>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" justifyContent="start">
           {/* <ColorPreview colors={colors} /> */}
-          <Typography variant="subtitle1">
-            <Typography
-              component="span"
-              variant="body1"
-              sx={{
-                color: 'text.disabled',
-                textDecoration: 'line-through',
-              }}
-            >
-              {priceSale && fCurrency(priceSale)}
-            </Typography>
-            &nbsp;
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: `${priceSale > 0 ? 'text.disabled' : null}`,
+              textDecoration: `${priceSale > 0 ? 'line-through' : 'none'}`,
+            }}
+          >
             {fCurrency(price)}
           </Typography>
+          {priceSale > 0 ? <Typography variant="subtitle1">&nbsp;{fCurrency(priceSale)}</Typography> : null}
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
           <Button variant="outlined" color="secondary" onClick={handleOpenFilter}>
