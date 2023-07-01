@@ -113,20 +113,24 @@ const updateItemByIdInteractor = async (
   { updateItemById, getImagesUrlFromS3Buscket },
   { id, storeName, updatedItem }
 ) => {
-  const newItem = await updateItemById({ id, storeName, updatedItem });
+  const formattedUpdatedItem = formatItemForUpdate(updatedItem);
+  const newItem = await updateItemById({ id, storeName, updatedItem: formattedUpdatedItem });
   if (!newItem) {
     return Promise.reject(new Error('Item not found'));
   }
-  const imagesUrl = await getImagesUrlFromS3Buscket({ images: newItem.images });
-  if (!imagesUrl) {
-    return Promise.reject(new Error('Error retrieving Images'));
-  }
+
+  // Since we are not displaying the updated image there is on need to make the extra call to S3
+  // const imagesUrl = await getImagesUrlFromS3Buscket({ images: newItem.images });
+  // if (!imagesUrl) {
+  //   return Promise.reject(new Error('Error retrieving Images'));
+  // }
   const formattedItem = formatItemForStore(newItem);
-  formattedItem['imagesUrl'] = imagesUrl;
+  // formattedItem['imagesUrl'] = imagesUrl;
 
   return formattedItem;
 };
 
+// FIX ME: deleting an item should also delete it from the S3 bucket
 const deleteItemByIdInteractor = async ({ deleteItemById }, { id, storeName }) => {
   await deleteItemById({ id, storeName });
 };
@@ -141,7 +145,7 @@ const formatItemForStore = (item) => {
     price: item?.price,
     category: item?.category,
     images: item?.images,
-    amount: item?.amount,
+    amount: item?.amount, // amount is here for legacy support, delete it when project is ready for prod
     discount: item?.discount,
     quantity: item?.quantity,
     displayPrice: item?.price * (1 - item.discount / 100),
@@ -158,6 +162,15 @@ const formatItemForUser = (item) => {
     discount: item?.discount,
     quantity: item?.quantity,
     displayPrice: item?.price * (1 - item.discount / 100),
+  };
+};
+
+const formatItemForUpdate = (item) => {
+  return {
+    title: item?.title,
+    price: item?.price,
+    discount: item?.discount,
+    quantity: item?.quantity,
   };
 };
 
