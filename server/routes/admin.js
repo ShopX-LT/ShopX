@@ -26,7 +26,7 @@ router.get('/stats', verifyToken, handleGetStoreStats);
 router.post('/field', verifyToken, handleAddField);
 router.get('/field', verifyToken, handleGetField);
 router.get('/order', verifyToken, handleGetAllOrders);
-router.get('/payout', verifyToken, handlePayout);
+router.post('/payout', verifyToken, handlePayout);
 router.get('/bank-list', verifyToken, handleGetBankList);
 router.put('/update-order/:id', verifyToken, handleUpdateOrder);
 

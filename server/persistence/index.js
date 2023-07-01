@@ -38,7 +38,6 @@ const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence'
 //
 const { saveImagesToS3Bucket, getImagesUrlFromS3Buscket } = require('./AWSPersistence');
 const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
-const { initiateTransaction, verifyPayment } = require('./PaystackPersistence');
 
 module.exports = {
   // STORE PERSISTENCE

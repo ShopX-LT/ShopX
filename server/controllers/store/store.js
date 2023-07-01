@@ -65,7 +65,6 @@ const handleGetAllOrders = async (req, res) => {
   }
 };
 
-
 const handleGetBankList = async (req, res) => {
   try {
     const banks = await getBanksInteractors(persistence);
@@ -74,7 +73,7 @@ const handleGetBankList = async (req, res) => {
     console.log(error);
     handleErrorInteractor(error, res);
   }
-}
+};
 
 const handleUpdateOrder = async (req, res) => {
   try {
@@ -88,7 +87,6 @@ const handleUpdateOrder = async (req, res) => {
     handleErrorInteractor(error, res);
   }
 };
-
 
 const handlePayout = async (req, res) => {
   try {
@@ -114,5 +112,12 @@ const handleGetStoreStats = async (req, res) => {
   }
 };
 
-
-module.exports = { handleAddField, handleGetField, handleGetAllOrders, handleUpdateOrder, handlePayout, handleGetBankList,handleGetStoreStats };
+module.exports = {
+  handleAddField,
+  handleGetField,
+  handleGetAllOrders,
+  handleUpdateOrder,
+  handlePayout,
+  handleGetBankList,
+  handleGetStoreStats,
+};

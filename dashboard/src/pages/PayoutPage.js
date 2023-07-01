@@ -18,7 +18,6 @@ import { fCurrency } from '../utils/formatNumber';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { getBankList, requestPayout } from '../services/PaymentService';
 
-
 const detailsSchema = Yup.object().shape({
   name: Yup.string().required('required'),
   account_number: Yup.mixed().required('required'),
@@ -55,14 +54,12 @@ const PayoutPage = () => {
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);
     });
-
     const payoutResponse = await requestPayout(axiosPrivate, formData);
     if (!payoutResponse) {
       alert('Something went wrong. Try again later');
       return;
     }
     onSubmitProps.resetForm();
-
   };
 
   return (

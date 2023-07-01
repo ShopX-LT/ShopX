@@ -144,9 +144,8 @@ const payoutInteractor = async (
   // verify store
   const store = await getStoreByName({ storeName: storeName });
   if (!store) {
-    throw new Error('Invalid store');
+    return Promise.reject(new Error('Invalid store'));
   }
-
   const banks = await getBanks();
 
   // create reciepient ------
@@ -159,19 +158,19 @@ const payoutInteractor = async (
   };
   const recipientResponse = await createRecipient({ recipientDetails });
   if (!recipientResponse) {
-    throw new Error('Invalid account details');
+    return Promise.reject(new Error('Invalid account details'));
   }
   const recipientCode = recipientResponse.data.data.recipient_code;
 
   // do transfer --------
   const transferDetails = {
     source: 'balance',
-    amount: store.wallet * 0.05,
+    amount: store.wallet * 100 * 0.05,
     recipient: recipientCode,
   };
   const transferResponse = await transferOut({ transferDetails });
   if (!transferResponse) {
-    throw new Error('Something went wrong');
+    return Promise.reject(new Error('Something went wrong'));
   }
   const transferData = transferResponse.data.data;
 
