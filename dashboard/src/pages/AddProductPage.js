@@ -37,7 +37,7 @@ const itemShema = Yup.object().shape({
   description: Yup.string().required('required'),
   images: Yup.array().required('required'),
   price: Yup.mixed().required('required'),
-  amount: Yup.number(),
+  quantity: Yup.number(),
   discount: Yup.number(),
 });
 
@@ -107,7 +107,7 @@ const AddProductPage = () => {
     description: '',
     images: [],
     price: '',
-    amount: '',
+    quantity: '',
     discount: 0,
     ...fields,
   };
@@ -210,12 +210,12 @@ const AddProductPage = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="Amount"
-                    name="amount"
-                    error={Boolean(touched.amount) && Boolean(errors.amount)}
+                    label="Quantity"
+                    name="quantity"
+                    error={Boolean(touched.quantity) && Boolean(errors.quantity)}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.amount}
+                    value={values.quantity}
                     fullWidth
                   />
                 </Grid>
