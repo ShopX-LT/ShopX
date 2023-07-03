@@ -31,6 +31,7 @@ const {
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
 } = require('./StorePersistence');
@@ -46,6 +47,7 @@ module.exports = {
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
 

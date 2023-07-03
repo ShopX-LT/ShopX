@@ -88,10 +88,27 @@ const addCategoryToStore = async ({ store, categoryId }) => {
 const addFieldToStore = async ({ store, field }) => {
   try {
     store.itemTemplate.push(field);
+    if (!store.itemTemplateValue) {
+      store.itemTemplateValue = {};
+    }
+    store.itemTemplateValue = { ...store.itemTemplateValue, [field]: [] };
     await store.save();
     return;
   } catch (error) {
     console.error('Store Persistence error in addFieldToStore()', error);
+    return null;
+  }
+};
+
+const addFieldValueToStore = async ({ store }) => {
+  try {
+    // console.log('store');
+    // store.itemTemplateValue[field].push(value);
+    // store.markModified('itemTemplateValue');
+    await store.save();
+    return;
+  } catch (error) {
+    console.error('Store Persistence error in addFieldValueToStore()', error);
     return null;
   }
 };
@@ -130,6 +147,7 @@ module.exports = {
   getStoreByNameAndEmail,
   addCategoryToStore,
   addFieldToStore,
+  addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
 };

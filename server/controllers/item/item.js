@@ -13,8 +13,9 @@ const persistence = require('../../persistence/index');
 const createItem = async (req, res) => {
   try {
     const data = req.body;
+    const itemData = { ...data, store: req.auth.store, images: req.files };
 
-    const item = await createItemInteractor(persistence, { ...data, store: req.auth.store, images: req.files });
+    const item = await createItemInteractor(persistence, itemData);
     return res.status(201).json({ item });
   } catch (error) {
     console.error(error);

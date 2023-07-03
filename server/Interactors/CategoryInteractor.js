@@ -62,10 +62,10 @@ const createCategoryInteractor = async (
  * @returns {Array} An array of formatted category objects.
  * @throws {Error} If the store is invalid.
  */
-const getAllCategoriesInteractor = async ({ getStoreByNameAndEmail, getManyCategories }, { storeName, email }) => {
+const getAllCategoriesInteractor = async ({ getStoreByName, getManyCategories }, { storeName }) => {
   try {
     // find the store
-    const store = await getStoreByNameAndEmail({ storeName, email });
+    const store = await getStoreByName({ storeName });
     if (!store) {
       return Promise.reject(new Error('Invalid store'));
     }
@@ -85,7 +85,14 @@ const getAllCategoriesInteractor = async ({ getStoreByNameAndEmail, getManyCateg
   }
 };
 
+const getCustomCategoriesInteractor = async ({ getStoreByName }, { storeName }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) return Promise.reject(new Error('Invalid store'));
+  return store.itemTemplateValue;
+};
+
 module.exports = {
   createCategoryInteractor,
   getAllCategoriesInteractor,
+  getCustomCategoriesInteractor,
 };

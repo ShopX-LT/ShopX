@@ -28,7 +28,7 @@ export async function getCategories(axiosPrivate) {
  */
 export async function createCategory(axiosPrivate, category) {
   try {
-    const response = await axiosPrivate.post(POST_CATEGORIES_URL, { name: category });
+    const response = await axiosPrivate.post(POST_CATEGORIES_URL, category);
     return response.data;
   } catch (error) {
     console.error(error);

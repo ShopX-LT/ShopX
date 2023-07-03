@@ -54,7 +54,7 @@ const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
 const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { storeName, field }) => {
   const store = await getStoreByName({ storeName });
   if (!store) return Promise.reject(new Error('Invalid store'));
-  await addFieldToStore({ store, field });
+  if (!store.itemTemplate.includes(field)) await addFieldToStore({ store, field });
   return store.itemTemplate;
 };
 

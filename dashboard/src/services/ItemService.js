@@ -6,7 +6,6 @@ const GET_ALL_ITEMS_URL = '/api/item/store/items';
 export async function createItem(axiosPrivate, formData) {
   try {
     const response = await axiosPrivate.post(CREAT_ITEM_URL, formData);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

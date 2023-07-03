@@ -21,7 +21,6 @@ const saveImagesToS3Bucket = async (files) => {
     const bucketRegion = process.env.BUCKET_REGION;
     const accessKey = process.env.ACCESS_KEY;
     const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-    console.log(bucketRegion, bucketName);
 
     const s3 = new S3Client({
       credentials: {
@@ -33,7 +32,6 @@ const saveImagesToS3Bucket = async (files) => {
     files.map((file) => {
       const { originalname } = file; //extract the file name
       const filename = `${uuidv4()}-${originalname.replace(/\.[^.]+$/, '')}`;
-      console.log(filename);
 
       const params = {
         Bucket: bucketName,

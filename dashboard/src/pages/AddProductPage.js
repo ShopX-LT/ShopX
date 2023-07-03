@@ -249,7 +249,7 @@ const AddProductPage = () => {
                         name={val}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values[{ val }]}
+                        value={values[val]}
                         fullWidth
                       />
                     </Grid>
