@@ -1,49 +1,143 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Stack } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Item from "../components/Item";
-import PillButton from "../components/PillButton";
-import { getAllItems } from "../services/ItemService";
+import ShopFilterSidebar from "../components/ShopFilterSidebar";
+import { getAllItems, queryItems } from "../services/ItemService";
+import {
+  getAllCategories,
+  getCustomCategories,
+} from "../services/categoryService";
 
 const ProductsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("chain");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCustomCategories, setSelectedCustomCategories] = useState([]);
+  // create a current filter options so that it can be displayed to the user
+  const [openFilter, setOpenFilter] = useState(false);
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [customCategories, setCustomCategories] = useState({});
 
-  const changeCategory = (category) => {
-    setSelectedCategory(category);
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
+  const resetFilter = async () => {
+    setSelectedCategory("");
+    setSelectedCustomCategories([]);
+    await retrieveItems();
+  };
+
+  const filterObject = (array, object) => {
+    const filteredObject = {};
+
+    Object.entries(object).forEach(([key, values]) => {
+      const matchingValues = values.filter((value) => array.includes(value));
+      if (matchingValues.length > 0) {
+        filteredObject[key] = matchingValues;
+      }
+    });
+
+    return filteredObject;
+  };
+
+  const changeCategory = async (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const changeCustomCategory = async (event) => {
+    const value = event.target.value;
+    if (selectedCustomCategories.includes(value)) {
+      setSelectedCustomCategories((prevState) =>
+        prevState.filter((val) => val !== value)
+      );
+    } else {
+      setSelectedCustomCategories((prevState) => [...prevState, value]);
+    }
+  };
+
+  const retreiveQueryItems = async () => {
+    const customFields = filterObject(
+      selectedCustomCategories,
+      customCategories
+    );
+    const response = await queryItems(selectedCategory, customFields);
+    if (!response) {
+      setItems([]);
+      return;
+    }
+    setItems(response);
+  };
+
+  const retrieveItems = async () => {
+    const response = await getAllItems();
+    if (!response) {
+      setItems([]);
+      return;
+    }
+    setItems(response);
+  };
+
+  const retrieveCategories = async () => {
+    const response = await getAllCategories();
+    if (!response) {
+      setCategories([]);
+      return;
+    }
+    setCategories(response);
+  };
+
+  const retrieveCustomCategories = async () => {
+    const response = await getCustomCategories();
+    if (!response) {
+      setCustomCategories([]);
+      return;
+    }
+    setCustomCategories(response);
   };
 
   useEffect(() => {
-    const retrieveItems = async () => {
-      const response = await getAllItems();
-      if (!response) {
-        setItems([]);
-        return;
-      }
-      setItems(response);
-    };
-    retrieveItems();
+    // retrieveItems();
+    retrieveCategories();
+    retrieveCustomCategories();
   }, []);
-  const categories = [
-    { id: "1ca", name: "chain" },
-    { id: "2ca", name: "necklace" },
-    { id: "3ca", name: "earring" },
-    { id: "4ca", name: "earring" },
-  ];
+
+  useEffect(() => {
+    retreiveQueryItems();
+  }, [selectedCustomCategories, selectedCategory]);
+
   return (
     <div>
       <Navbar page={"product"} />
-      <div className="mb-3 sticky top-0 z-10 flex flex-row flex-wrap justify-center items-center w-full bg-[#f1dbcc] border-b-2 border-b-black">
-        {categories.map((category) => (
-          <PillButton
-            key={category.id}
-            text={category.name}
-            isSelected={selectedCategory === category.name}
-            changeCategory={changeCategory}
+      <Stack
+        direction="row"
+        flexWrap="wrap-reverse"
+        alignItems="center"
+        justifyContent="flex-start"
+        className="mb-4 mt-2"
+      >
+        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+          <ShopFilterSidebar
+            openFilter={openFilter}
+            onOpenFilter={handleOpenFilter}
+            onCloseFilter={handleCloseFilter}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            customCategories={customCategories}
+            selectedCustomCategories={selectedCustomCategories}
+            onFilterOptionsChange={changeCategory}
+            changeCustomCategory={changeCustomCategory}
+            resetFilter={resetFilter}
           />
-        ))}
-      </div>
+          {/* <ProductSort /> */}
+        </Stack>
+      </Stack>
 
-      <div className=" flex flex-row flex-wrap  justify-center sm:gap-[30px] gap-[20px]">
+      <div className=" flex flex-row flex-wrap  justify-start sm:gap-[30px] gap-[20px]">
         {items.map((item) => (
           <Item
             key={item.id}

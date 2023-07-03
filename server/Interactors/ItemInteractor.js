@@ -11,25 +11,23 @@
  * @returns {Object} - the newly created object
  */
 const createItemInteractor = async (
-  { createItem, getStoreByName, saveImagesToS3Bucket },
-  { title, price, store, description, discount, category, images, quantity, reviews }
+  { createItem, getStoreByName, saveImagesToS3Bucket, addFieldValueToStore },
+  itemData
 ) => {
   try {
+    const { store, images } = itemData;
     const validStore = await validateStore(getStoreByName, store);
+    await handleFieldValues(addFieldValueToStore, { store: validStore, item: itemData });
+
     const savedImages = await saveImagesToS3Bucket(images);
     if (!savedImages) {
       return Promise.reject(new Error('Error saving images'));
     }
+
     const item = await createItem({
-      title,
-      price,
+      ...itemData,
       store: validStore.name,
-      description,
-      discount,
-      category,
       images: savedImages,
-      quantity,
-      reviews,
     });
 
     const formattedItem = formatItemForStore(item);
@@ -38,6 +36,19 @@ const createItemInteractor = async (
     console.log('Item Interact error in createItemInteractor()', error);
     return null;
   }
+};
+
+const handleFieldValues = async (addFieldValueToStore, { store, item }) => {
+  const fields = store.itemTemplate;
+
+  for (const field of fields) {
+    const fieldValue = item[field];
+    const value = fieldValue ? fieldValue.toLowerCase() : null;
+    if (value && !store.itemTemplateValue[field].includes(value)) {
+      store.itemTemplateValue[field].push(value);
+    }
+  }
+  await addFieldValueToStore({ store });
 };
 
 const getItemInteractor = async ({ getItemById, getImagesUrlFromS3Buscket }, { id }, user) => {

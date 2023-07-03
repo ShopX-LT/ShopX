@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button, Box } from "@mui/material";
-import axios from "../api/axios";
 import useStyle from "../hooks/useStyle";
 import { createOrder } from "../services/checkoutService";
 import { fCurrency } from "../utils/formatNumber";
@@ -32,6 +30,7 @@ const CheckoutPage = () => {
 
     window.location.href = response;
   };
+  //FIX: take out the address form, move it to a new file, use formik in that page
 
   return (
     <div className="flex sm:flex-row flex-col  bg-white min-h-[100vh]">

@@ -16,19 +16,9 @@ const Item = require('../models/Item');
  * @returns {Promise<Item>} A promise that resolves to the newly created category object.
  *
  */
-const createItem = async ({ title, price, store, description, discount, category, images, quantity, reviews }) => {
+const createItem = async (itemData) => {
   try {
-    const newItem = new Item({
-      title,
-      price,
-      store,
-      description,
-      discount,
-      category,
-      images,
-      quantity,
-      reviews,
-    });
+    const newItem = new Item({ ...itemData });
     const item = await newItem.save();
     return item;
   } catch (error) {
@@ -84,10 +74,18 @@ const getGroupedItems = async (inputItemsArray) => {
 const getItemsByQuery = async ({ query, store }) => {
   try {
     const { category } = query;
-    const items = await Item.find({
-      store: store,
-      category: category ? { $in: [category] } : { $exists: true, $ne: [] },
-    }).exec();
+    const databaseQuery = { store: store };
+
+    //build the query
+    Object.entries(query).forEach(([field, values]) => {
+      if (field === 'category') {
+        databaseQuery[field] = { $in: [values] };
+      } else {
+        databaseQuery[field] = { $in: values };
+      }
+    });
+
+    const items = await Item.find(query).exec();
     return items;
   } catch (error) {
     console.error('Item Persistence error in getItemsByQuery()', error);

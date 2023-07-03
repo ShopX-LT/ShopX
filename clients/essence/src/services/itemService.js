@@ -13,6 +13,17 @@ export async function getAllItems() {
   }
 }
 
+export async function queryItems(category, fields) {
+  try {
+    const fieldQuery = buildQuery(category, fields);
+    const response = await axios.get(`${ALL_ITEMS_URL}${fieldQuery}`);
+    return response.data.items;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export async function getItem({ id }) {
   try {
     const response = await axios.get(`${GET_ITEM_URL}/${id}`);
@@ -22,3 +33,19 @@ export async function getItem({ id }) {
     return null;
   }
 }
+
+const buildQuery = (category, fields) => {
+  const params = new URLSearchParams();
+
+  Object.entries(fields).forEach(([key, values]) => {
+    values.forEach((value) => {
+      params.append(key, value);
+    });
+  });
+
+  if (category) {
+    params.append("category", category);
+  }
+
+  return `?${params.toString()}`;
+};

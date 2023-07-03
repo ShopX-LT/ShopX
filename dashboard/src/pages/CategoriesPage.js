@@ -93,15 +93,13 @@ const CategoriesPage = () => {
 
   // CREATING A NEW CATEGORY
   const handleSubmitForm = async (values, onSubmitProps) => {
-    const formData = new FormData();
+    const formData = {};
     // Append each form value to the formData object.
     Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
+      formData[key] = values[key];
     });
-    console.log(formData);
-
     try {
-      const response = await createCategory(axiosPrivate, JSON.stringify(formData));
+      const response = await createCategory(axiosPrivate, formData);
       onSubmitProps.resetForm();
     } catch (error) {
       alert(error.message);

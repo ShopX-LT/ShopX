@@ -25,6 +25,10 @@ const StoreSchema = new mongoose.Schema(
     isActive: Boolean,
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     itemTemplate: [String],
+    itemTemplateValue: {
+      type: Object,
+      default: {},
+    },
 
     wallet: {
       type: Number,

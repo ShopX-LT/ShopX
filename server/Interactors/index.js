@@ -8,7 +8,11 @@
  * @property {function} getOrCreateUserInteractor - A function that gets or creates a user interactor.
  * @property {function}
  */
-const { createCategoryInteractor, getAllCategoriesInteractor } = require('./CategoryInteractor');
+const {
+  createCategoryInteractor,
+  getAllCategoriesInteractor,
+  getCustomCategoriesInteractor,
+} = require('./CategoryInteractor');
 const {
   createItemInteractor,
   getItemInteractor,
@@ -54,6 +58,7 @@ module.exports = {
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
+  getCustomCategoriesInteractor,
   // ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,

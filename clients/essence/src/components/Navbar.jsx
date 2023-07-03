@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import Cart from "./Cart";
 import useStyle from "../hooks/useStyle";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +10,7 @@ import CartPanel from "./CartPanel";
 const navLinks = [
   { id: "home", title: "Home" },
   { id: "product", title: "Product" },
-  { id: "reels", title: "Reels" },
+  // { id: "reels", title: "Reels" },
 ];
 const navItemStyle =
   "cursor-pointer hover:text-dimBlack text-[16px] font-poppins font-normal";
@@ -18,9 +21,9 @@ const Navbar = ({ page }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div>
+    <div className="border-b-2 border-black">
       <nav
-        className={`sticky w-full flex py-6 justify-between items-center navbar mt-6`}
+        className={`sticky w-full flex sm:py-4 justify-between items-center navbar mt-4`}
       >
         <div className="font-semibold text-[24px]">ESSENCE</div>
         <ul className="list-none sm:flex hidden flex-row items-center justify-end flex-1 relative">
@@ -42,14 +45,14 @@ const Navbar = ({ page }) => {
         </ul>
         {/* MOBILE */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
-          <p
+          <IconButton
             onClick={() => {
               setIsMenuOpen((prev) => !prev);
             }}
-            className="cursor-pointer"
+            // className="cursor-pointer"
           >
-            {isMenuOpen ? "close menu" : "open menu"}
-          </p>
+            {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+          </IconButton>
           <div
             className={`${
               isMenuOpen ? "flex" : "hidden"
