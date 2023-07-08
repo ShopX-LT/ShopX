@@ -1,13 +1,13 @@
 import React from 'react';
 // @mui
-import { Box, Radio, Stack, Button, Drawer, Divider, IconButton, Typography } from '@mui/material';
+import { Box, Radio, Stack, Button, Drawer as MuiDrawer, Divider, IconButton, Typography } from '@mui/material';
 
-import Iconify from '../../../components/iconify';
-import Scrollbar from '../../../components/scrollbar';
+import Iconify from '../iconify';
+import Scrollbar from '../scrollbar';
 
-const ProductDrawer = ({ openFilter, onOpenFilter, onCloseFilter, width = 280, title, children }) => {
+const Drawer = ({ openFilter, onOpenFilter, onCloseFilter, width = 280, title, children }) => {
   return (
-    <Drawer
+    <MuiDrawer
       anchor="right"
       open={openFilter}
       onClose={onCloseFilter}
@@ -29,8 +29,8 @@ const ProductDrawer = ({ openFilter, onOpenFilter, onCloseFilter, width = 280, t
           {children}
         </Stack>
       </Scrollbar>
-    </Drawer>
+    </MuiDrawer>
   );
 };
 
-export default ProductDrawer;
+export default Drawer;

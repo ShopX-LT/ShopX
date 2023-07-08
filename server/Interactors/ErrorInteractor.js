@@ -7,10 +7,10 @@ const handleErrorInteractor = (error, res) => {
       res.status(400).json({ message: error.message });
       break;
     case 'Invalid store':
-      res.status(400).json({ message: error.message });
+      res.status(401).json({ message: error.message });
       break;
     case 'Invalid Password':
-      res.status(400).json({ message: error.message });
+      res.status(401).json({ message: error.message });
       break;
     case 'This User does not exist':
       res.status(400).json({ message: error.message });

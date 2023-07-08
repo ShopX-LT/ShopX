@@ -22,10 +22,16 @@ export default class APIHandler {
       return { token, admin, store };
     } catch (error) {
       // TODO: Handle different status response to display incorrect details
-      console.error(error);
-      console.log('Error in SignIn');
-      alert('Error in SignIn');
-      return false;
+
+      if (!error.response) {
+        const displayError = 'Network error, please try again later';
+        return { error: displayError };
+      }
+      if (error.response.status === 401) {
+        const displayError = 'Invalid store name, email or password';
+        return { error: displayError };
+      }
+      return { error: 'An unexpected error has occurred' };
     }
   }
 

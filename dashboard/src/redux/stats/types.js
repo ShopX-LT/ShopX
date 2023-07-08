@@ -1,0 +1,1 @@
+export const SET_STORE_STATS = 'SET_STORE_STATS';

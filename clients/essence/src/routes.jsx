@@ -4,7 +4,7 @@ import ProductsPage from "./pages/ProductsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import VerifyPayment from "./pages/VerifyPayment";
 
-export default function Router({ styles }) {
+export default function Router() {
   const routes = useRoutes([
     { path: "/", element: <Home />, index: true },
     { path: "/home", element: <Home /> },

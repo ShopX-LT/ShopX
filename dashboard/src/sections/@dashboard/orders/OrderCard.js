@@ -6,16 +6,26 @@ import { OrderDetails } from '.';
 import { fDate } from '../../../utils/formatTime';
 import { fCurrency } from '../../../utils/formatNumber';
 import PillDropdownButton from '../../../components/button/DropdownPillButton';
+import Drawer from '../../../components/drawer';
 
 const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
 
+  const [openFilter, setOpenFilter] = useState(false);
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
   return (
     <>
       <TableRow>
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setIsOpen(!isOpen)}>
+          <IconButton aria-label="expand row" size="small" onClick={handleOpenFilter}>
             {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
@@ -28,13 +38,16 @@ const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
           <PillDropdownButton order={order} updateFunction={updateFunction} setUpdatedOrder={setUpdatedOrder} />
         </TableCell>
       </TableRow>
-      {/* COLLAPSE */}
-      <OrderDetails
-        open={isOpen}
-        items={order.itemsOrdered}
-        subTotal={order.subTotal}
-        deliveryFee={order.deliveryFee}
-      />
+      {/* Side Panel */}
+      <Drawer title="Order Details" openFilter={openFilter} onCloseFilter={handleCloseFilter} width={400}>
+        <OrderDetails
+          open={isOpen}
+          order={order}
+          statusButton={
+            <PillDropdownButton order={order} updateFunction={updateFunction} setUpdatedOrder={setUpdatedOrder} />
+          }
+        />
+      </Drawer>
     </>
   );
 };

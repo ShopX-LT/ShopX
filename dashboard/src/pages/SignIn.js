@@ -1,8 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 // MUI
 import {
+  Alert,
   Avatar,
   Button,
   Box,
@@ -13,6 +15,7 @@ import {
   Paper,
   TextField,
   Typography,
+  Snackbar,
 } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -20,6 +23,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import useAuth from '../hooks/useAuth';
 import APIHandler from '../api/APIHandler';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getOrders } from '../services/OrderService';
+import { getStoreStats } from '../services/StatsService';
+import { ordersError, updateOrders, setStoreStats } from '../redux';
+import ErrorSnackbar from '../components/errorSnackbar';
 
 function Copyright(props) {
   return (
@@ -37,6 +45,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
   const apiHandler = new APIHandler();
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
@@ -45,6 +55,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [storeName, setStoreName] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const togglePersist = () => {
     setPersist((prev) => !prev);
@@ -55,7 +66,7 @@ const SignIn = () => {
 
   const formValidation = () => {
     if (email.includes('<') || email.includes('>')) {
-      alert('Invalid email');
+      setError('Invalid email');
       return false;
     }
     return true;
@@ -64,11 +75,28 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (formValidation()) {
-      const { token, admin, store } = await apiHandler.signin({ email, password, storeName });
-
+      const { token, admin, store, error } = await apiHandler.signin({ email, password, storeName });
       if (token) {
         setAuth({ store, admin, token });
+        // ORDERS
+        const ordersResponse = await getOrders(axiosPrivate);
+        if (!ordersResponse) {
+          dispatch(ordersError('Error getting orders'));
+          return;
+        }
+        dispatch(updateOrders(ordersResponse));
+        // STATS
+
+        const statsResponse = await getStoreStats(axiosPrivate);
+        if (!statsResponse) {
+          dispatch(ordersError('Error getting store details'));
+          return;
+        }
+        dispatch(setStoreStats(statsResponse));
+
         navigate(from, { replace: true });
+      } else {
+        setError(error);
       }
     }
   };
@@ -76,6 +104,7 @@ const SignIn = () => {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
+        {error && <ErrorSnackbar error={error} setError={setError} />}
         <Grid
           item
           xs={false}

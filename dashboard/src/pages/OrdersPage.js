@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { murmur3 } from 'murmurhash-js';
 
@@ -17,8 +18,8 @@ function hashArrayOfOrders(arr) {
 
 const OrdersPage = () => {
   const axiosPrivate = useAxiosPrivate();
+  const orders = useSelector((state) => state.orders.orders);
 
-  const [orders, setOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [arrayHash, setArrayHash] = useState('');
   const [updatedOrder, setUpdatedOrder] = useState();
@@ -42,34 +43,42 @@ const OrdersPage = () => {
     setSortConfig({ key, direction });
   };
 
+  const statusSort = {
+    pending: 4,
+    ready: 3,
+    'in transit': 2,
+    delivered: 1,
+    cancelled: 0,
+  };
+
   const sortedOrders = [...orders].sort((a, b) => {
+    if (sortConfig.key === 'status') {
+      const statusA = statusSort[a[sortConfig.key]];
+      const statusB = statusSort[b[sortConfig.key]];
+
+      if (statusA < statusB) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (statusA > statusB) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === 'asc' ? -1 : 1;
     }
     if (a[sortConfig.key] > b[sortConfig.key]) {
       return sortConfig.direction === 'asc' ? 1 : -1;
     }
+
     return 0;
   });
-
-  const retreiveOrders = async () => {
-    const response = await getOrders(axiosPrivate);
-    if (!response) {
-      setOrders([]);
-      return;
-    }
-    setOrders(response);
-  };
-
-  useEffect(() => {
-    retreiveOrders();
-  }, []);
 
   useEffect(() => {
     if (!firstRender) {
       const updateStatus = async () => {
-        const response = await updateOrder(axiosPrivate, updatedOrder.id, updatedOrder);
-        console.log(updatedOrder);
+        const response = updatedOrder?.id && (await updateOrder(axiosPrivate, updatedOrder.id, updatedOrder));
       };
       updateStatus();
     }

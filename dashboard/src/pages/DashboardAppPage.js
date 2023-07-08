@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
@@ -19,27 +20,17 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { getStoreStats } from '../services/StatsService';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
-  const axiosPrivate = useAxiosPrivate();
+  const orders = useSelector((state) => state.orders.orders);
+  const { totalEarning: wallet, totalSales } = useSelector((state) => state.stats.store);
+  const ordersError = useSelector((state) => state.orders.error);
 
-  const [wallet, setWallet] = useState(0);
-  const [orders, setOrders] = useState(0);
-
-  useEffect(() => {
-    const callGetStoreStats = async () => {
-      const response = await getStoreStats(axiosPrivate);
-      console.log(response);
-      const { totalEarning, totalSales } = response;
-      setWallet(totalEarning);
-      setOrders(totalSales);
-    };
-    callGetStoreStats();
-  }, []);
+  const newOrders = orders
+    .filter((order) => order.status === 'pending')
+    .sort((a, b) => new Date(b.dateOrdered) - new Date(a.dateOrdered));
 
   return (
     <>
@@ -53,18 +44,18 @@ export default function DashboardAppPage() {
         </Typography>
 
         <Grid container spacing={3}>
-          {/* <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'mdi:money'} />
+          <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary title="Weekly Sales" total={0} icon={'mdi:money'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'tabler:mood-happy-filled'} />
-          </Grid> */}
+            <AppWidgetSummary title="New Users" total={0} color="info" icon={'tabler:mood-happy-filled'} />
+          </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Item sold"
-              total={orders || 1}
+              total={totalSales || 1}
               color="warning"
               icon={'clarity:shopping-bag-solid'}
             />
@@ -72,6 +63,13 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={4}>
+            <AppOrderTimeline
+              title={`${newOrders.length} New Orders`}
+              list={newOrders.length > 6 ? newOrders.splice(0, 6) : newOrders}
+            />
           </Grid>
 
           {/* <Grid item xs={12} md={6} lg={8}>

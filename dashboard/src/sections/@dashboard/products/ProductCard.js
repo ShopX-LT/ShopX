@@ -8,10 +8,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
-import ProductDrawer from './Drawer';
 import EditProductForm from './EditProductForm';
 import Label from '../../../components/label';
 import { ColorPreview } from '../../../components/color-utils';
+import Drawer from '../../../components/drawer/Drawer';
 
 // ----------------------------------------------------------------------
 
@@ -92,9 +92,9 @@ export default function ShopProductCard({ product }) {
             <DeleteIcon />
           </Button>
         </Stack>
-        <ProductDrawer title="Edit Product" openFilter={openFilter} onCloseFilter={handleCloseFilter} width={450}>
+        <Drawer title="Edit Product" openFilter={openFilter} onCloseFilter={handleCloseFilter} width={450}>
           <EditProductForm product={product} onCloseFilter={handleCloseFilter} />
-        </ProductDrawer>
+        </Drawer>
       </Stack>
     </Card>
   );
