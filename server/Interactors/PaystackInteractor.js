@@ -27,7 +27,7 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
   const body = {
     email: email,
     amount: total,
-    callback_url: 'http://localhost:5173/process-payment',
+    callback_url: `http://www.shopx-lt.com/${storeName}/process-payment`,
     metadata: {
       custom_fields: [
         {

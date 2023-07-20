@@ -6,6 +6,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const xssClean = require('xss-clean');
+const helmet = require('helmet');
 
 // ROUTES
 const adminRoutes = require('./routes/admin');
@@ -29,8 +32,12 @@ function makeApp(database) {
     })
   );
   app.use(express.urlencoded({ limit: '30mb', extended: true }));
+  app.use(helmet());
+
   app.use(cookieParser());
   app.use(bodyParser.json({ limit: '30mb', extended: true }));
+  app.use(xssClean());
+  app.use(mongoSanitize());
 
   //ROUTES
   app.use('/api/admin', adminRoutes);

@@ -5,9 +5,11 @@ import { createOrder } from "../services/checkoutService";
 import { fCurrency } from "../utils/formatNumber";
 import { clearCart } from "../state";
 import CartList from "../components/CartList";
+import useAxiosWithStore from "../api/hooks/useAxiosWithStore";
 
 const CheckoutPage = () => {
   const { style } = useStyle();
+  const axios = useAxiosWithStore();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const total = useSelector((state) => state.total);
@@ -25,7 +27,7 @@ const CheckoutPage = () => {
       notes: data.get("notes"),
     };
 
-    const response = await createOrder(cart, userDetails);
+    const response = await createOrder(axios, cart, userDetails);
     dispatch(clearCart());
 
     window.location.href = response;

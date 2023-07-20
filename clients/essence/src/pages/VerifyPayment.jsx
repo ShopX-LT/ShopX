@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { verifyPayment } from "../services/checkoutService";
+import useAxiosWithStore from "../api/hooks/useAxiosWithStore";
 
 const VerifyPayment = () => {
+  const axios = useAxiosWithStore();
   const [firstRender, setFirstRender] = useState(true);
 
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -15,7 +17,7 @@ const VerifyPayment = () => {
 
         if (!hasCallBeenMade) {
           // Make the backend call only if it hasn't been made before
-          const response = await verifyPayment(transactionRef);
+          const response = await verifyPayment(axios, transactionRef);
 
           sessionStorage.setItem("paymentCallMade", "true"); // Set flag in storage
         }

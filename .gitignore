@@ -3,3 +3,5 @@ access.log
 **/node_modules
 .nyc_output
 coverage
+docker-compose.yml
+Dockerfile

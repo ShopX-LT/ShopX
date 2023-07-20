@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getItem } from "../services/ItemService";
+import { getItem } from "../services/itemService";
 import useStyle from "../hooks/useStyle";
 import { decreaseItemCount, increaseItemCount } from "../state";
 import { fCurrency } from "../utils/formatNumber";

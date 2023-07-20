@@ -1,9 +1,7 @@
-import axios from "../api/axios";
-
 const CREATE_ORDER_URL = "/api/order/checkout";
 const VERIFY_PAYMENT_URL = "/api/order/verify-payment";
 
-export async function createOrder(cart, form) {
+export async function createOrder(axios, cart, form) {
   try {
     const body = { items: cart, userDetails: form };
     console.log(body);
@@ -17,7 +15,7 @@ export async function createOrder(cart, form) {
   }
 }
 
-export async function verifyPayment(reference) {
+export async function verifyPayment(axios, reference) {
   try {
     const body = { reference };
     const response = await axios.post(VERIFY_PAYMENT_URL, body);

@@ -97,7 +97,7 @@ const OrdersPage = () => {
           </Typography>
         </Stack>
         <Card>
-          <TableContainer sx={{ minWidth: 800 }} aria-label="Orders table">
+          <TableContainer sx={{ minWidth: 400 }} aria-label="Orders table">
             <Table>
               <OrderListHead handleSort={handleSort} />
               <TableBody>

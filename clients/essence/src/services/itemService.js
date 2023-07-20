@@ -1,9 +1,7 @@
-import axios from "../api/axios";
-
 const ALL_ITEMS_URL = "/api/item/user/items";
 const GET_ITEM_URL = "/api/item/user/id";
 
-export async function getAllItems() {
+export async function getAllItems(axios) {
   try {
     const response = await axios.get(`${ALL_ITEMS_URL}`);
     return response.data.items;
@@ -13,7 +11,7 @@ export async function getAllItems() {
   }
 }
 
-export async function queryItems(category, fields) {
+export async function queryItems(axios, category, fields) {
   try {
     const fieldQuery = buildQuery(category, fields);
     const response = await axios.get(`${ALL_ITEMS_URL}${fieldQuery}`);
@@ -24,7 +22,7 @@ export async function queryItems(category, fields) {
   }
 }
 
-export async function getItem({ id }) {
+export async function getItem(axios, { id }) {
   try {
     const response = await axios.get(`${GET_ITEM_URL}/${id}`);
     return response.data.item;

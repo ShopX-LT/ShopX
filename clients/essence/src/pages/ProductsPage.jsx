@@ -3,13 +3,15 @@ import { Stack } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Item from "../components/Item";
 import ShopFilterSidebar from "../components/ShopFilterSidebar";
-import { getAllItems, queryItems } from "../services/ItemService";
+import { getAllItems, queryItems } from "../services/itemService";
 import {
   getAllCategories,
   getCustomCategories,
 } from "../services/categoryService";
+import useAxiosWithStore from "../api/hooks/useAxiosWithStore";
 
 const ProductsPage = () => {
+  const axios = useAxiosWithStore();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCustomCategories, setSelectedCustomCategories] = useState([]);
   // create a current filter options so that it can be displayed to the user
@@ -29,7 +31,7 @@ const ProductsPage = () => {
   const resetFilter = async () => {
     setSelectedCategory("");
     setSelectedCustomCategories([]);
-    await retrieveItems();
+    await retrieveItems(axios);
   };
 
   const filterObject = (array, object) => {
@@ -65,7 +67,7 @@ const ProductsPage = () => {
       selectedCustomCategories,
       customCategories
     );
-    const response = await queryItems(selectedCategory, customFields);
+    const response = await queryItems(axios, selectedCategory, customFields);
     if (!response) {
       setItems([]);
       return;
@@ -74,7 +76,7 @@ const ProductsPage = () => {
   };
 
   const retrieveItems = async () => {
-    const response = await getAllItems();
+    const response = await getAllItems(axios);
     if (!response) {
       setItems([]);
       return;
@@ -83,7 +85,7 @@ const ProductsPage = () => {
   };
 
   const retrieveCategories = async () => {
-    const response = await getAllCategories();
+    const response = await getAllCategories(axios);
     if (!response) {
       setCategories([]);
       return;
@@ -92,7 +94,7 @@ const ProductsPage = () => {
   };
 
   const retrieveCustomCategories = async () => {
-    const response = await getCustomCategories();
+    const response = await getCustomCategories(axios);
     if (!response) {
       setCustomCategories([]);
       return;

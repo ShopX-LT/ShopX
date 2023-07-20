@@ -2,13 +2,15 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Router from "./routes";
-import defaultStyle, { editStyle } from "./style";
-import Home from "./pages/Home";
-import ProductsPage from "./pages/ProductsPage";
+import { editStyle } from "./style";
 import { useEffect } from "react";
 import { useState } from "react";
 import useStyle from "./hooks/useStyle";
 import "react-toastify/dist/ReactToastify.css";
+import ExtractStore from "./components/ExtractStore";
+import useStore from "./hooks/useStore";
+import LandingPage from "./pages/LandingPage";
+
 const mock = {
   primaryColor: "brown-gradient",
   brandColor: "[#000]",
@@ -19,6 +21,8 @@ const mock = {
 
 const App = () => {
   const { style, setStyle } = useStyle();
+  const [activeStore, setActiveStore] = useState("");
+  const { store } = useStore();
 
   useEffect(() => {
     const presetStyles = editStyle(style, {
@@ -33,13 +37,20 @@ const App = () => {
   return (
     <div>
       {/* {setDefault()} */}
+      <ExtractStore />
       <div
         className={`w-full ${style.primaryColor}  min-h-[100vh] flex justify-center`}
       >
         <div className={`${style.container} sm:px-16 px-6`}>
-          <BrowserRouter>
-            <Router styles={style} />
-          </BrowserRouter>
+          {store ? (
+            <>
+              <BrowserRouter basename={`${store}`}>
+                <Router />
+              </BrowserRouter>
+            </>
+          ) : (
+            <LandingPage />
+          )}
           <ToastContainer
             position="bottom-left"
             autoClose={3000}

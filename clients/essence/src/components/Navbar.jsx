@@ -6,6 +6,8 @@ import Cart from "./Cart";
 import useStyle from "../hooks/useStyle";
 import { useDispatch, useSelector } from "react-redux";
 import CartPanel from "./CartPanel";
+import useStore from "../hooks/useStore";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { id: "home", title: "Home" },
@@ -17,8 +19,10 @@ const navItemStyle =
 
 const Navbar = ({ page }) => {
   const { style } = useStyle();
+  const { store } = useStore();
   const isCartOpen = useSelector((state) => state.isCartOpen);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="border-b-2 border-black">
@@ -35,8 +39,11 @@ const Navbar = ({ page }) => {
               }`}
               role="button"
               tabIndex={0}
+              onClick={() => {
+                navigate(`/${navItem.id}`);
+              }}
             >
-              <a href={`/${navItem.id}`}>{navItem.title}</a>
+              <p>{navItem.title}</p>
             </li>
           ))}
           <li className={`ml-[40px] ${navItemStyle}`}>
@@ -70,8 +77,13 @@ const Navbar = ({ page }) => {
                     navItem.id === page ? "text-red-700" : ""
                   }  border-b-[1px] border-black flex items-center justify-center  w-full`}
                 >
-                  <li className={` ${navItemStyle}`}>
-                    <a href={`/${navItem.id}`}>{navItem.title}</a>
+                  <li
+                    className={` ${navItemStyle}`}
+                    onClick={() => {
+                      navigate(`/${navItem.id}`);
+                    }}
+                  >
+                    <p>{navItem.title}</p>
                   </li>
                 </div>
               ))}
