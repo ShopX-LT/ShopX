@@ -45,6 +45,9 @@ function makeApp(database) {
   app.use('/api/item', itemRoutes);
   app.use('/api/order', orderRoutes);
 
+  app.use('/api', (req, res) => {
+    res.status(200).json({ message: 'Hello' });
+  });
   app.use('/', (req, res) => {
     res.status(200).json({ message: 'Hello' });
   });
