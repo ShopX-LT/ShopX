@@ -38,34 +38,35 @@ const App = () => {
     <div>
       {/* {setDefault()} */}
       <ExtractStore />
-      <div
-        className={`w-full ${style.primaryColor}  min-h-[100vh] flex justify-center`}
-      >
-        <div className={`${style.container} sm:px-16 px-6`}>
-          {store ? (
-            <>
+
+      {store ? (
+        <>
+          <div
+            className={`w-full ${style.primaryColor}  min-h-[100vh] flex justify-center`}
+          >
+            <div className={`${style.container} sm:px-16 px-6`}>
               <BrowserRouter basename={`${store}`}>
                 <Router />
               </BrowserRouter>
-            </>
-          ) : (
-            <LandingPage />
-          )}
-          <ToastContainer
-            position="bottom-left"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            limit={3}
-          />
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <LandingPage />
+      )}
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        limit={3}
+      />
     </div>
   );
 };
