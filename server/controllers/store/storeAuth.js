@@ -40,21 +40,23 @@ const handleSignIn = async (req, res) => {
 const handleSignUp = async (req, res) => {
   try {
     const { storeName, email, password } = req.body;
-
     // Create a new user or verify the current user
     const admin = await getOrCreateUserInteractor(persistence, { email, password });
 
-    // create the store
-    const store = await createStoreInteractor(persistence, { storeName, email });
+    if (admin) {
+      // create the store
+      const store = await createStoreInteractor(persistence, { storeName, email });
+      // set the refresh and access tokens
+      const tokens = generateTokensInteractor(
+        { tokenizer: jwt },
+        { adminEmail: admin.email, storeName: store.name, res: res }
+      );
 
-    // set the refresh and access tokens
-    const tokens = generateTokensInteractor(
-      { tokenizer: jwt },
-      { adminEmail: admin.email, storeName: store.name, res: res }
-    );
+      // send response
+      res.status(200).json({ token: tokens, admin: admin, store: store });
+    }
 
-    // send response
-    res.status(200).json({ token: tokens, admin: admin, store: store });
+    // @INFO: If there is no admin it will throw an error and it will be handled by the error handler
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);

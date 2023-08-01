@@ -7,6 +7,7 @@ const {
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
+  checkStoreNameInteractor,
   //ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,
@@ -104,10 +105,20 @@ const handleGetStoreStats = async (req, res) => {
   try {
     const storeName = req.auth?.store;
     const stats = await getStoreStatsInteractor(persistence, { storeName });
-    res.status(200).json({ stats });
+    return res.status(200).json({ stats });
   } catch (error) {
     console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
 
+const handleCheckStoreName = async (req, res) => {
+  try {
+    const { storeName } = req.body;
+    const isValid = await checkStoreNameInteractor(persistence, { storeName });
+    return res.stats(200).json({ isValid });
+  } catch (error) {
+    console.error(error);
     handleErrorInteractor(error, res);
   }
 };
@@ -120,4 +131,5 @@ module.exports = {
   handlePayout,
   handleGetBankList,
   handleGetStoreStats,
+  handleCheckStoreName,
 };

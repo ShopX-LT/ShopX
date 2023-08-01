@@ -33,12 +33,15 @@ const createStore = async ({ storeName, email }) => {
  * @param {string} options.storeName - The name of the store to find.
  * @returns {Promise<Store>} A promise that resolves to the store object if found, or null if not found.
  */
-const getStoreByName = async ({ storeName }) => {
+const getStoreByName = async ({ storeName }, checking) => {
   try {
     const store = await Store.findOne({ name: storeName });
     return store;
   } catch (error) {
     console.error('Store Persistence error in getStoreByName()', error);
+    if (checking) {
+      return 'an error occurred';
+    }
     return null;
   }
 };

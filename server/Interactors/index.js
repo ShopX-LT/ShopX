@@ -35,6 +35,7 @@ const {
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
+  checkStoreNameInteractor,
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
 const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
@@ -46,6 +47,7 @@ module.exports = {
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
+  checkStoreNameInteractor,
   // USER INTERACTORS
   getOrCreateUserInteractor,
   userLogin,

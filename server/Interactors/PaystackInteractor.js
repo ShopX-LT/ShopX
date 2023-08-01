@@ -67,7 +67,7 @@ const initTransactionInteractor = async (
   { items, userDetails }
 ) => {
   if (items.length <= 0 || !verifyUserDetails(userDetails)) {
-    return 'http://localhost:3001';
+    return 'https://myshopx.net';
   }
 
   // get the items based of the ids and massage them
@@ -78,7 +78,7 @@ const initTransactionInteractor = async (
   const subTotal = getSubTotal(dereferencedItems);
 
   //   get the store
-  const store = await getStoreByName({ storeName: dereferencedItems[0].store });
+  const store = await getStoreByName({ storeName: dereferencedItems[0]?.store });
   if (!store) {
     return Promise.reject(new Error('Invalid store'));
   }
@@ -128,7 +128,7 @@ const verifyPaymentInteractor = async (
   await addOrderToStore({ store, order });
 
   // update the items
-  await updateItemQuanity({ order });
+  await updateItemStatistics({ order });
 };
 
 const getBanksInteractors = async ({ getBanks }) => {
@@ -165,7 +165,7 @@ const payoutInteractor = async (
   // do transfer --------
   const transferDetails = {
     source: 'balance',
-    amount: store.wallet * 100 * 0.05,
+    amount: store.wallet * 100 * 0.05, // Collect service fee agreeded by store
     recipient: recipientCode,
   };
   const transferResponse = await transferOut({ transferDetails });

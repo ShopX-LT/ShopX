@@ -39,6 +39,8 @@ const ItemSchema = new mongoose.Schema(
     viewsWeeklyHistory: [Number],
     likes: Number,
     viewIpAddresses: [String],
+    salesIpAddresses: [String],
+    sales: Number,
   },
   { strict: false }
 );

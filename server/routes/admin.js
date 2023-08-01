@@ -10,6 +10,7 @@ const {
   handleGetBankList,
   handleUpdateOrder,
   handleGetStoreStats,
+  handleCheckStoreName,
 } = require('../controllers/store/store');
 const { handleRefreshToken } = require('../controllers/refreshController');
 const { handleLogout } = require('../controllers/logoutController');
@@ -22,6 +23,7 @@ router.post('/signup', handleSignUp);
 router.post('/signin', handleSignIn);
 router.get('/refresh', handleRefreshToken);
 router.get('/logout', handleLogout);
+router.post('/checkstorename', handleCheckStoreName);
 router.get('/stats', verifyToken, handleGetStoreStats);
 router.post('/field', verifyToken, handleAddField);
 router.get('/field', verifyToken, handleGetField);

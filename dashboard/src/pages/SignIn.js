@@ -55,7 +55,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [storeName, setStoreName] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const togglePersist = () => {
     setPersist((prev) => !prev);
@@ -66,7 +66,7 @@ const SignIn = () => {
 
   const formValidation = () => {
     if (email.includes('<') || email.includes('>')) {
-      setError('Invalid email');
+      setErrorMessage('Invalid email');
       return false;
     }
     return true;
@@ -78,14 +78,14 @@ const SignIn = () => {
       const { token, admin, store, error } = await apiHandler.signin({ email, password, storeName });
       if (token) {
         setAuth({ store, admin, token });
-        // ORDERS
+        // GET ORDERS
         const ordersResponse = await getOrders(axiosPrivate);
         if (!ordersResponse) {
           dispatch(ordersError('Error getting orders'));
           return;
         }
         dispatch(updateOrders(ordersResponse));
-        // STATS
+        // GET STATS
 
         const statsResponse = await getStoreStats(axiosPrivate);
         if (!statsResponse) {
@@ -96,7 +96,7 @@ const SignIn = () => {
 
         navigate(from, { replace: true });
       } else {
-        setError(error);
+        setErrorMessage(error);
       }
     }
   };
@@ -104,7 +104,7 @@ const SignIn = () => {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        {error && <ErrorSnackbar error={error} setError={setError} />}
+        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
         <Grid
           item
           xs={false}

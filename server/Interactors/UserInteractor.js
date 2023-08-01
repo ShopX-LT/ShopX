@@ -1,14 +1,21 @@
+const { sendSignUpEmail } = require('../services/EmailService');
+
 const getOrCreateUserInteractor = async (
   { getUser, verifyPassword, createUser, encryptPassword },
   { email, password }
 ) => {
   //check if the user already has an account
   let user = await getUser({ email });
+
   if (!user) {
-    const encryptedPassword = encryptPassword(password);
-    user = await createUser({ email, encryptedPassword });
+    const encryptedPassword = await encryptPassword(password);
+
+    user = await createUser({ email, password: encryptedPassword });
+
+    await sendSignUpEmail({ email });
   } else {
-    verifyPassword({ password: user.password, userInput: password });
+    const isPasswordValid = await verifyPassword({ password: user.password, userInput: password });
+    if (!isPasswordValid) return Promise.reject(new Error(`Invalid Password`));
   }
   user = formatUser(user);
   return user;
@@ -16,12 +23,15 @@ const getOrCreateUserInteractor = async (
 
 const userLogin = async ({ getUser, verifyPassword }, { email, password }) => {
   //check if the user already has an account
+
   let user = await getUser({ email });
   if (!user) {
     return Promise.reject(new Error(`This User does not exist`));
   }
+
   const isPasswordValid = await verifyPassword({ password: user.password, userInput: password });
-  // if (!isPasswordValid) return Promise.reject(new Error(`Invalid Password`));
+
+  if (!isPasswordValid) return Promise.reject(new Error(`Invalid Password`));
   user = formatUser(user);
   return user;
 };

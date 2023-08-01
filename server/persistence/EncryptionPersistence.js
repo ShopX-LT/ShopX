@@ -23,7 +23,8 @@ const encryptPassword = async (password) => {
  * @throws {Error} - Throws an error if the user input does not match the hashed password.
  */
 const verifyPassword = async ({ password, userInput }) => {
-  const isMatch = await bcrypt.compare(password, userInput);
+  console.log('bcrtpt', userInput, password);
+  const isMatch = await bcrypt.compare(userInput, password);
   return isMatch;
 };
 

@@ -10,6 +10,7 @@
 const createStoreInteractor = async ({ getStoreByName, createStore }, { storeName, email }) => {
   // check if the store name already exists
   const store = await getStoreByName({ storeName });
+
   if (store) return Promise.reject(new Error('Store already exists'));
 
   const newStore = await createStore({ storeName, email });
@@ -73,6 +74,27 @@ const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) =>
   return store.itemTemplate;
 };
 
+/**
+ *
+ * @param {*} store
+ * @returns
+ */
+
+const checkStoreNameInteractor = async ({ getStoreByName }, { storeName }) => {
+  const blackList = ['error', 'api'];
+  if (blackList.includes(storeName.toLowerCase())) {
+    return false;
+  }
+  const store = await getStoreByName({ storeName }, checking);
+  if (store === 'an error occurred') {
+    return Promise.reject(new Error('An error occured on the server'));
+  }
+  if (store) {
+    return false;
+  }
+  return true;
+};
+
 const formatStore = (store) => {
   return {
     name: store?.name,
@@ -107,4 +129,5 @@ module.exports = {
   storeLogin,
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
+  checkStoreNameInteractor,
 };

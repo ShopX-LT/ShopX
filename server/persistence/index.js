@@ -18,7 +18,7 @@ const {
   getGroupedItems,
   updateItemById,
   deleteItemById,
-  updateItemQuanity,
+  updateItemStatistics,
 } = require('./ItemPersistence');
 
 const { createPayout } = require('./PayoutPersistence');
@@ -63,7 +63,7 @@ module.exports = {
   getItemById,
   updateItemById,
   deleteItemById,
-  updateItemQuanity,
+  updateItemStatistics,
 
   // CATEGORY PERSISTENCE
   createCategory,

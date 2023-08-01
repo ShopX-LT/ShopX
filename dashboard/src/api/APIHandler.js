@@ -5,10 +5,12 @@ import axios, { axiosPrivate } from './axios';
 export default class APIHandler {
   API = {
     SIGNIN: '/api/admin/signin',
-    SIGNUP: '/signup',
+    SIGNUP: '/api/admin/signup',
     CREAT_ITEM: '/api/item/create',
     GET_ALL_ITEMS: '/api/item/store/items',
   };
+
+  // @INFO: it is better to use error code to prevent the server message from being seen by an attacker as it could give useful information
 
   async signin(siginDetails) {
     try {
@@ -31,6 +33,34 @@ export default class APIHandler {
         const displayError = 'Invalid store name, email or password';
         return { error: displayError };
       }
+      return { error: 'An unexpected error has occurred' };
+    }
+  }
+
+  async signup(signupDetails) {
+    try {
+      const response = await axios.post(this.API.SIGNUP, signupDetails, {
+        withCredentials: true,
+      });
+      const token = response?.data?.token;
+      const admin = response?.data?.admin.email;
+      const store = response?.data?.store?.name;
+
+      return { token, admin, store };
+    } catch (error) {
+      if (!error.response) {
+        const displayError = 'Server are down, please try again later';
+        return { error: displayError };
+      }
+      if (error.response.status === 401) {
+        const displayError = 'This user already exists. Use your user credentials to create the new store';
+        return { error: displayError };
+      }
+      if (error.response.status === 409) {
+        const displayError = 'This store already exists. Try a different name';
+        return { error: displayError };
+      }
+
       return { error: 'An unexpected error has occurred' };
     }
   }

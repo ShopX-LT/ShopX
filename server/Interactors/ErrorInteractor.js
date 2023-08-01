@@ -4,16 +4,17 @@ const handleErrorInteractor = (error, res) => {
       res.status(400).json({ message: error.message });
       break;
     case 'Store already exists':
-      res.status(400).json({ message: error.message });
+      console.log('here');
+      res.status(409).json({ message: error.message });
       break;
     case 'Invalid store':
-      res.status(401).json({ message: error.message });
+      res.status(401).json({ message: 'Credential is incorrect.' });
       break;
     case 'Invalid Password':
-      res.status(401).json({ message: error.message });
+      res.status(401).json({ message: 'Credential is incorrect.' });
       break;
     case 'This User does not exist':
-      res.status(400).json({ message: error.message });
+      res.status(401).json({ error: 'Credential is incorrect.' });
       break;
     case 'Invalid token':
       res.status(400).json({ message: error.message });
@@ -44,6 +45,9 @@ const handleErrorInteractor = (error, res) => {
       break;
     case 'Something went wrong':
       res.status(400).json({ message: error.message });
+      break;
+    case 'An error occured on the server':
+      res.status(500).json({ message: error.message });
       break;
     case 'Unauthorized Access':
       res.sendStatus(403);

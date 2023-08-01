@@ -112,12 +112,14 @@ const deleteItemById = async ({ id, storeName }) => {
   }
 };
 
-const updateItemQuanity = async ({ order }) => {
+const updateItemStatistics = async ({ order }) => {
   try {
     await Promise.all(
       order.itemsOrdered.map(async (item) => {
         const itemToUpdate = await Item.findById(item.itemId);
         itemToUpdate.quantity -= item.quantity;
+        itemToUpdate.sales += item.quantity;
+        itemToUpdate += order.ip_address;
         await itemToUpdate.save();
       })
     );
@@ -135,6 +137,6 @@ module.exports = {
   getGroupedItems,
   getItemById,
   updateItemById,
-  updateItemQuanity,
+  updateItemStatistics,
   deleteItemById,
 };

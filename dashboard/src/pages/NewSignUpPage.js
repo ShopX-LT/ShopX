@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
-  Avatar,
   Box,
   Button,
   Checkbox,
   Container,
   CssBaseline,
-  FormControlLabel,
-  Grid,
   Link,
-  TextField,
+  Paper,
+  Stepper,
+  Step,
+  StepLabel,
   Typography,
 } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import APIHandler from '../api/APIHandler';
 import ErrorSnackbar from '../components/errorSnackbar';
@@ -98,8 +97,56 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container component="main" maxWidth="xs" sx={{ mb: 4 }}>
-        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '1px black solid',
+          minHeight: '100%',
+        }}
+      >
+        <Container component="main" maxWidth="xs" sx={{ mb: 4 }}>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            <Typography variant="h4" align="center">
+              Create A Store
+            </Typography>
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === steps.length ? (
+              <>
+                <Typography variant="h5" gutterBottom>
+                  Thank choosing ShopX.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Your online website has been created. You can sign-in to start managing your store
+                </Typography>
+              </>
+            ) : (
+              <>
+                {getStepContent(activeStep, { setDisableNextButton, setStoreName })}
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                      Back
+                    </Button>
+                  )}
+
+                  <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }} disabled={disableNextButton}>
+                    {activeStep === steps.length - 1 ? 'Create my store' : 'Next'}
+                  </Button>
+                </Box>
+              </>
+            )}
+          </Paper>
+
+          {/* {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
         <Box
           sx={{
             marginTop: 8,
@@ -171,9 +218,10 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
+        </Box> */}
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </Box>
     </ThemeProvider>
   );
 }
