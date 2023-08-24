@@ -121,10 +121,18 @@ const addOrderToStore = async ({ store, order }) => {
     // console.log(store, order);
     store.orders.push(order._id);
     order.itemsOrdered.map((item) => {
-      console.log(item);
+      if (!store.totalSales || store.totalSales == NaN) {
+        store.totalSales = 0;
+      }
       store.totalSales += parseInt(item.quantity);
     });
+    if (!store.totalEarning || store.totalEarning == NaN) {
+      store.totalEarning = 0;
+    }
     store.totalEarning += parseInt(order.total) * 0.9;
+    if (!store.wallet || store.wallet == NaN) {
+      store.wallet = 0;
+    }
     store.wallet += parseInt(order.total) * 0.9;
 
     await store.save();

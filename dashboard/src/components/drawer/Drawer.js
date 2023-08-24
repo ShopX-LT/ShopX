@@ -5,12 +5,12 @@ import { Box, Radio, Stack, Button, Drawer as MuiDrawer, Divider, IconButton, Ty
 import Iconify from '../iconify';
 import Scrollbar from '../scrollbar';
 
-const Drawer = ({ openFilter, onOpenFilter, onCloseFilter, width = 280, title, children }) => {
+const Drawer = ({ openDrawer, onCloseDrawer, width = 280, title, children }) => {
   return (
     <MuiDrawer
       anchor="right"
-      open={openFilter}
-      onClose={onCloseFilter}
+      open={openDrawer}
+      onClose={onCloseDrawer}
       PaperProps={{
         sx: { width: { width }, border: 'none', overflow: 'hidden' },
       }}
@@ -19,7 +19,7 @@ const Drawer = ({ openFilter, onOpenFilter, onCloseFilter, width = 280, title, c
         <Typography variant="subtitle1" sx={{ ml: 1 }}>
           {title}
         </Typography>
-        <IconButton onClick={onCloseFilter}>
+        <IconButton onClick={onCloseDrawer}>
           <Iconify icon="eva:close-fill" />
         </IconButton>
       </Stack>

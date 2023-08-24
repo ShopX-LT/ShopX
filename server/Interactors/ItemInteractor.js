@@ -106,6 +106,46 @@ const getQueryItemsInteractor = async (
 };
 
 /**
+ * Retrieves items from a store based on a given query and formats them.
+ * @param {Object} persistence- An object containing functions to retrieve items by query and store name.
+ * @param {Function} persistence.getItemsBySearch - A function that retrieves items from a store based on a given text.
+ * @param {Function} persistence.getStoreByName - A function that retrieves a store by name.
+ * @param {Object} - An object containing the name of the store and the query to retrieve items.
+ * @param {string} store - The name of the store to retrieve items from.
+ * @param {Object} searchParam - The search param to use to retrieve items.
+ * @returns {Array} - An array of formatted items.
+ */
+const getSearchItemsInteractor = async (
+  { getItemsBySearch, getStoreByName, getImagesUrlFromS3Buscket },
+  { storeName, searchParam },
+  user
+) => {
+  const validStore = await validateStore(getStoreByName, storeName);
+  const items = await getItemsBySearch({ storeName: validStore.name, searchParam });
+
+  let formattedItems;
+  if (user) {
+    formattedItems = items.map((item) => {
+      return formatItemForUser(item);
+    });
+  } else {
+    formattedItems = items.map((item) => {
+      return formatItemForStore(item);
+    });
+  }
+
+  const itemsWithImageUrlPromises = formattedItems.map((item) => {
+    return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
+      item.imagesUrl = urls;
+      return item;
+    });
+  });
+  const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
+
+  return itemsWithImageUrl;
+};
+
+/**
  * Validates the given store by checking if it exists in the database.
  * @param {function} getStoreByName - The function to retrieve a store by name from the database.
  * @param {string} store - The name of the store to validate.
@@ -188,6 +228,7 @@ const formatItemForUpdate = (item) => {
 module.exports = {
   createItemInteractor,
   getItemInteractor,
+  getSearchItemsInteractor,
   getQueryItemsInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,

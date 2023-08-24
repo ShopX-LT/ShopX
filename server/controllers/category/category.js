@@ -50,6 +50,7 @@ const getCategoryForUsers = async (req, res) => {
 const getCustomCategories = async (req, res) => {
   try {
     const store = req.header('store');
+    console.log(req.header);
     const fields = await getCustomCategoriesInteractor(persistence, { storeName: store });
 
     return res.status(200).json(fields);

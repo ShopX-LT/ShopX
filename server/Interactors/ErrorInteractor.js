@@ -3,8 +3,13 @@ const handleErrorInteractor = (error, res) => {
     case 'Credential is incorrect. Use your account password':
       res.status(400).json({ message: error.message });
       break;
+    case 'Passwords do not match':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'This account already exist':
+      res.status(409).json({ message: error.message });
+      break;
     case 'Store already exists':
-      console.log('here');
       res.status(409).json({ message: error.message });
       break;
     case 'Invalid store':
@@ -40,17 +45,27 @@ const handleErrorInteractor = (error, res) => {
     case 'Failed to create order':
       res.status(400).json({ message: error.message });
       break;
+    case 'Invalid store creation details':
+      res.status(400).json({ message: error.message });
     case 'Invalid account details':
+      res.status(400).json({ message: error.message });
+    case 'This account does not exist':
       res.status(400).json({ message: error.message });
       break;
     case 'Something went wrong':
       res.status(400).json({ message: error.message });
       break;
-    case 'An error occured on the server':
-      res.status(500).json({ message: error.message });
+    case 'Design Not Found':
+      res.sendStatus(404);
       break;
     case 'Unauthorized Access':
       res.sendStatus(403);
+      break;
+    case 'An error occured on the server':
+      res.status(500).json({ message: error.message });
+      break;
+    case 'Error creating website':
+      res.sendStatus(500);
       break;
     default:
       return res.status(500).json({ message: 'Internal server error' });

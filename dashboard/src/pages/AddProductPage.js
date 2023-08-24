@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   Box,
   Stack,
@@ -33,7 +34,7 @@ import { getFields, creatField } from '../services/FieldService';
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
   title: Yup.string().required('required'),
-  category: Yup.array().required('required'),
+  category: Yup.array(),
   description: Yup.string().required('required'),
   images: Yup.array().required('required'),
   price: Yup.mixed().required('required'),
@@ -73,7 +74,7 @@ const AddProductPage = () => {
 
   // CREATING A FIELD
   const handleFieldSave = async () => {
-    const newFields = await creatField(axiosPrivate, field);
+    const newFields = await creatField(axiosPrivate, toast, field);
     setStoreFields(newFields);
     setOpenFieldDialog(false);
   };
@@ -130,7 +131,7 @@ const AddProductPage = () => {
     });
 
     // Send formData object to server to create item.
-    await createItem(axiosPrivate, formData);
+    await createItem(axiosPrivate, toast, formData);
     onSubmitProps.resetForm();
     setProductImages((prevState) => {
       const newState = [];

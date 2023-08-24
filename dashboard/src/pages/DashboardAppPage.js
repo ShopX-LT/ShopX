@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
+import { ordersError, updateOrders, setStoreStats } from '../redux';
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -20,10 +21,36 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getOrders } from '../services/OrderService';
+import { getStoreStats } from '../services/StatsService';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
+  const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
+  const setup = async () => {
+    // GET ORDERS
+    const ordersResponse = await getOrders(axiosPrivate);
+    if (!ordersResponse) {
+      dispatch(ordersError('Error getting orders'));
+      return;
+    }
+    dispatch(updateOrders(ordersResponse));
+    // GET STATS
+
+    const statsResponse = await getStoreStats(axiosPrivate);
+    if (!statsResponse) {
+      dispatch(ordersError('Error getting store details'));
+      return;
+    }
+    dispatch(setStoreStats(statsResponse));
+  };
+
+  useEffect(() => {
+    setup();
+  }, []);
+
   const orders = useSelector((state) => state.orders.orders);
   const { totalEarning: wallet, totalSales } = useSelector((state) => state.stats.store);
   const ordersError = useSelector((state) => state.orders.error);
@@ -55,7 +82,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Item sold"
-              total={totalSales || 1}
+              total={totalSales || 0}
               color="warning"
               icon={'clarity:shopping-bag-solid'}
             />

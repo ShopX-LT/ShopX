@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { murmur3 } from 'murmurhash-js';
@@ -78,7 +79,7 @@ const OrdersPage = () => {
   useEffect(() => {
     if (!firstRender) {
       const updateStatus = async () => {
-        const response = updatedOrder?.id && (await updateOrder(axiosPrivate, updatedOrder.id, updatedOrder));
+        const response = updatedOrder?.id && (await updateOrder(axiosPrivate, toast, updatedOrder.id, updatedOrder));
       };
       updateStatus();
     }

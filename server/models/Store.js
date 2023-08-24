@@ -32,6 +32,7 @@ const StoreSchema = new mongoose.Schema(
 
     wallet: {
       type: Number,
+      default: 0,
     },
     // SETTINGS
     settings: {
@@ -55,22 +56,49 @@ const StoreSchema = new mongoose.Schema(
 
     // STATISTICS
     // earnings
-    totalEarning: Number, //all time earnings made on the app
-    weeklyEarning: Number,
+    totalEarning: {
+      type: Number,
+      default: 0,
+    }, //all time earnings made on the app
+    weeklyEarning: {
+      type: Number,
+      default: 0,
+    },
     weeklyEarningHistory: [Number],
-    dailyEarning: Number,
+    dailyEarning: {
+      type: Number,
+      default: 0,
+    },
     dailyEarningHistory: [Number],
     // sales
-    totalSales: Number, //all time earnings made on the app
-    weeklySales: Number,
+    totalSales: {
+      type: Number,
+      default: 0,
+    }, //all time earnings made on the app
+    weeklySales: {
+      type: Number,
+      default: 0,
+    },
     weeklySalesHistory: [Number],
-    dailySales: Number,
+    dailySales: {
+      type: Number,
+      default: 0,
+    },
     dailySalesHistory: [Number],
     // Visits
-    totalVisits: Number, //all time earnings made on the app
-    weeklyVisits: Number,
+    totalVisits: {
+      type: Number,
+      default: 0,
+    }, //all time earnings made on the app
+    weeklyVisits: {
+      type: Number,
+      default: 0,
+    },
     weeklyVisitsHistory: [Number],
-    dailyVisits: Number,
+    dailyVisits: {
+      type: Number,
+      default: 0,
+    },
     dailyVisitsHistory: [Number],
     // subscribers
     subscribers: [

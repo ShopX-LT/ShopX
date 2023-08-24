@@ -9,7 +9,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import SignUp from './pages/NewSignUp';
 import AddProductPage from './pages/AddProductPage';
 import CategoriesPage from './pages/CategoriesPage';
 import OrdersPage from './pages/OrdersPage';
@@ -19,6 +19,8 @@ import PayoutPage from './pages/PayoutPage';
 // CONTEXT
 import useAuth from './hooks/useAuth';
 import PersistLogin from './components/PersistLogin';
+import FrontPage from './pages/designPages/FrontPage';
+import ShoppingPage from './pages/designPages/ShoppingPage';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +52,8 @@ export default function Router() {
                 { path: 'orders', element: <OrdersPage /> },
                 // { path: 'reviews', element: <ReviewPages /> },
                 { path: 'payout', element: <PayoutPage /> },
+                { path: 'design/frontpage', element: <FrontPage /> },
+                { path: 'design/shoppage', element: <ShoppingPage /> },
               ],
             },
           ],

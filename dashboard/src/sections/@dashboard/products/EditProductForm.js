@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Box, Button, TextField } from '@mui/material';
 import _ from 'lodash';
 import { Formik } from 'formik';
@@ -39,7 +40,7 @@ const EditProductForm = ({ product, onCloseFilter }) => {
     });
 
     // Send formData object to server to create item.
-    await updateItem(axiosPrivate, id, formData);
+    await updateItem(axiosPrivate, toast, id, formData);
     // set the drawer to close and reload the page
     onCloseFilter();
     window.location.reload();

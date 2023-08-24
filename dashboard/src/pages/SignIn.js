@@ -48,7 +48,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const apiHandler = new APIHandler();
-  const { setAuth, persist, setPersist } = useAuth();
+  const { auth, setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
@@ -78,28 +78,35 @@ const SignIn = () => {
       const { token, admin, store, error } = await apiHandler.signin({ email, password, storeName });
       if (token) {
         setAuth({ store, admin, token });
-        // GET ORDERS
-        const ordersResponse = await getOrders(axiosPrivate);
-        if (!ordersResponse) {
-          dispatch(ordersError('Error getting orders'));
-          return;
-        }
-        dispatch(updateOrders(ordersResponse));
-        // GET STATS
-
-        const statsResponse = await getStoreStats(axiosPrivate);
-        if (!statsResponse) {
-          dispatch(ordersError('Error getting store details'));
-          return;
-        }
-        dispatch(setStoreStats(statsResponse));
-
         navigate(from, { replace: true });
       } else {
         setErrorMessage(error);
       }
     }
   };
+
+  const setup = async () => {
+    // GET ORDERS
+    const ordersResponse = await getOrders(axiosPrivate);
+    if (!ordersResponse) {
+      dispatch(ordersError('Error getting orders'));
+      return;
+    }
+    dispatch(updateOrders(ordersResponse));
+    // GET STATS
+
+    const statsResponse = await getStoreStats(axiosPrivate);
+    if (!statsResponse) {
+      dispatch(ordersError('Error getting store details'));
+      return;
+    }
+    dispatch(setStoreStats(statsResponse));
+  };
+
+  useEffect(() => {
+    setup();
+  }, [auth.token, auth.admin, auth.store]);
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -172,7 +179,7 @@ const SignIn = () => {
                 autoComplete="current-password"
               />
               <FormControlLabel
-                control={<Checkbox value={persist} onChange={togglePersist} color="primary" />}
+                control={<Checkbox checked={persist} onChange={togglePersist} color="primary" />}
                 label="Remember me"
               />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

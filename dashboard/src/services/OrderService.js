@@ -18,9 +18,10 @@ export async function getOrders(axiosPrivate) {
   }
 }
 
-export async function updateOrder(axiosPrivate, id, order) {
+export async function updateOrder(axiosPrivate, toast, id, order) {
   try {
     const response = await axiosPrivate.put(`${UPDATE_ORDER_URL}/${id}`, order);
+    toast.success('Order Updated');
     return response.data;
   } catch (error) {
     console.error(error);

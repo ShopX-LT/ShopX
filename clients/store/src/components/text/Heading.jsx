@@ -14,7 +14,7 @@ const Heading = ({ textColor, text, weight = '500', bgColor, ...rest }) => {
 
 Heading.propTypes = {
   bgColor: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   textColor: PropTypes.string,
   weight: PropTypes.string,
 };

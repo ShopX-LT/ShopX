@@ -16,6 +16,7 @@ const {
 const {
   createItemInteractor,
   getItemInteractor,
+  getSearchItemsInteractor,
   getQueryItemsInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
@@ -39,6 +40,7 @@ const {
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
 const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
+const { getStoreDesignInteractor, updateStoreDesignInteractor } = require('./WebDesignInteractor');
 
 module.exports = {
   // STORE INTERACRORS
@@ -54,6 +56,7 @@ module.exports = {
   //ITEM INTERACTORS
   createItemInteractor,
   getItemInteractor,
+  getSearchItemsInteractor,
   getQueryItemsInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
@@ -73,6 +76,9 @@ module.exports = {
   generateTokensInteractor,
   adminRefreshTokenInteractor,
   logoutInteractor,
+  // WEBDESIGN INTERACTOR
+  getStoreDesignInteractor,
+  updateStoreDesignInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 };

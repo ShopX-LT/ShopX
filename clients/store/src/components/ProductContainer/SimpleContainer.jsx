@@ -1,7 +1,11 @@
 import React from 'react';
-import { Box, Card, Stack, Link, Typography, styled } from '@mui/material';
+import { Box, Card, Stack, Link, Typography, styled, Button } from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { fCurrency } from '../../utils/formatNumber';
 import ActionButton from '../button/ActionButton';
+import GeneralButton from '../button/GeneralButton';
+import useCart from '../../sections/cart/hooks/useCart';
+import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({
@@ -14,16 +18,6 @@ const StyledProductImg = styled('img')({
 
 // ----------------------------------------------------------------------
 
-const mockProduct = {
-  title: 'Testitem Title',
-  imagesUrl: [
-    'https://images.unsplash.com/photo-1609873814058-a8928924184a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80',
-  ],
-  price: 10000,
-  priceSale: 9000,
-  // work out price sale later
-};
-
 const mock = {
   backgroundColor: 'white',
   mainTextColor: 'black',
@@ -35,38 +29,64 @@ const mock = {
 };
 
 const SimpleContainer = ({ product }) => {
+  const { title, imagesUrl, price, discount, quantity } = product;
+  const priceSale = discount === 0 ? 0 : price * (1 - discount / 100);
+  const priceAtferDiscount = price * (1 - discount / 100);
+  const { handleAddToCart } = useCart();
+  const containerDesign = useSelector((state) => state.webDesign.productContainer);
+
+  const handleOnClick = () => {
+    handleAddToCart({ id: product.id, title: title, discountedPrice: priceAtferDiscount });
+  };
+
   return (
-    <Card sx={{ background: mock.backgroundColor }}>
+    <Card sx={{ background: containerDesign.backgroundColor }}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        <StyledProductImg alt={mockProduct.title} src={mockProduct.imagesUrl[0]} />
+        <StyledProductImg alt={title} src={imagesUrl[0]} />
       </Box>
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Typography variant="subtitle2" sx={{ color: mock.mainTextColor }} noWrap>
-          {mockProduct.title}
-        </Typography>
-        <Stack direction="row" alignItems="center" justifyContent="start">
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: `${mockProduct.priceSale > 0 ? mock.subTextColor : null}`,
-              textDecoration: `${mockProduct.priceSale > 0 ? 'line-through' : 'none'}`,
-            }}
-          >
-            {fCurrency(mockProduct.price)}
+      <Stack spacing={2} direction="row" alignItems={'center'} justifyContent={'space-between'}>
+        <Stack
+          sx={{
+            p: 1,
+            flexGrow: 1,
+            flexBasis: 'auto',
+            minWidth: 0,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          <Typography variant="subtitle1" sx={{ color: containerDesign.mainTextColor }}>
+            {product.title}
           </Typography>
-          {mockProduct.priceSale > 0 ? (
-            <Typography variant="subtitle1" sx={{ color: mock.mainTextColor }}>
-              &nbsp;{fCurrency(mockProduct.priceSale)}
+          <Stack direction="row" alignItems="center" justifyContent="start">
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: `${priceSale > 0 ? containerDesign.subTextColor : null}`,
+                textDecoration: `${priceSale > 0 ? 'line-through' : 'none'}`,
+              }}
+            >
+              {fCurrency(price)}
             </Typography>
-          ) : null}
+            {priceSale > 0 ? (
+              <Typography variant="subtitle1" sx={{ color: containerDesign.mainTextColor }}>
+                &nbsp;{fCurrency(priceSale)}
+              </Typography>
+            ) : null}
+          </Stack>
         </Stack>
-        <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
-          <ActionButton
-            text={mock.actionButtonText}
-            textColor={mock.actionButtonTextColor}
-            bgColor={mock.actionButtonColor}
-          />
-        </Stack>
+        <Box px={1}>
+          <GeneralButton
+            aria-label="Add to cart"
+            buttonstyle={'action'}
+            textColor={containerDesign.actionButtonTextColor}
+            bgColor={containerDesign.actionButtonColor}
+            onClick={handleOnClick}
+            p={1}
+          >
+            BUY
+          </GeneralButton>
+        </Box>
       </Stack>
     </Card>
   );

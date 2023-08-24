@@ -65,6 +65,30 @@ const getGroupedItems = async (inputItemsArray) => {
 };
 
 /**
+ * Retrieves items from the database based on the given search text.
+ * @param {Object} options - An object containing the text to search for items.
+ * @param {string} options.searchParam - The text to search for items.
+ *  * @param {string} options.storeName - The store to search for items.
+ * @returns {Promise<Array<Item>>} - A promise that resolves to an array of items that match the query and store.
+ */
+const getItemsBySearch = async ({ storeName, searchParam }) => {
+  try {
+    const items = await Item.find({
+      store: storeName,
+      $or: [
+        { title: { $regex: searchParam, $options: 'i' } },
+        { category: { $elemMatch: { $regex: searchParam, $options: 'i' } } },
+      ],
+    }).exec();
+
+    return items;
+  } catch (error) {
+    console.error('Item Persistence error in getItemsBySearch()', error);
+    return null;
+  }
+};
+
+/**
  * Retrieves items from the database based on the given query and store.
  * @param {Object} options - An object containing the query and store to search for items.
  * @param {string} options.query - The query to search for items.
@@ -85,7 +109,7 @@ const getItemsByQuery = async ({ query, store }) => {
       }
     });
 
-    const items = await Item.find(query).exec();
+    const items = await Item.find(databaseQuery).exec();
     return items;
   } catch (error) {
     console.error('Item Persistence error in getItemsByQuery()', error);
@@ -133,6 +157,7 @@ const updateItemStatistics = async ({ order }) => {
 
 module.exports = {
   createItem,
+  getItemsBySearch,
   getItemsByQuery,
   getGroupedItems,
   getItemById,

@@ -32,13 +32,13 @@ ShopProductCard.propTypes = {
 export default function ShopProductCard({ product }) {
   const { title, imagesUrl, price, discount, quantity } = product;
   const priceSale = discount === 0 ? 0 : price * (1 - discount / 100);
-  const [openFilter, setOpenFilter] = useState(false);
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
   };
 
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
   };
 
   const handleOnDelete = async () => {};
@@ -85,15 +85,15 @@ export default function ShopProductCard({ product }) {
           {priceSale > 0 ? <Typography variant="subtitle1">&nbsp;{fCurrency(priceSale)}</Typography> : null}
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between">
-          <Button variant="outlined" color="secondary" onClick={handleOpenFilter}>
+          <Button variant="outlined" color="secondary" onClick={handleOpenDrawer}>
             <EditIcon />
           </Button>
           <Button variant="outlined" color="error" onClick={handleOnDelete}>
             <DeleteIcon />
           </Button>
         </Stack>
-        <Drawer title="Edit Product" openFilter={openFilter} onCloseFilter={handleCloseFilter} width={450}>
-          <EditProductForm product={product} onCloseFilter={handleCloseFilter} />
+        <Drawer title="Edit Product" openDrawer={openDrawer} onCloseDrawer={handleCloseDrawer} width={450}>
+          <EditProductForm product={product} onCloseDrawer={handleCloseDrawer} />
         </Drawer>
       </Stack>
     </Card>

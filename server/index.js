@@ -15,6 +15,7 @@ const adminRoutes = require('./routes/admin');
 const categoryRoutes = require('./routes/category');
 const itemRoutes = require('./routes/item');
 const orderRoutes = require('./routes/order');
+const designRoutes = require('./routes/design');
 const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
 
@@ -44,6 +45,7 @@ function makeApp(database) {
   app.use('/api/category', categoryRoutes);
   app.use('/api/item', itemRoutes);
   app.use('/api/order', orderRoutes);
+  app.use('/api/design', designRoutes);
 
   app.use('/api', (req, res) => {
     res.status(200).json({ message: 'Hello' });

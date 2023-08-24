@@ -26,13 +26,14 @@ export async function getCategories(axiosPrivate) {
  * @returns {Promise<Object|null>} - A Promise that resolves to the created category object or null if there was an error.
  * @throws {Error} - If there was an error creating the category.
  */
-export async function createCategory(axiosPrivate, category) {
+export async function createCategory(axiosPrivate, toast, category) {
   try {
     const response = await axiosPrivate.post(POST_CATEGORIES_URL, category);
+    toast.success('Category Created');
     return response.data;
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    toast.error('Error Creating Category, wait a moment and try again');
+
     return null;
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 // @mui
@@ -27,7 +28,7 @@ import { getCategories, createCategory } from '../services/CategoryService';
 import { AddCategory, CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
 import Scrollbar from '../components/scrollbar/Scrollbar';
 
-const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }, { id: '' }];
+const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -99,7 +100,7 @@ const CategoriesPage = () => {
       formData[key] = values[key];
     });
     try {
-      const response = await createCategory(axiosPrivate, formData);
+      const response = await createCategory(axiosPrivate, toast, formData);
       onSubmitProps.resetForm();
     } catch (error) {
       alert(error.message);

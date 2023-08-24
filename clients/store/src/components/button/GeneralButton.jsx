@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
 import ActionButton from './ActionButton';
 
-const renderButton = () => {};
-
-const GeneralButton = (props) => {
-  switch (props.style) {
+const renderButton = (props) => {
+  switch (props.buttonstyle) {
     case 'action':
-      return <ActionButton props={props} />;
+      return <ActionButton {...props} />;
     default:
   }
 };
+
+const GeneralButton = (props) => {
+  return <div>{renderButton(props)}</div>;
+};
 GeneralButton.propTypes = {
-  style: PropTypes.string,
+  buttonstyle: PropTypes.string,
   bgColor: PropTypes.string,
   children: PropTypes.node,
   hover: PropTypes.bool,

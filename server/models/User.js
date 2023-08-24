@@ -9,6 +9,9 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    adminRefreshToken: {
+      type: String,
+    },
     password: {
       type: String,
       min: 5,

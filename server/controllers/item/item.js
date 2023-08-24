@@ -2,6 +2,7 @@ const {
   // ITEM INTERACTORS
   createItemInteractor,
   getItemInteractor,
+  getSearchItemsInteractor,
   getQueryItemsInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
@@ -55,6 +56,20 @@ const getAllItemsForUser = async (req, res) => {
   }
 };
 
+const handleSearch = async (req, res) => {
+  try {
+    const store = req.header('store');
+    const { searchParam } = req.params;
+
+    const items = await getSearchItemsInteractor(persistence, { storeName: store, searchParam }, true);
+    console.log(items);
+    return res.status(200).json({ items });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 const updateItemById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -83,6 +98,7 @@ module.exports = {
   createItem,
   getAllItemsForStore,
   getItemForUser,
+  handleSearch,
   updateItemById,
   deleteById,
   getAllItemsForUser,

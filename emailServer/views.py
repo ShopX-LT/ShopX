@@ -51,6 +51,7 @@ def send_email(
         server.sendmail(SENDER_EMAIL, receiver_email, msg.as_string())
 
 
+# ___Welcome Email___
 def send_welcome_email(receiver_email):
     EMAIL_HEADER = "Welcome to ShopX"
     SUBJECT = "Your Journey To Greatness Has Begun"
@@ -79,6 +80,23 @@ def send_welcome_email(receiver_email):
     )
 
 
+# def massage_new_order_items(items)
+
+
+def send_new_order_email(orderData):
+    EMAIL_HEADER = f"ShopX -New Order Received"
+    SUBJECT = (
+        f'{orderData["storeName"]} has a new order for  ₦{orderData["totalPrice"]}'
+    )
+    receiver_email = orderData["receiver"]
+
+    email_template = render_template("new_order_template.html", orderData=orderData)
+    send_email(receiver_email, EMAIL_HEADER, SUBJECT, email_template)
+
+
+"""************************Views*************************************"""
+
+
 @views.route("/signup", methods=["POST"])
 def signup():
     try:
@@ -89,7 +107,28 @@ def signup():
         response = {"success": True}
         json_obj = json.dumps(response)
     except Exception as e:
-        print("Error sending email:", e)
+        print("Error sending signup email:", e)
+        response = {"success": False}
+        json_obj = json.dumps(response)
+    return json_obj
+
+
+@views.route("/new-order", methods=["POST"])
+def new_order():
+    try:
+        orderData = request.get_json()
+        print(orderData)
+        ## {receiver:, totalPrice:, storeName:, items:[{title:, quantity, price,}]}
+        # totalPrice = orderData['totalPrice']
+        # storeName = orderData['storeName']
+        # items = orderData['items']
+
+        send_new_order_email(orderData)
+        response = {"success": True}
+        json_obj = json.dumps(response)
+
+    except Exception as e:
+        print("Error sending new order email:", e)
         response = {"success": False}
         json_obj = json.dumps(response)
     return json_obj

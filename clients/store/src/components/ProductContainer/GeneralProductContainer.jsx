@@ -3,7 +3,7 @@ import SimpleContainer from './SimpleContainer';
 import GlassContainer from './GlassContainer';
 
 const GeneralProductContainer = (props) => {
-  switch (props.style) {
+  switch (props.productStyle) {
     case 'simple':
       return <SimpleContainer {...props} />;
     case 'glass':

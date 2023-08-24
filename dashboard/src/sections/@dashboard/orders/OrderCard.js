@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IconButton, styled, TableCell, TableRow } from '@mui/material';
+import { IconButton, Button, styled, TableCell, TableRow } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { OrderDetails } from '.';
@@ -12,22 +12,22 @@ const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dateOrdered = fDate(order.dateOrdered);
 
-  const [openFilter, setOpenFilter] = useState(false);
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const handleOpenDrawer = () => {
+    setOpenDrawer(true);
   };
 
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
+  const handleCloseDrawer = () => {
+    setOpenDrawer(false);
   };
 
   return (
     <>
       <TableRow>
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={handleOpenFilter}>
-            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          <Button variant="contained" aria-label="view order" size="small" onClick={handleOpenDrawer}>
+            View order
+          </Button>
         </TableCell>
         <TableCell align="left">{dateOrdered}</TableCell>
         <TableCell component="th" scope="row">
@@ -39,7 +39,7 @@ const OrderCard = ({ order, updateFunction, setUpdatedOrder }) => {
         </TableCell>
       </TableRow>
       {/* Side Panel */}
-      <Drawer title="Order Details" openFilter={openFilter} onCloseFilter={handleCloseFilter} width={400}>
+      <Drawer title="Order Details" openDrawer={openDrawer} onCloseDrawer={handleCloseDrawer} width={375}>
         <OrderDetails
           open={isOpen}
           order={order}

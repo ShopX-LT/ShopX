@@ -11,13 +11,13 @@ export async function getFields(axiosPrivate) {
   }
 }
 
-export async function creatField(axiosPrivate, field) {
+export async function creatField(axiosPrivate, toast, field) {
   try {
     const response = await axiosPrivate.post(FIELD_URL, { field });
+    toast.success(`${field} Field created`);
     return response.data.fields;
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    toast.error(`An error occurred creating ${field} Field, wait a moment and try again`);
     return null;
   }
 }

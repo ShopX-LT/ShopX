@@ -124,12 +124,12 @@ describe('getAllCategoriesInteractor', () => {
     getManyCategories.mockResolvedValue(validCategories);
 
     const result = await getAllCategoriesInteractor(
-      { getStoreByNameAndEmail, getManyCategories },
-      { storeName, email }
+      { getStoreByName: getStoreByNameAndEmail, getManyCategories },
+      { storeName }
     );
 
     expect(result).toEqual(expectedFormattedCategories);
-    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName, email });
+    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName });
     expect(getManyCategories).toHaveBeenCalledWith({ categories: validCategories });
   });
 
@@ -137,25 +137,25 @@ describe('getAllCategoriesInteractor', () => {
     getStoreByNameAndEmail.mockResolvedValue(null);
 
     await expect(
-      getAllCategoriesInteractor({ getStoreByNameAndEmail, getManyCategories }, { storeName, email })
+      getAllCategoriesInteractor({ getStoreByName: getStoreByNameAndEmail, getManyCategories }, { storeName })
     ).rejects.toThrow('Invalid store');
 
-    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName, email });
+    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName });
     expect(getManyCategories).not.toHaveBeenCalled();
   });
 
   test('should throw an error when categories retrieval fails', async () => {
-    const store = { categories: validCategories };
+    const store = { categories: invalidCategories };
 
     getStoreByNameAndEmail.mockResolvedValue(store);
     getManyCategories.mockResolvedValue(invalidCategories);
 
     await expect(
-      getAllCategoriesInteractor({ getStoreByNameAndEmail, getManyCategories }, { storeName, email })
+      getAllCategoriesInteractor({ getStoreByName: getStoreByNameAndEmail, getManyCategories }, { storeName })
     ).rejects.toThrow('Error retrieving categories');
 
-    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName, email });
-    expect(getManyCategories).toHaveBeenCalledWith({ categories: validCategories });
+    expect(getStoreByNameAndEmail).toHaveBeenCalledWith({ storeName });
+    expect(getManyCategories).toHaveBeenCalledWith({ categories: null });
   });
 
   test('should return null when an error occurs', async () => {
@@ -165,8 +165,8 @@ describe('getAllCategoriesInteractor', () => {
     getStoreByNameAndEmail.mockRejectedValue(new Error(errorMessage));
 
     const result = await getAllCategoriesInteractor(
-      { getStoreByNameAndEmail, getManyCategories },
-      { storeName, email }
+      { getStoreByName: getStoreByNameAndEmail, getManyCategories },
+      { storeName }
     );
 
     expect(result).toBeNull();

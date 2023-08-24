@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable */
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import useRefreshToken from '../hooks/useRefreshToken';
 import useAuth from '../hooks/useAuth';
+import { Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 export default function PersistLogin() {
@@ -28,6 +30,5 @@ export default function PersistLogin() {
     // eslint-disable-next-line no-return-assign
     return () => (isMounted = false);
   }, []);
-
-  return <>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</>;
+  return <Box>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</Box>;
 }

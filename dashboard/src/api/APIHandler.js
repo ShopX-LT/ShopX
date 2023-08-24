@@ -43,20 +43,29 @@ export default class APIHandler {
         withCredentials: true,
       });
       const token = response?.data?.token;
+      const url = response?.data?.url;
       const admin = response?.data?.admin.email;
       const store = response?.data?.store?.name;
 
-      return { token, admin, store };
+      return { token, admin, store, url };
     } catch (error) {
       if (!error.response) {
         const displayError = 'Server are down, please try again later';
+        return { error: displayError };
+      }
+      if (error.response.data.message === 'Passwords do not match') {
+        const displayError = 'The passwords do not match';
+        return { error: displayError };
+      }
+      if (error.response.data.message === 'This account already exist') {
+        const displayError = 'The passwords do not match';
         return { error: displayError };
       }
       if (error.response.status === 401) {
         const displayError = 'This user already exists. Use your user credentials to create the new store';
         return { error: displayError };
       }
-      if (error.response.status === 409) {
+      if (error.response.data.message === 'Store already exists') {
         const displayError = 'This store already exists. Try a different name';
         return { error: displayError };
       }
@@ -66,13 +75,11 @@ export default class APIHandler {
   }
 
   // An alternative is to call the function from the services, just pass the api and axios as parameters
-  async getAllItems() {
+  async getAllItems(axiosPrivate) {
     try {
       const response = await axiosPrivate.get(this.API.GET_ALL_ITEMS);
       return response.data.items;
     } catch (error) {
-      console.error(error);
-      alert(error.message);
       return null;
     }
   }

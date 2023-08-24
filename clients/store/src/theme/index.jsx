@@ -1,16 +1,12 @@
-import PropTypes from "prop-types";
-import { useMemo } from "react";
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 // @mui
-import { CssBaseline } from "@mui/material";
-import {
-  ThemeProvider as MUIThemeProvider,
-  createTheme,
-  StyledEngineProvider,
-} from "@mui/material/styles";
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
 //
-import GlobalStyles from "./GlobalStyles";
-import palette from "./palette";
-import typography from "./typography";
+import GlobalStyles from './GlobalStyles';
+import palette from './palette';
+import typography from './typography';
 
 // ----------------------------------------------------------------------
 

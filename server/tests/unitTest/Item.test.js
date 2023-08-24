@@ -1,92 +1,143 @@
-// const { createItemInteractor } = require('../../Interactors/ItemInteractor'); // Import the necessary functions and dependencies
+const { createItemInteractor } = require('../../Interactors/ItemInteractor');
+// Import other dependencies and mock functions here if needed
 
-// const getStoreByName = async ({ storeName }) => {};
-// const saveImagesToS3Bucket = async () => {};
-// const createItem = async () => {};
-// describe('createItemInteractor', () => {
-//   // Mock data for testing
-//   const inputData = {
-//     title: 'Test Item',
-//     price: 10.99,
-//     store: 'Test Store',
-//     description: 'Test description',
-//     discount: 0,
-//     category: 'Test category',
-//     images: ['image1.jpg', 'image2.jpg'],
-//     quantity: 5,
-//     reviews: [],
-//   };
+/**
+ * Formats an item object by extracting specific properties and calculating the display price.
+ */
+const formatItemForStore = (item) => {
+  return {
+    id: item?._id,
+    title: item?.title,
+    price: item?.price,
+    category: item?.category,
+    images: item?.images,
+    amount: item?.amount, // amount is here for legacy support, delete it when project is ready for prod
+    discount: item?.discount,
+    quantity: item?.quantity,
+    displayPrice: item?.price * (1 - item.discount / 100),
+  };
+};
 
-//   const validStore = { name: 'Test Store' };
-//   const savedImages = ['image1.jpg', 'image2.jpg'];
-//   const createdItem = {
-//     /* Mock created item data */
-//   };
-//   const formattedItem = {
-//     /* Mock formatted item data */
-//     ...inputData,
-//     displayPrice: inputData.price * (1 - inputData.discount / 100),
-//   };
+// Mock functions
+const createItemMock = jest.fn();
+const getStoreByNameMock = jest.fn();
+const saveImagesToS3BucketMock = jest.fn();
+const addFieldValueToStoreMock = jest.fn();
 
-//   // Mock the required functions
-//   const mockValidateStore = jest.fn().mockResolvedValue(validStore);
-//   const mockSaveImagesToS3Bucket = jest.fn().mockResolvedValue(savedImages);
-//   const mockCreateItem = jest.fn().mockResolvedValue(createdItem);
+// Sample item data for testing
+const itemData = {
+  title: 'Sample Item',
+  price: 20,
+  store: 'Example Store',
+  images: ['image1.jpg', 'image2.jpg'],
+  // ... other properties
+};
 
-//   // Test case: Successful item creation
-//   it('should create and return a formatted item', async () => {
-//     // Set up the mock dependencies
-//     // getStoreByName.mockImplementation(mockValidateStore);
-//     // saveImagesToS3Bucket.mockImplementation(mockSaveImagesToS3Bucket);
-//     // createItem.mockImplementation(mockCreateItem);
+describe('createItemInteractor', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-//     // Call the function
-//     const result = await createItemInteractor(
-//       {
-//         createItem: mockCreateItem,
-//         getStoreByName: mockValidateStore,
-//         saveImagesToS3Bucket: mockSaveImagesToS3Bucket,
-//       },
-//       inputData
-//     );
+  it('creates and formats an item correctly', async () => {
+    const validStore = {
+      name: 'Example Store',
+      itemTemplate: ['category', 'color'], // Sample fields
+      itemTemplateValue: { category: [], color: [] }, // Sample field values
+      // ... other properties
+    };
+    const createdItem = {
+      _id: 'item_id',
+      // ... other properties
+    };
+    const expectedFormattedItem = formatItemForStore(createdItem);
 
-//     // Assertions
-//     expect(result).toEqual(formattedItem);
-//     expect(getStoreByName).toHaveBeenCalledWith(inputData.store);
-//     expect(mockValidateStore).toHaveBeenCalledWith(getStoreByName, inputData.store);
-//     expect(saveImagesToS3Bucket).toHaveBeenCalledWith(inputData.images);
-//     expect(mockCreateItem).toHaveBeenCalledWith({
-//       title: inputData.title,
-//       price: inputData.price,
-//       store: validStore.name,
-//       description: inputData.description,
-//       discount: inputData.discount,
-//       category: inputData.category,
-//       images: savedImages,
-//       quantity: inputData.quantity,
-//       reviews: inputData.reviews,
-//     });
-//   });
+    // Mock function implementations
+    getStoreByNameMock.mockResolvedValue(validStore);
+    addFieldValueToStoreMock.mockResolvedValue(true);
+    saveImagesToS3BucketMock.mockResolvedValue(itemData.images);
+    createItemMock.mockResolvedValue(createdItem);
 
-//   // Test case: Error saving images
-//   it('should return null when there is an error saving images', async () => {
-//     // Set up the mock dependencies
-//     getStoreByName.mockImplementation(mockValidateStore);
-//     saveImagesToS3Bucket.mockResolvedValue(null);
+    const result = await createItemInteractor(
+      {
+        createItem: createItemMock,
+        getStoreByName: getStoreByNameMock,
+        saveImagesToS3Bucket: saveImagesToS3BucketMock,
+        addFieldValueToStore: addFieldValueToStoreMock,
+      },
+      itemData
+    );
 
-//     // Call the function
-//     const result = await createItemInteractor(
-//       {
-//         createItem: createItem,
-//         getStoreByName: getStoreByName,
-//         saveImagesToS3Bucket: saveImagesToS3Bucket,
-//       },
-//       inputData
-//     );
+    expect(result).toEqual(expectedFormattedItem);
+    expect(getStoreByNameMock).toHaveBeenCalledWith({ storeName: itemData.store });
+    expect(addFieldValueToStoreMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        store: validStore,
+      })
+    );
+    expect(saveImagesToS3BucketMock).toHaveBeenCalledWith(itemData.images);
+    expect(createItemMock).toHaveBeenCalledWith({
+      ...itemData,
+      store: validStore.name,
+      images: itemData.images,
+    });
+  });
 
-//     // Assertion
-//     expect(result).toBeNull();
-//   });
+  it('handles errors gracefully', async () => {
+    // Mock function implementations to simulate errors
+    getStoreByNameMock.mockRejectedValue(new Error('Store not found'));
 
-//   // Add more test cases as needed for different scenarios and error conditions
-// });
+    const result = await createItemInteractor(
+      {
+        createItem: createItemMock,
+        getStoreByName: getStoreByNameMock,
+        saveImagesToS3Bucket: saveImagesToS3BucketMock,
+        addFieldValueToStore: addFieldValueToStoreMock,
+      },
+      itemData
+    );
+
+    expect(result).toBeNull();
+    expect(getStoreByNameMock).toHaveBeenCalledWith({ storeName: itemData.store });
+    // Check other function calls and error handling as needed
+  });
+
+  it('handles field values correctly', async () => {
+    const validStore = {
+      name: 'Example Store',
+      itemTemplate: ['category', 'color'], // Sample fields
+      itemTemplateValue: { category: ['electronics'], color: ['red'] }, // Sample existing field values
+      // ... other properties
+    };
+
+    // Mock function implementations
+    getStoreByNameMock.mockResolvedValue(validStore);
+    addFieldValueToStoreMock.mockResolvedValue(true);
+    saveImagesToS3BucketMock.mockResolvedValue(itemData.images);
+    createItemMock.mockResolvedValue({
+      /* ... */
+    });
+
+    await createItemInteractor(
+      {
+        createItem: createItemMock,
+        getStoreByName: getStoreByNameMock,
+        saveImagesToS3Bucket: saveImagesToS3BucketMock,
+        addFieldValueToStore: addFieldValueToStoreMock,
+      },
+      itemData
+    );
+
+    expect(addFieldValueToStoreMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        store: expect.objectContaining({
+          itemTemplateValue: expect.objectContaining({
+            category: expect.arrayContaining(['electronics']),
+            color: expect.arrayContaining(['red']),
+          }),
+        }),
+      })
+    );
+  });
+
+  // Add more test cases here for edge and normal cases
+});

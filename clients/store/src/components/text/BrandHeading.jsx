@@ -14,7 +14,7 @@ const BrandHeading = ({ textColor, text, weight = '700', bgColor, ...rest }) => 
 
 BrandHeading.propTypes = {
   bgColor: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   textColor: PropTypes.string,
   weight: PropTypes.string,
 };

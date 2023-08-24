@@ -1,8 +1,21 @@
+const { sendNewOrderEmail } = require('../services/EmailService');
+
+const priceAfterDiscount = (price, discount) => {
+  return price * (1 - discount / 100);
+};
+
+const priceInKobo = (price) => {
+  return price * 100;
+};
+const koboToNaira = (price) => {
+  return price / 100;
+};
+
 const getSubTotal = (items) => {
   let subTotal = 0; //sub total in kobo
   items.forEach((item) => {
-    const price = item.price * (1 - item.discount / 100) * 100;
-    subTotal += item.purchasedQuantity * price;
+    const priceInKb = priceInKobo(priceAfterDiscount(item.price, item.discount));
+    subTotal += item.purchasedQuantity * priceInKb;
   });
   return subTotal;
 };
@@ -14,7 +27,7 @@ const massageItems = (items) => {
       title: item.title,
       discount: item.discount,
       price: item.price,
-      paid: item.price * (1 - item.discount / 100),
+      paid: priceAfterDiscount(item.price, item.discount),
       quantity: item.purchasedQuantity,
     };
   });
@@ -23,11 +36,13 @@ const massageItems = (items) => {
 
 const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) => {
   const { email, address1, address2, city, state, country, notes } = userDetails;
-  const total = subTotal + deliveryFee;
+  const serviceFee = 1.05;
+  const total = (subTotal + deliveryFee * 100) * serviceFee;
   const body = {
     email: email,
     amount: total,
-    callback_url: `http://www.shopx-lt.com/${storeName}/process-payment`,
+    callback_url: `https://myshopx.net/${storeName}/payment-success`,
+    // callback_url: `http://localhost:4000/${storeName}/payment-success`,
     metadata: {
       custom_fields: [
         {
@@ -87,7 +102,7 @@ const initTransactionInteractor = async (
     userDetails: userDetails,
     items: massagedItems,
     subTotal: subTotal,
-    deliveryFee: parseInt(store.deliveryFee) || 0,
+    deliveryFee: 1500,
     storeName: store.name,
   });
 
@@ -129,6 +144,7 @@ const verifyPaymentInteractor = async (
 
   // update the items
   await updateItemStatistics({ order });
+  await sendNewOrderEmail(order, store.owner);
 };
 
 const getBanksInteractors = async ({ getBanks }) => {

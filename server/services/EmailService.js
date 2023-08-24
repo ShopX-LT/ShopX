@@ -9,6 +9,21 @@ const sendSignUpEmail = async ({ email }) => {
   }
 };
 
+const sendNewOrderEmail = async (order, receiverEmail) => {
+  const body = {
+    storeName: order.store,
+    receiver: receiverEmail,
+    totalPrice: order.subTotal,
+    items: order.itemsOrdered,
+  };
+  try {
+    await axios.post(`https://myshopx.net/api/email/new-order`, body);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   sendSignUpEmail,
+  sendNewOrderEmail,
 };

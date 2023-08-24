@@ -6,7 +6,6 @@ import { Container, Stack, Typography } from '@mui/material';
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { getAllItems } from '../services/ItemService';
 import APIHandler from '../api/APIHandler';
 
 // ----------------------------------------------------------------------
@@ -19,8 +18,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     const retrieveProducts = async () => {
-      const response = await apiHandler.getAllItems();
-      console.log(response);
+      const response = await apiHandler.getAllItems(axiosPrivate);
       if (!response) {
         setProducts([]);
         return;

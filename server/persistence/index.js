@@ -11,9 +11,11 @@
  * @property {function} getUser - retrieves a user by email
  */
 const { createCategory, getManyCategories } = require('./CategoryPersistence');
+const { generateText } = require('./ChatGPTPersistence');
 const {
   createItem,
   getItemById,
+  getItemsBySearch,
   getItemsByQuery,
   getGroupedItems,
   updateItemById,
@@ -24,6 +26,7 @@ const {
 const { createPayout } = require('./PayoutPersistence');
 const { initiateTransaction, verifyPayment, getBanks, createRecipient, transferOut } = require('./PaystackPersistence');
 const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
+const { createWebDesign, getStoreDesign, updateStoreDesign } = require('./WebDesignPersistence');
 
 const {
   createStore,
@@ -35,12 +38,21 @@ const {
   addOrderToStore,
   editStoreWallet,
 } = require('./StorePersistence');
-const { createUser, getUser, getUserByAdminToken } = require('./UserPersistence');
+const {
+  createUser,
+  getUser,
+  getUserByAdminToken,
+  setAdminRefreshToken,
+  removeAdminRefreshToken,
+} = require('./UserPersistence');
 //
 const { saveImagesToS3Bucket, getImagesUrlFromS3Buscket } = require('./AWSPersistence');
 const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
 
 module.exports = {
+  // CHATGPT PERSISTENCE
+  generateText,
+
   // STORE PERSISTENCE
   createStore,
   getStoreByName,
@@ -55,9 +67,12 @@ module.exports = {
   createUser,
   getUser,
   getUserByAdminToken,
+  setAdminRefreshToken,
+  removeAdminRefreshToken,
 
   // ITEM PERSISTENCE
   createItem,
+  getItemsBySearch,
   getItemsByQuery,
   getGroupedItems,
   getItemById,
@@ -96,4 +111,9 @@ module.exports = {
   // PAYSTACK PERSISTENCE
   initiateTransaction,
   verifyPayment,
+
+  // WEBDESIGN PERSISTENCE
+  createWebDesign,
+  getStoreDesign,
+  updateStoreDesign,
 };

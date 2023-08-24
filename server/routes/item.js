@@ -7,6 +7,7 @@ const {
   getAllItemsForUser,
   deleteById,
   updateItemById,
+  handleSearch,
 } = require('../controllers/item/item');
 
 // MIDDLEWARE
@@ -41,6 +42,7 @@ router.delete('/store/remove/:id', verifyToken, deleteById);
 
 //
 router.get('/user/items', getAllItemsForUser);
+router.get('/user/:searchParam', handleSearch);
 
 router.get('/user/id/:id', getItemForUser);
 

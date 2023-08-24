@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
-import { Box, Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
-import * as Yup from 'yup';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from '@mui/material';
 
-// YUP DECLERACTIONS
-const storeNameSchema = Yup.object().shape({
-  email: Yup.string().email().required('You need to enter a valid email'),
-  password: Yup.string().min(7, 'Password must be atleast 7 charactes long').required('Enter a password'),
-});
-
-const AccountDetails = ({ setStoreName, setDisableNextButton }) => {
-  const axiosPrivate = useAxiosPrivate();
-  const [isLoading, setisLoading] = useState(false);
-  const [accountType, setAccountType] = useState('new');
-
-  const initialstoreName = {};
-
-  const handleFormSubmit = () => {
-    console.log('here');
-    setDisableNextButton(false);
-  };
-
-  const handleChange = (event) => {
-    setAccountType(event.target.value);
+const AccountDetails = ({ accountType, email, password, verifyPassword, onChange, onAccountTypeChange }) => {
+  const checkPasswords = () => {
+    if (!password || !verifyPassword || password !== verifyPassword) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -35,10 +28,10 @@ const AccountDetails = ({ setStoreName, setDisableNextButton }) => {
       <FormControl>
         <RadioGroup
           aria-label="account type"
+          id="accountType"
           name="accountType"
-          defaultValue={accountType}
           value={accountType}
-          onChange={handleChange}
+          onChange={onAccountTypeChange}
         >
           <FormControlLabel
             value="old"
@@ -49,53 +42,57 @@ const AccountDetails = ({ setStoreName, setDisableNextButton }) => {
             value="new"
             control={<Radio />}
             size="small"
-            label="This is my first time creating a store with ShopX with this email address"
+            label="This is my first time creating a store with ShopX using this email address"
           />
         </RadioGroup>
       </FormControl>
-      <Formik onSubmit={handleFormSubmit} initialValues={initialstoreName} validationSchema={storeNameSchema}>
-        {({
-          values,
-          errors,
-          touched,
-          isValidating,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          setFieldValue,
-          resetForm,
-        }) => (
-          <form onSubmit={handleSubmit}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Enter your email address"
+            fullWidth
+            variant="standard"
+            type="email"
+            value={email}
+            onChange={onChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="password"
+            name="password"
+            label="Password"
+            fullWidth
+            onChange={onChange}
+            variant="standard"
+            value={password}
+            type="password"
+          />
+        </Grid>
+        {accountType === 'new' && (
+          <Grid item xs={12}>
             <TextField
-              label="Email"
-              type="email"
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
+              id="verifyPassword"
+              required
+              name="verifyPassword"
+              label="Verify password"
               fullWidth
-              margin="dense"
-            />
-            <TextField
-              label="Password"
-              name="password"
+              onChange={(e) => {
+                onChange(e);
+                checkPasswords();
+              }}
+              variant="standard"
+              value={verifyPassword}
+              error={checkPasswords()}
               type="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.password}
-              fullWidth
-              margin="dense"
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button variant="outlined" size="small" sx={{ mt: 2 }} type="submit">
-                {accountType === 'new' ? 'Create a new account' : 'Add to my existing account'}
-              </Button>
-            </Box>
-          </form>
+          </Grid>
         )}
-      </Formik>
+      </Grid>
     </Box>
   );
 };

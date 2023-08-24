@@ -14,7 +14,7 @@ const Body = ({ textColor, text, weight, bgColor, ...rest }) => {
 
 Body.propTypes = {
   bgColor: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   textColor: PropTypes.string,
   weight: PropTypes.string,
 };

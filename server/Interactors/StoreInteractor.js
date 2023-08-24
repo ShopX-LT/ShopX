@@ -7,15 +7,28 @@
  * @returns An object containing the newly created store object.
  * @throws An error if the store already exists.
  */
-const createStoreInteractor = async ({ getStoreByName, createStore }, { storeName, email }) => {
+const createStoreInteractor = async (
+  { getStoreByName, createStore, createWebDesign, generateText },
+  { storeName, email, product, brandColor }
+) => {
   // check if the store name already exists
   const store = await getStoreByName({ storeName });
 
   if (store) return Promise.reject(new Error('Store already exists'));
 
   const newStore = await createStore({ storeName, email });
+  // create the website
+  const { mainText, subText } = await generateText({ product });
+  if (!mainText && !subText) {
+    return Promise.reject(new Error('Error creating website'));
+  }
+  const webDesign = await createWebDesign({ mainText, subText, brandColor, storeName: newStore.name });
+  if (!webDesign) {
+    return Promise.reject(new Error('Error creating website'));
+  }
+
   const formattedStore = formatStore(newStore);
-  return formattedStore;
+  return { store: formattedStore, url: `https://myshopx.net/${formattedStore.name}` };
 };
 
 const getStoreStatsInteractor = async ({ getStoreByName }, { storeName }) => {
@@ -85,7 +98,7 @@ const checkStoreNameInteractor = async ({ getStoreByName }, { storeName }) => {
   if (blackList.includes(storeName.toLowerCase())) {
     return false;
   }
-  const store = await getStoreByName({ storeName }, checking);
+  const store = await getStoreByName({ storeName }, true);
   if (store === 'an error occurred') {
     return Promise.reject(new Error('An error occured on the server'));
   }

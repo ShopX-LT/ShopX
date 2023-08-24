@@ -16,6 +16,9 @@ const {
   // PAYSTACK INTERACTORS
   payoutInteractor,
   getBanksInteractors,
+  // WEBDESIGN INTERACTORS
+  getStoreDesignInteractor,
+  updateStoreDesignInteractor,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
@@ -116,13 +119,36 @@ const handleCheckStoreName = async (req, res) => {
   try {
     const { storeName } = req.body;
     const isValid = await checkStoreNameInteractor(persistence, { storeName });
-    return res.stats(200).json({ isValid });
+    return res.status(200).json({ isValid });
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);
   }
 };
 
+const handleGetDesign = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const design = await getStoreDesignInteractor(persistence, { storeName });
+    return res.status(200).json(design);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+const handleUpdateDesign = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const update = req.body;
+    console.log(req.body);
+    const design = await updateStoreDesignInteractor(persistence, { storeName, update });
+    return res.status(200).json(design);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
 module.exports = {
   handleAddField,
   handleGetField,
@@ -132,4 +158,6 @@ module.exports = {
   handleGetBankList,
   handleGetStoreStats,
   handleCheckStoreName,
+  handleGetDesign,
+  handleUpdateDesign,
 };

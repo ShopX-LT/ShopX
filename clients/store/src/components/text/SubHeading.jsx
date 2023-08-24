@@ -14,7 +14,7 @@ const SubHeading = ({ textColor, text, weight, bgColor, ...rest }) => {
 
 SubHeading.propTypes = {
   bgColor: PropTypes.string,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   textColor: PropTypes.string,
   weight: PropTypes.string,
 };
