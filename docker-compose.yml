@@ -24,7 +24,7 @@ services:
       - "host.docker.internal:host-gateway"
   client:
     build:
-      context: ./client/store
+      context: ./clients/store
       dockerfile: ./Dockerfile
     image: tosvng/shopx:client
     ports:
