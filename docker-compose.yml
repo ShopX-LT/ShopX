@@ -1,7 +1,7 @@
 services:
   emailservice:
     build:
-      context: ./emailservice
+      context: ./emailServer
       dockerfile: ./Dockerfile
     image: tosvng/shopx:emailservice
     env_file: .env
