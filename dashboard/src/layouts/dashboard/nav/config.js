@@ -2,15 +2,20 @@
 
 const navConfig = [
   {
+    title: 'Management',
+    path: '',
+    icon: '',
+  },
+  {
     title: 'dashboard',
     path: '/dashboard/app',
     icon: 'majesticons:analytics',
   },
-  {
-    title: 'user',
-    path: '/dashboard/user',
-    icon: 'mdi:user-circle',
-  },
+  // {
+  //   title: 'user',
+  //   path: '/dashboard/user',
+  //   icon: 'mdi:user-circle',
+  // },
   {
     title: 'products',
     path: '/dashboard/products',
@@ -31,15 +36,30 @@ const navConfig = [
     path: '/dashboard/orders',
     icon: 'ic:baseline-request-quote',
   },
-  {
-    title: 'reviews',
-    path: '/dashboard/reviews',
-    icon: 'material-symbols:reviews',
-  },
+  // {
+  //   title: 'reviews',
+  //   path: '/dashboard/reviews',
+  //   icon: 'material-symbols:reviews',
+  // },
   {
     title: 'payout',
     path: '/dashboard/payout',
     icon: 'game-icons:pay-money',
+  },
+  {
+    title: 'Design',
+    path: '',
+    icon: '',
+  },
+  {
+    title: 'FrontPage',
+    path: '/dashboard/design/frontpage',
+    icon: 'clarity:design-solid',
+  },
+  {
+    title: 'ShoppingPage',
+    path: '/dashboard/design/shoppage',
+    icon: 'clarity:design-solid',
   },
 ];
 

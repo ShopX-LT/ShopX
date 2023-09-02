@@ -1,7 +1,10 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 // MUI
 import {
+  Alert,
   Avatar,
   Button,
   Box,
@@ -12,13 +15,19 @@ import {
   Paper,
   TextField,
   Typography,
+  Snackbar,
 } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
+import APIHandler from '../api/APIHandler';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { getOrders } from '../services/OrderService';
+import { getStoreStats } from '../services/StatsService';
+import { ordersError, updateOrders, setStoreStats } from '../redux';
+import ErrorSnackbar from '../components/errorSnackbar';
 
 function Copyright(props) {
   return (
@@ -36,41 +45,73 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = () => {
-  const { setAuth } = useAuth();
+  const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const apiHandler = new APIHandler();
+  const { auth, setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const SIGNIN_URL = '/api/admin/signin';
+  const [email, setEmail] = useState('kg@shopx.com');
+  const [storeName, setStoreName] = useState('kg-watches');
+  const [password, setPassword] = useState('12345');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+  useEffect(() => {
+    localStorage.setItem('persist', persist);
+  }, [persist]);
+
+  const formValidation = () => {
+    if (email.includes('<') || email.includes('>')) {
+      setErrorMessage('Invalid email');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const obj = {
-      email: data.get('email'),
-      password: data.get('password'),
-      storeName: data.get('storeName'),
-    };
-    try {
-      const res = await axios.post(SIGNIN_URL, obj, { withCredentials: true });
-
-      const token = res?.data?.token;
-      const admin = res?.data?.formattedAdmin;
-      const store = res?.data?.formattedStore?.name;
-      setAuth({ store, admin, token });
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error);
-      if (!error?.response) {
-        alert('No server response');
+    if (formValidation()) {
+      const { token, admin, store, error } = await apiHandler.signin({ email, password, storeName });
+      if (token) {
+        setAuth({ store, admin, token });
+        navigate(from, { replace: true });
       } else {
-        alert(error.response.data.message);
+        setErrorMessage(error);
       }
     }
   };
+
+  const setup = async () => {
+    // GET ORDERS
+    const ordersResponse = await getOrders(axiosPrivate);
+    if (!ordersResponse) {
+      dispatch(ordersError('Error getting orders'));
+      return;
+    }
+    dispatch(updateOrders(ordersResponse));
+    // GET STATS
+
+    const statsResponse = await getStoreStats(axiosPrivate);
+    if (!statsResponse) {
+      dispatch(ordersError('Error getting store details'));
+      return;
+    }
+    dispatch(setStoreStats(statsResponse));
+  };
+
+  useEffect(() => {
+    setup();
+  }, [auth.token, auth.admin, auth.store]);
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
+        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
         <Grid
           item
           xs={false}
@@ -108,7 +149,9 @@ const SignIn = () => {
                 id="storeName"
                 label="Store Name"
                 name="storeName"
-                autoComplete="storeName"
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+                autoComplete="name"
                 autoFocus
               />
               <TextField
@@ -118,6 +161,8 @@ const SignIn = () => {
                 id="email"
                 label="Email Address"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
                 autoFocus
               />
@@ -129,9 +174,14 @@ const SignIn = () => {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
-              <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+              <FormControlLabel
+                control={<Checkbox checked={persist} onChange={togglePersist} color="primary" />}
+                label="Remember me"
+              />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>

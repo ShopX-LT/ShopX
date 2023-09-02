@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Welcome To ShopX!</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+    <style type="text/css">
+      .tg {
+        border-collapse: collapse;
+        border-color: #ccc;
+        border-spacing: 0;
+      }
+      .tg td {
+        background-color: #fff;
+        border-bottom-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-top-width: 1px;
+        border-width: 0px;
+        color: #333;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        overflow: hidden;
+        padding: 12px 12px;
+        word-break: normal;
+      }
+      .tg th {
+        background-color: #f0f0f0;
+        border-bottom-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-top-width: 1px;
+        border-width: 0px;
+        color: #333;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 12px 12px;
+        word-break: normal;
+      }
+      .tg .tg-tbfz {
+        background-color: #f9f9f9;
+        font-family: "Times New Roman", Times, serif !important;
+        font-size: 14px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .tg .tg-buh4 {
+        background-color: #f9f9f9;
+        text-align: left;
+        vertical-align: top;
+      }
+      .tg .tg-0lax {
+        text-align: left;
+        vertical-align: top;
+        text-weight: "bold";
+      }
+      .tg .tg-8mgi {
+        font-family: "Times New Roman", Times, serif !important;
+        font-size: 14px;
+        text-align: left;
+        text-weight: 200;
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="padding: 20px">
+      <p>Hello,</p>
+      <p>The table below contains details about the new order.</p>
+      <center>
+        <table class="tg">
+          <thead>
+            <tr>
+              <td class="tg-0lax">Item</td>
+              <td class="tg-0lax">Quantity</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in orderData['items'] %}
+            <tr>
+              <td class="tg-buh4">{{ item['title'] }}</td>
+              <td class="tg-tbfz">x{{ item['quantity'] }}</td>
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </center>
+      <p>
+        <a href="https://admin.myshopx.net">Click here </a>to login to your
+        admin dashboard and update your customer that the order has been
+        received
+      </p>
+    </div>
+
+    <script src="" async defer></script>
+  </body>
+</html>

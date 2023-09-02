@@ -1,21 +1,30 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from '../api/axios';
+import APIHandler from '../api/APIHandler';
+import ErrorSnackbar from '../components/errorSnackbar';
 import useAuth from '../hooks/useAuth';
+import SelectStoreNameForm from '../sections/auth/signup/SelectStoreNameForm';
+import AccountDetails from '../sections/auth/signup/AccountDetails';
+import Review from '../sections/auth/signup/Review';
+
+const theme = createTheme();
+
+const steps = ['Name your store', 'Account details', 'Review settings'];
 
 function Copyright(props) {
   return (
@@ -30,44 +39,67 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+function getStepContent(step, { setDisableNextButton, setStoreName, setEmail, setPassword }) {
+  switch (step) {
+    case 0:
+      return <SelectStoreNameForm setDisableNextButton={setDisableNextButton} setStoreName={setStoreName} />;
+    case 1:
+      return <AccountDetails setEmail={setEmail} setPassword={setPassword} />;
+    case 2:
+      return <Review />;
+    default:
+      throw new Error('Unknown step');
+  }
+}
 
 export default function SignUp() {
+  const apiHandler = new APIHandler();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/dashboard';
-  const SIGNUP_URL = '/signup';
+  // const from = location.state?.from?.pathname || '/dashboard';
+  const navigateTo = '/signin';
+  const [email, setEmail] = useState('');
+  const [storeName, setStoreName] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [activeStep, setActiveStep] = useState(0);
+  const [disableNextButton, setDisableNextButton] = useState(true);
+
+  const handleNext = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
+  const formValidation = () => {
+    if (email.includes('<') || email.includes('>') || !email.includes('@')) {
+      setErrorMessage('Invalid email');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const obj = {
-      email: data.get('email'),
-      password: data.get('password'),
-      storeName: data.get('storeName'),
-    };
-    try {
-      const res = await axios.post(SIGNUP_URL, obj, { withCredentials: true });
-      const token = res?.data?.token;
-      const admin = res?.data?.formattedAdmin;
-      const store = res?.data?.formattedStore?.name;
-      setAuth({ store, admin, token });
-      navigate(from, { replace: true });
-    } catch (error) {
-      if (!error?.response) {
-        alert('No server response');
-        console.log(error);
+    if (formValidation()) {
+      const { token, admin, store, error } = await apiHandler.signup({ email, password, storeName });
+
+      if (token) {
+        navigate(navigateTo);
       } else {
-        alert(error.response.data.message);
+        setErrorMessage(error);
       }
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <CssBaseline />
+      <Container component="main" maxWidth="xs" sx={{ mb: 4 }}>
+        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
         <Box
           sx={{
             marginTop: 8,
@@ -91,11 +123,22 @@ export default function SignUp() {
                   id="storeName"
                   label="Store Name"
                   name="storeName"
+                  value={storeName}
+                  onChange={(e) => setStoreName(e.target.value)}
                   autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -105,6 +148,8 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                 />
               </Grid>

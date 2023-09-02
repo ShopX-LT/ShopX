@@ -2,6 +2,7 @@ const {
   // CATEGORY INTERACRORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
+  getCustomCategoriesInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
@@ -14,7 +15,7 @@ const createCategory = async (req, res) => {
     const { name } = req.body;
     const { admin, store } = req.auth;
     const categories = await createCategoryInteractor(persistence, { storeName: store, email: admin, category: name });
-    res.status(201).json({ categories });
+    res.sendStatus(201);
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);
@@ -25,9 +26,33 @@ const createCategory = async (req, res) => {
 const getCategory = async (req, res) => {
   try {
     const { admin, store } = req.auth;
-    const categories = await getAllCategoriesInteractor(persistence, { storeName: store, email: admin });
+    const categories = await getAllCategoriesInteractor(persistence, { storeName: store });
 
     return res.status(200).json(categories);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+// get all the categories created by a store for their website
+const getCategoryForUsers = async (req, res) => {
+  try {
+    const store = req.header('store');
+    const categories = await getAllCategoriesInteractor(persistence, { storeName: store });
+
+    return res.status(200).json(categories);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+const getCustomCategories = async (req, res) => {
+  try {
+    const store = req.header('store');
+    const fields = await getCustomCategoriesInteractor(persistence, { storeName: store });
+
+    return res.status(200).json(fields);
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);
@@ -37,4 +62,6 @@ const getCategory = async (req, res) => {
 module.exports = {
   createCategory: createCategory,
   getCategory: getCategory,
+  getCategoryForUsers,
+  getCustomCategories,
 };

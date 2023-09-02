@@ -83,6 +83,7 @@ const palette = {
   text: {
     primary: GREY[800],
     secondary: GREY[600],
+    success: SUCCESS.dark,
     disabled: GREY[500],
   },
   background: {

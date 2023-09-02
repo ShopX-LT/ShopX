@@ -1,0 +1,38 @@
+{
+  "name": "analysisserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.400.0",
+    "@aws-sdk/s3-request-presigner": "^3.400.0",
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^7.4.5",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "uuid": "^9.0.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3",
+    "typescript": "^5.2.2"
+  }
+}

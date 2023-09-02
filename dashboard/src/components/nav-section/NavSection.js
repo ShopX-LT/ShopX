@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
-import { Box, List, ListItemText } from '@mui/material';
+import { Box, Divider, List, ListItemText } from '@mui/material';
 //
-import { StyledNavItem, StyledNavItemIcon } from './styles';
+import { StyledNavItem, StyledNavItemIcon, StyledSectionItem } from './styles';
 //
 import Iconify from '../iconify';
 
@@ -35,25 +35,33 @@ function NavItem({ item }) {
   const { title, path, icon, info } = item;
 
   return (
-    <StyledNavItem
-      component={RouterLink}
-      to={path}
-      sx={{
-        '&.active': {
-          color: 'text.primary',
-          bgcolor: 'action.selected',
-          fontWeight: 'fontWeightBold',
-        },
-      }}
-    >
-      <StyledNavItemIcon>
-        {' '}
-        <Iconify icon={icon} width={20} height={20} />
-      </StyledNavItemIcon>
+    <>
+      {path ? (
+        <StyledNavItem
+          component={RouterLink}
+          to={path}
+          sx={{
+            '&.active': {
+              color: 'text.primary',
+              bgcolor: 'action.selected',
+              fontWeight: 'fontWeightBold',
+            },
+          }}
+        >
+          <StyledNavItemIcon>
+            {' '}
+            <Iconify icon={icon} width={20} height={20} />
+          </StyledNavItemIcon>
 
-      <ListItemText disableTypography primary={title} />
+          <ListItemText disableTypography primary={title} />
 
-      {info && info}
-    </StyledNavItem>
+          {info && info}
+        </StyledNavItem>
+      ) : (
+        <>
+          <StyledSectionItem disableTypography primary={title} />
+        </>
+      )}
+    </>
   );
 }

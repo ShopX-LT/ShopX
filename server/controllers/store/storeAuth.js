@@ -20,12 +20,12 @@ const handleSignIn = async (req, res) => {
     // Extract body info
     const { email, storeName, password } = req.body;
     // Get the store
+    const admin = await userLogin(persistence, { email, password });
     const store = await storeLogin(persistence, { storeName, email });
 
-    const admin = await userLogin(persistence, { email, password });
-
     // set the refresh and access tokens
-    const tokens = generateTokensInteractor(
+    const tokens = await generateTokensInteractor(
+      persistence,
       { tokenizer: jwt },
       { adminEmail: admin.email, storeName: store.name, res: res }
     );
@@ -41,22 +41,24 @@ const handleSignIn = async (req, res) => {
 //CREATE A STORE
 const handleSignUp = async (req, res) => {
   try {
-    const { storeName, email, password } = req.body;
-
+    const { storeName, email, password, verPassword, accountType, product, brandColor } = req.body;
     // Create a new user or verify the current user
-    const admin = await getOrCreateUserInteractor(persistence, { email, password });
+    const admin = await getOrCreateUserInteractor(persistence, { email, password, verPassword, accountType });
 
-    // create the store
-    const store = await createStoreInteractor(persistence, { storeName, email });
+    if (admin) {
+      // create the store
+      const { store, url } = await createStoreInteractor(persistence, { storeName, email, product, brandColor });
+      // set the refresh and access tokens
+      const tokens = generateTokensInteractor(
+        { tokenizer: jwt },
+        { adminEmail: admin.email, storeName: store.name, res: res }
+      );
 
-    // set the refresh and access tokens
-    const tokens = generateTokensInteractor(
-      { tokenizer: jwt },
-      { adminEmail: admin.email, storeName: store.name, res: res }
-    );
+      // send response
+      res.status(200).json({ token: tokens, admin: admin, store: store, url: url });
+    }
 
-    // send response
-    res.status(200).json({ token: tokens, admin: admin, store: store });
+    // @INFO: If there is no admin it will throw an error and it will be handled by the error handler
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);

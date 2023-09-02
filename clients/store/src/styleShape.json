@@ -1,0 +1,44 @@
+{
+    hero: {
+        style: "",
+
+        mainText: "",
+        mainTextColor: "",
+
+        subText: "",
+        subTextColor: "",
+
+        imagePath: "",
+
+        actionButtonStyle: "",
+        actionButtonText: "",
+        actionButtonColor: "",
+        actionButtonTextColor: "",
+
+        secondaryButtonLink: ""
+        secondaryButtonStyle: "",
+        secondaryButtonText: "",
+        secondaryButtonColor: "",
+        secondaryButtonTextColor: "",
+        imageUrl:"",
+        imageBlur: "",
+        coverOpacity: "number",
+    },
+    
+    productContainer: {
+        style: "",
+        backgroundColor: "",
+        mainTextColor: "",
+        subTextColor: "",
+        actionButtonStyle: "",
+        actionButtonText: "",
+        actionButtonColor: "",
+        actionButtonTextColor: "",
+
+    }
+
+    nav: {
+        textColor: "",
+        backgroundColor: "",
+    }
+}

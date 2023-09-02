@@ -1,24 +1,48 @@
 services:
-  nginx:
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+  emailservice:
+    image: tosvng/shopx:emailservice
+    env_file: .env
     ports:
-      - "80:80"
+      - 8000:8000
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   dashboard:
-    build:
-      dockerfile: Dockerfile
-      context: ./dashboard
-    # ports:
-    #   - "5000:3000"
+    image: tosvng/shopx:dashboard
+    ports:
+      - 3000:3000
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  client:
+    image: tosvng/shopx:client
+    ports:
+      - 4000:4000
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   server:
-    build:
-      dockerfile: Dockerfile
-      context: ./server
-    environment:
-      - PORT = 3001
-      - MONGO_URL = oo
-      - PROD_MONGO_URL = pp
-      - JWT_SECRET = pp
-    # ports:
-    #   - "3001:3001"
+    image: tosvng/shopx:server
+    env_file: .env
+    ports:
+      - 3001:3001
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  analysisServer:
+    image: tosvng/shopx:analysisServer
+    env_file: .env
+    ports:
+      - 3002:3002
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+networks:
+  my_network:
+    name: my_network
+    driver: bridge

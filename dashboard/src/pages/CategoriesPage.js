@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 // @mui
@@ -27,7 +28,7 @@ import { getCategories, createCategory } from '../services/CategoryService';
 import { AddCategory, CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
 import Scrollbar from '../components/scrollbar/Scrollbar';
 
-const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }, { id: '' }];
+const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -46,7 +47,6 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  console.log(array);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -94,15 +94,13 @@ const CategoriesPage = () => {
 
   // CREATING A NEW CATEGORY
   const handleSubmitForm = async (values, onSubmitProps) => {
-    const formData = new FormData();
+    const formData = {};
     // Append each form value to the formData object.
     Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
+      formData[key] = values[key];
     });
-    console.log(formData);
-
     try {
-      const response = await createCategory(axiosPrivate, JSON.stringify(formData));
+      const response = await createCategory(axiosPrivate, toast, formData);
       onSubmitProps.resetForm();
     } catch (error) {
       alert(error.message);
@@ -152,7 +150,7 @@ const CategoriesPage = () => {
                   {filteredCategory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { _id, name } = row;
                     return (
-                      <TableRow hover key={_id} tabIndex={-1}>
+                      <TableRow hover key={name} tabIndex={-1}>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
                             <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>

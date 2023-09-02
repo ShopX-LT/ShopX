@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   Box,
   Stack,
@@ -16,8 +17,11 @@ import {
   ListItemText,
   Checkbox,
   IconButton,
+  OutlinedInput,
+  styled,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Dropzone from 'react-dropzone';
@@ -30,14 +34,30 @@ import { getFields, creatField } from '../services/FieldService';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
-  title: Yup.string().required('required'),
-  category: Yup.array().required('required'),
-  description: Yup.string().required('required'),
-  images: Yup.array().required('required'),
-  price: Yup.mixed().required('required'),
-  amount: Yup.number(),
+  title: Yup.string().required('name your item'),
+  category: Yup.array(),
+  description: Yup.string(),
+  images: Yup.array().required('add some images of your item'),
+  price: Yup.mixed().required('what is the price of this item?'),
+  quantity: Yup.number(),
   discount: Yup.number(),
 });
+
+function capitalizeArrayStrings(arr) {
+  return arr.map((str) => _.upperFirst(str));
+}
+
+const StyledTextarea = styled(TextareaAutosize)(
+  ({ theme }) => `
+    font-family: IBM Plex Sans, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 12px;
+    border-radius: 12px 12px 0 12px;
+    border: 1px solid grey;
+  `
+);
 
 const AddProductPage = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -67,7 +87,7 @@ const AddProductPage = () => {
 
   // CREATING A FIELD
   const handleFieldSave = async () => {
-    const newFields = await creatField(axiosPrivate, field);
+    const newFields = await creatField(axiosPrivate, toast, field);
     setStoreFields(newFields);
     setOpenFieldDialog(false);
   };
@@ -101,7 +121,7 @@ const AddProductPage = () => {
     description: '',
     images: [],
     price: '',
-    amount: '',
+    quantity: '',
     discount: 0,
     ...fields,
   };
@@ -124,8 +144,12 @@ const AddProductPage = () => {
     });
 
     // Send formData object to server to create item.
-    await createItem(axiosPrivate, formData);
+    await createItem(axiosPrivate, toast, formData);
     onSubmitProps.resetForm();
+    setProductImages((prevState) => {
+      const newState = [];
+      return newState;
+    });
   };
 
   // RETURN
@@ -162,7 +186,7 @@ const AddProductPage = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="Title"
+                    label="Product Name"
                     name="title"
                     error={Boolean(touched.title) && Boolean(errors.title)}
                     onBlur={handleBlur}
@@ -179,6 +203,7 @@ const AddProductPage = () => {
                       labelId="Category"
                       name="category"
                       multiple
+                      renderValue={(selected) => capitalizeArrayStrings(selected).join(', ')}
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.category}
@@ -188,7 +213,7 @@ const AddProductPage = () => {
                       </MenuItem>
                       {categories.map((category) => {
                         return (
-                          <MenuItem key={category._id} value={category.name} sx={{ textTransform: 'capitalize' }}>
+                          <MenuItem key={category.name} value={category.name} sx={{ textTransform: 'capitalize' }}>
                             <Checkbox checked={values.category.indexOf(category.name) > -1} />
                             <ListItemText primary={category.name} />
                           </MenuItem>
@@ -199,12 +224,12 @@ const AddProductPage = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="Amount"
-                    name="amount"
-                    error={Boolean(touched.amount) && Boolean(errors.amount)}
+                    label="Quantity"
+                    name="quantity"
+                    error={Boolean(touched.quantity) && Boolean(errors.quantity)}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.amount}
+                    value={values.quantity}
                     fullWidth
                   />
                 </Grid>
@@ -232,26 +257,26 @@ const AddProductPage = () => {
                 </Grid>
                 {storeFields.map((val, index) => {
                   return (
-                    <Grid key={index} item xs={12} md={6}>
+                    <Grid key={val} item xs={12} md={6}>
                       <TextField
                         label={val}
                         name={val}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values[{ val }]}
+                        value={values[val]}
                         fullWidth
                       />
                     </Grid>
                   );
                 })}
                 <Grid item xs={12}>
-                  <TextareaAutosize
+                  <StyledTextarea
                     label="Description"
                     name="description"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.description}
-                    minRows={4}
+                    minRows={2}
                     placeholder="Product description"
                     style={{ width: '100%' }}
                   />
@@ -273,7 +298,7 @@ const AddProductPage = () => {
                   {({ getRootProps, getInputProps }) => (
                     <Box
                       {...getRootProps()}
-                      border={`2px dashed black`}
+                      border={`1px dashed black`}
                       p="1rem"
                       sx={{ '&:hover': { cursor: 'pointer' } }}
                     >
@@ -283,12 +308,10 @@ const AddProductPage = () => {
                     </Box>
                   )}
                 </Dropzone>
-                <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
                   {values.images.map((image, index) => {
-                    // console.log(index);
-                    // console.log(img.name);
                     return (
-                      <Box key={index}>
+                      <Box key={image.name}>
                         <img src={URL.createObjectURL(image)} alt={image.name} width={200} height={200} />
                         <Box
                           sx={{
@@ -301,7 +324,6 @@ const AddProductPage = () => {
                           <Typography>{image.name}</Typography>
                           <IconButton
                             onClick={() => {
-                              console.log(index);
                               const newFiles = [...productImages];
                               newFiles.splice(index, 1);
                               setProductImages(newFiles);

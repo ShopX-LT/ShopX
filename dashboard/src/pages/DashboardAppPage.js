@@ -1,14 +1,17 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
+import { ordersError, updateOrders, setStoreStats } from '../redux';
 // components
 import Iconify from '../components/iconify';
 // sections
 import {
   AppTasks,
-  AppNewsUpdate,
+  AppTopSellers,
   AppOrderTimeline,
   AppCurrentVisits,
   AppWebsiteVisits,
@@ -17,11 +20,52 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useAxiosAnalysis from '../hooks/useAxiosAnalysis';
+import { getOrders } from '../services/OrderService';
+import { getStoreStats } from '../services/StatsService';
+import { getTopSales } from '../services/AnalysisService';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
+  const axiosPrivate = useAxiosPrivate();
+  const axiosAnalysis = useAxiosAnalysis();
+  const dispatch = useDispatch();
+  const [topSellers, setTopSellers] = useState([]);
+
+  const setup = async () => {
+    const response = await getTopSales(axiosAnalysis);
+    setTopSellers(response);
+
+    // GET ORDERS
+    const ordersResponse = await getOrders(axiosPrivate);
+    if (!ordersResponse) {
+      dispatch(ordersError('Error getting orders'));
+      return;
+    }
+    dispatch(updateOrders(ordersResponse));
+    // GET STATS
+
+    const statsResponse = await getStoreStats(axiosPrivate);
+    if (!statsResponse) {
+      dispatch(ordersError('Error getting store details'));
+      return;
+    }
+    dispatch(setStoreStats(statsResponse));
+  };
+
+  useEffect(() => {
+    setup();
+  }, []);
+
+  const orders = useSelector((state) => state.orders.orders);
+  const { totalEarning: wallet, totalSales, totalVisits } = useSelector((state) => state.stats.store);
+  const ordersError = useSelector((state) => state.orders.error);
+
+  const newOrders = orders
+    .filter((order) => order.status === 'pending')
+    .sort((a, b) => new Date(b.dateOrdered) - new Date(a.dateOrdered));
 
   return (
     <>
@@ -36,22 +80,39 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'mdi:money'} />
+            <AppWidgetSummary title="Weekly Sales" total={0} icon={'mdi:money'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'tabler:mood-happy-filled'} />
+            <AppWidgetSummary
+              title="Website Visits"
+              total={Math.round(totalVisits / 3) || 0}
+              color="info"
+              icon={'tabler:mood-happy-filled'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'clarity:shopping-bag-solid'} />
+            <AppWidgetSummary
+              title="Item sold"
+              total={totalSales || 0}
+              color="warning"
+              icon={'clarity:shopping-bag-solid'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Wallet" total={234} color="error" icon={'ion:wallet'} />
+            <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} sm={6} lg={4}>
+            <AppOrderTimeline title={`New Orders`} list={newOrders.length > 5 ? newOrders.splice(0, 4) : newOrders} />
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <AppTopSellers title="Top Sellers" list={topSellers} />
+          </Grid>
+
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
               title="Website Visits"
               subheader="(+43%) than last year"
@@ -211,7 +272,7 @@ export default function DashboardAppPage() {
                 { id: '5', label: 'Sprint Showcase' },
               ]}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </>
