@@ -1,5 +1,8 @@
 services:
   emailservice:
+    build:
+      context: ./emailServer
+      dockerfile: ./Dockerfile
     image: tosvng/shopx:emailservice
     env_file: .env
     ports:
@@ -9,6 +12,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
   dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: ./Dockerfile
     image: tosvng/shopx:dashboard
     ports:
       - 3000:3000
@@ -17,6 +23,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
   client:
+    build:
+      context: ./clients/store
+      dockerfile: ./Dockerfile
     image: tosvng/shopx:client
     ports:
       - 4000:4000
@@ -25,6 +34,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
   server:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
     image: tosvng/shopx:server
     env_file: .env
     ports:
@@ -34,6 +46,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
   analysisServer:
+    build:
+      context: ./analysisServer
+      dockerfile: ./Dockerfile
     image: tosvng/shopx:analysisServer
     env_file: .env
     ports:
