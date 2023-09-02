@@ -180,7 +180,8 @@ const payoutInteractor = async (
   // do transfer --------
   const transferDetails = {
     source: 'balance',
-    amount: store.wallet * 100 * 0.05, // Collect service fee agreeded by store
+    // amount: store.wallet * 100 * 0.05, // Collect service fee agreeded by store
+    amount: 0, // Collect service fee agreeded by store
     recipient: recipientCode,
   };
   const transferResponse = await transferOut({ transferDetails });
