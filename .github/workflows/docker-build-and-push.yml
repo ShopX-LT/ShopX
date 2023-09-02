@@ -20,7 +20,22 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    
+    - name: Create .env file
+      run: |
+        echo "SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}" > .env
+        echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+        echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+        echo "ANALYSIS_SERVER_PORT=${{ secrets.ANALYSIS_SERVER_PORT }}" >> .env
+        echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
+        echo "PROD_MONGO_URL=${{ secrets.PROD_MONGO_URL }}" >> .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
+        echo "PAYSTACK_KEY=${{ secrets.PAYSTACK_KEY }}" >> .env
+        echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> .env
+        echo "BUCKET_REGION=${{ secrets.BUCKET_REGION }}" >> .env
+        echo "ACCESS_KEY=${{ secrets.ACCESS_KEY }}" >> .env
+        echo "SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}" >> .env
+
     - name: Build the Docker images
       run:  docker-compose build
 
