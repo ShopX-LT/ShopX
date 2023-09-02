@@ -18,6 +18,7 @@ import {
   Checkbox,
   IconButton,
   OutlinedInput,
+  styled,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import _ from 'lodash';
@@ -33,11 +34,11 @@ import { getFields, creatField } from '../services/FieldService';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
-  title: Yup.string().required('required'),
+  title: Yup.string().required('name your item'),
   category: Yup.array(),
-  description: Yup.string().required('required'),
-  images: Yup.array().required('required'),
-  price: Yup.mixed().required('required'),
+  description: Yup.string(),
+  images: Yup.array().required('add some images of your item'),
+  price: Yup.mixed().required('what is the price of this item?'),
   quantity: Yup.number(),
   discount: Yup.number(),
 });
@@ -45,6 +46,18 @@ const itemShema = Yup.object().shape({
 function capitalizeArrayStrings(arr) {
   return arr.map((str) => _.upperFirst(str));
 }
+
+const StyledTextarea = styled(TextareaAutosize)(
+  ({ theme }) => `
+    font-family: IBM Plex Sans, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 12px;
+    border-radius: 12px 12px 0 12px;
+    border: 1px solid grey;
+  `
+);
 
 const AddProductPage = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -173,7 +186,7 @@ const AddProductPage = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="Title"
+                    label="Product Name"
                     name="title"
                     error={Boolean(touched.title) && Boolean(errors.title)}
                     onBlur={handleBlur}
@@ -257,13 +270,13 @@ const AddProductPage = () => {
                   );
                 })}
                 <Grid item xs={12}>
-                  <TextareaAutosize
+                  <StyledTextarea
                     label="Description"
                     name="description"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.description}
-                    minRows={4}
+                    minRows={2}
                     placeholder="Product description"
                     style={{ width: '100%' }}
                   />
@@ -285,7 +298,7 @@ const AddProductPage = () => {
                   {({ getRootProps, getInputProps }) => (
                     <Box
                       {...getRootProps()}
-                      border={`2px dashed black`}
+                      border={`1px dashed black`}
                       p="1rem"
                       sx={{ '&:hover': { cursor: 'pointer' } }}
                     >
@@ -295,7 +308,7 @@ const AddProductPage = () => {
                     </Box>
                   )}
                 </Dropzone>
-                <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
                   {values.images.map((image, index) => {
                     return (
                       <Box key={image.name}>

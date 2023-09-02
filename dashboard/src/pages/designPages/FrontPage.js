@@ -75,9 +75,11 @@ const FrontPage = () => {
                   </Button>
                 </LegacyTextContainer>
                 <LegacyImageContainer>
-                  <Box sx={{ width: '350px', height: '300px', border: '1px purple solid', borderRadius: '10px' }}>
-                    img here...
-                  </Box>
+                  <img
+                    src={design.heroImageUrl}
+                    alt="hero"
+                    style={{ width: '350px', height: '300px', imageFit: 'cover', borderRadius: '10px' }}
+                  />
                 </LegacyImageContainer>
               </FlexContainer>
             </PageContainer>

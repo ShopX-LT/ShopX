@@ -18,25 +18,16 @@ const SuccessPage = () => {
   useEffect(() => {
     const callVerifyPayment = async () => {
       try {
-        // Check if the backend call has already been made
-        const hasCallBeenMade = sessionStorage.getItem('paymentCallMade');
-
-        if (!hasCallBeenMade) {
-          // Make the backend call only if it hasn't been made before
-          const response = await verifyPayment(axios, transactionRef);
-
-          sessionStorage.setItem('paymentCallMade', 'true'); // Set flag in storage
-        }
+        // Make the backend call only if it hasn't been made before
+        const response = await verifyPayment(axios, transactionRef);
+        console.log('response');
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
-    if (firstRender) {
-      callVerifyPayment();
-      setFirstRender(false);
-    }
-  }, [firstRender, transactionRef]);
+    callVerifyPayment();
+  }, []);
   dispatch(clearCart());
   return (
     <Box sx={{ minHeight: '100vh' }}>

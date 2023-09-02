@@ -29,7 +29,6 @@ export const LegacyImageContainer = styled(Box)(({ theme, design }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  border: '1px black dashed',
 }));
 
 export const MinimalistImageContainer = styled(Box)(({ theme, design }) => ({

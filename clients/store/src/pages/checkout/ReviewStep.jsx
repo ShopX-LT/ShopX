@@ -2,8 +2,10 @@ import React, { Fragment } from 'react';
 import { List, ListItem, ListItemText, Grid, Typography, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fCurrency } from '../../utils/formatNumber';
+import useStore from '../../hooks/useStore';
 
 export default function Review({ email, address1, address2, city, state, country, notes }) {
+  const { store } = useStore();
   const cartItems = useSelector((state) => state.cart.cart);
   const cartTotal = useSelector((state) => state.cart.total);
   const deleveryFee = 1500;
@@ -15,12 +17,17 @@ export default function Review({ email, address1, address2, city, state, country
         Order summary
       </Typography>
       <List disablePadding>
-        {cartItems.map((item) => (
-          <ListItem key={item.itemId} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={item.title} secondary={`x${item.quantity}`} />
-            <Typography variant="body2">{fCurrency(item.price)}</Typography>
-          </ListItem>
-        ))}
+        {cartItems.map((item) => {
+          if (item.store === store) {
+            return (
+              <ListItem key={item.itemId} sx={{ py: 1, px: 0 }}>
+                <ListItemText primary={item.title} secondary={`x${item.quantity}`} />
+                <Typography variant="body2">{fCurrency(item.price)}</Typography>
+              </ListItem>
+            );
+          }
+          return null;
+        })}
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Delivery" />
           <Typography variant="body2">{fCurrency(deleveryFee)}</Typography>

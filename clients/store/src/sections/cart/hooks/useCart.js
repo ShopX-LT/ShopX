@@ -5,8 +5,17 @@ import { addToCart, increaseItemCount, decreaseItemCount } from '../../../redux/
 
 const useCart = () => {
   const dispatch = useDispatch();
-  const handleAddToCart = ({ id, title, discountedPrice }) => {
-    dispatch(addToCart({ itemId: id, title: title, price: discountedPrice, quantity: 1 }));
+  const handleAddToCart = ({ id, title, discountedPrice, availableQuantity, store }) => {
+    dispatch(
+      addToCart({
+        itemId: id,
+        title: title,
+        price: discountedPrice,
+        quantity: 1,
+        availableQuantity,
+        store: store,
+      })
+    );
     toast.success('Added to cart');
   };
   const increaseCount = (id) => {

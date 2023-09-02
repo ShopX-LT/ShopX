@@ -152,6 +152,18 @@ const editStoreWallet = async ({ store, amount }) => {
   }
 };
 
+const addVisitToStore = async ({ store, isNewVisitor }) => {
+  try {
+    store.totalVisits += 1;
+    if (isNewVisitor) store.newVisit += 1;
+    await store.save();
+    return true;
+  } catch (error) {
+    console.error('Store Persistence error in addVisitToStore()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createStore,
   getStoreByName,
@@ -161,4 +173,5 @@ module.exports = {
   addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
+  addVisitToStore,
 };

@@ -141,16 +141,17 @@ const updateItemStatistics = async ({ order }) => {
     await Promise.all(
       order.itemsOrdered.map(async (item) => {
         const itemToUpdate = await Item.findById(item.itemId);
+        console.log(itemToUpdate);
         itemToUpdate.quantity -= item.quantity;
         itemToUpdate.sales += item.quantity;
-        itemToUpdate += order.ip_address;
+        itemToUpdate.salesIpAddresses.push(order.ip_address);
         await itemToUpdate.save();
       })
     );
 
     return;
   } catch (error) {
-    console.error('Item Persistence error in updateItemQuanity()', error);
+    console.error('Item Persistence error in updateItemStatistics()', error);
     return null;
   }
 };

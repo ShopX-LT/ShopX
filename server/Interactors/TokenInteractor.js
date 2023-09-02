@@ -16,15 +16,20 @@ const setRefreshToken = async (setAdminRefreshToken, tokenizer, verification, re
 
 // VERIFY REFRESH TOKEN
 const verifyRefreshToken = (tokenizer, admin, refreshToken) => {
-  const details = tokenizer.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-  // console.log('details', details);
-  // console.log('admin', admin);
+  try {
+    const details = tokenizer.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    // console.log('details', details);
+    // console.log('admin', admin);
 
-  // encure the admin requesting for a new token is the same as the owner of rhe refresh token
-  if (admin.email !== details.admin) {
-    throw new Error('Unauthorized Access');
+    // encure the admin requesting for a new token is the same as the owner of rhe refresh token
+    if (admin.email !== details.admin) {
+      throw new Error('Unauthorized Access');
+    }
+    return details;
+  } catch (error) {
+    console.error(error);
+    throw new Error('verifyRefreshToken: Refresh Token error');
   }
-  return details;
 };
 
 const generateTokensInteractor = async ({ setAdminRefreshToken }, { tokenizer }, { adminEmail, storeName, res }) => {
@@ -50,18 +55,22 @@ const adminRefreshTokenInteractor = async ({ getUserByAdminToken }, { tokenizer,
   if (!admin) {
     throw new Error('Invalid token');
   }
+  try {
+    const cookieDetails = verifyRefreshToken(tokenizer, admin, refreshToken);
+    //create the new token
+    const verification = {
+      admin: cookieDetails.admin,
+      store: cookieDetails.store,
+    };
+    const token = tokenizer.sign(verification, process.env.JWT_SECRET, {
+      expiresIn: TOKEN_EXPIRES_TIME,
+    });
 
-  const cookieDetails = verifyRefreshToken(tokenizer, admin, refreshToken);
-  //create the new token
-  const verification = {
-    admin: cookieDetails.admin,
-    store: cookieDetails.store,
-  };
-  const token = tokenizer.sign(verification, process.env.JWT_SECRET, {
-    expiresIn: TOKEN_EXPIRES_TIME,
-  });
-
-  return token;
+    return token;
+  } catch (error) {
+    console.error(error);
+    throw new Error('adminRefreshTokenInteractor: Refresh Token error');
+  }
 };
 
 const logoutInteractor = async ({ getUserByAdminToken, removeAdminRefreshToken }, { cookies, res }) => {

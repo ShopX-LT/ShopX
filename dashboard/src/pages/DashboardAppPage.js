@@ -11,7 +11,7 @@ import Iconify from '../components/iconify';
 // sections
 import {
   AppTasks,
-  AppNewsUpdate,
+  AppTopSellers,
   AppOrderTimeline,
   AppCurrentVisits,
   AppWebsiteVisits,
@@ -21,15 +21,23 @@ import {
   AppConversionRates,
 } from '../sections/@dashboard/app';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import useAxiosAnalysis from '../hooks/useAxiosAnalysis';
 import { getOrders } from '../services/OrderService';
 import { getStoreStats } from '../services/StatsService';
+import { getTopSales } from '../services/AnalysisService';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const axiosPrivate = useAxiosPrivate();
+  const axiosAnalysis = useAxiosAnalysis();
   const dispatch = useDispatch();
+  const [topSellers, setTopSellers] = useState([]);
+
   const setup = async () => {
+    const response = await getTopSales(axiosAnalysis);
+    setTopSellers(response);
+
     // GET ORDERS
     const ordersResponse = await getOrders(axiosPrivate);
     if (!ordersResponse) {
@@ -52,7 +60,7 @@ export default function DashboardAppPage() {
   }, []);
 
   const orders = useSelector((state) => state.orders.orders);
-  const { totalEarning: wallet, totalSales } = useSelector((state) => state.stats.store);
+  const { totalEarning: wallet, totalSales, totalVisits } = useSelector((state) => state.stats.store);
   const ordersError = useSelector((state) => state.orders.error);
 
   const newOrders = orders
@@ -76,7 +84,12 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={0} color="info" icon={'tabler:mood-happy-filled'} />
+            <AppWidgetSummary
+              title="Website Visits"
+              total={Math.round(totalVisits / 3) || 0}
+              color="info"
+              icon={'tabler:mood-happy-filled'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -92,11 +105,11 @@ export default function DashboardAppPage() {
             <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppOrderTimeline
-              title={`${newOrders.length} New Orders`}
-              list={newOrders.length > 6 ? newOrders.splice(0, 6) : newOrders}
-            />
+          <Grid item xs={12} sm={6} lg={4}>
+            <AppOrderTimeline title={`New Orders`} list={newOrders.length > 5 ? newOrders.splice(0, 4) : newOrders} />
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <AppTopSellers title="Top Sellers" list={topSellers} />
           </Grid>
 
           {/* <Grid item xs={12} md={6} lg={8}>

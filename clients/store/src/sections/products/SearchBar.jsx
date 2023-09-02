@@ -22,9 +22,9 @@ const SearchBar = ({ searchParam, handleSearch, handleChange }) => {
           aria-label="search"
           sx={{
             p: '5px',
-            background: '#1e1e1e',
+            background: heroDesign.heroActionButtonColor,
             borderRadius: '0px 3px 3px 0px',
-            color: heroDesign.heroActionButtonColor,
+            color: heroDesign.heroActionButtonTextColor,
           }}
           type="submit"
           variant="contained"

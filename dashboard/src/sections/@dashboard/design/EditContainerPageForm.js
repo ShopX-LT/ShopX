@@ -6,7 +6,12 @@ import {
   AccordionDetails,
   Box,
   Button,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
   Grid,
+  Radio,
+  RadioGroup,
   Typography,
   TextField,
   TextareaAutosize,
@@ -40,16 +45,18 @@ const EditContainerPageForm = ({ design, handleInputChange, handleFormSubmit }) 
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="Container Style"
-                  name="productStyle"
-                  // error={Boolean(touched.productStyle) && Boolean(errors.productStyle)}
-                  // onBlur={handleBlur}
-                  onChange={handleInputChange}
-                  value={design.productStyle}
-                  fullWidth
-                  disabled
-                />
+                <FormControl>
+                  <FormLabel id="container Style">Select Container Style</FormLabel>
+                  <RadioGroup
+                    aria-labelledby="container Style radio label"
+                    name="productStyle"
+                    onChange={handleInputChange}
+                    value={design.productStyle}
+                  >
+                    <FormControlLabel value="simple" control={<Radio />} label="Simple" />
+                    <FormControlLabel disabled value="glass" control={<Radio />} label="Glass" />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12} mt={7}>
@@ -62,7 +69,7 @@ const EditContainerPageForm = ({ design, handleInputChange, handleFormSubmit }) 
                   id="productBackgroundColor"
                   name="productBackgroundColor"
                   disabled
-                  label="Select Item Description Color"
+                  label="Select Item Backgound Color"
                   // error={Boolean(touched.productBackgroundColor) && Boolean(errors.productBackgroundColor)}
                   // onBlur={handleBlur}
                   onChange={handleInputChange}

@@ -20,6 +20,9 @@ const handleCheckout = async (req, res) => {
 };
 const handleverifyPayment = async (req, res) => {
   try {
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
     const { reference } = req.body;
     await verifyPaymentInteractor(persistence, { reference });
   } catch (error) {

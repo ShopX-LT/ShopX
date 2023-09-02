@@ -1,37 +1,70 @@
 services:
   emailservice:
-    build:
-      dockerfile: Dockerfile
-      context: ./emailServer
     image: tosvng/shopx:emailservice
+    environment:
+      - SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}
+      - PASSWORD=${{ secrets.PASSWORD }}
     ports:
       - 8000:8000
-  # nginx:
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./nginx
-  #   image: tosvng/shopx:nginx
-  #   ports:
-  #     - "80:80"
-
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   dashboard:
-    build:
-      dockerfile: Dockerfile
-      context: ./dashboard
     image: tosvng/shopx:dashboard
     ports:
       - 3000:3000
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   client:
-    build:
-      dockerfile: Dockerfile
-      context: ./clients/store
     image: tosvng/shopx:client
     ports:
       - 4000:4000
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   server:
-    build:
-      dockerfile: Dockerfile
-      context: ./server
     image: tosvng/shopx:server
+    environment:
+      - SERVER_PORT=${{ secrets.SERVER_PORT }}
+      - MONGO_URL=${{ secrets.MONGO_URL }}
+      - PROD_MONGO_URL=${{ secrets.PROD_MONGO_URL }}
+      - JWT_SECRET=${{ secrets.JWT_SECRET }}
+      - JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+      - PAYSTACK_KEY=${{ secrets.PAYSTACK_KEY }}
+      - BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+      - BUCKET_REGION=${{ secrets.BUCKET_REGION }}
+      - ACCESS_KEY=${{ secrets.ACCESS_KEY }}
+      - SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}
     ports:
       - 3001:3001
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  analysisServer:
+    image: tosvng/shopx:analysisServer
+    environment:
+      - ANALYSIS_SERVER_PORT=${{ secrets.ANALYSIS_SERVER_PORT }}
+      - MONGO_URL=${{ secrets.MONGO_URL }}
+      - PROD_MONGO_URL=${{ secrets.PROD_MONGO_URL }}
+      - JWT_SECRET=${{ secrets.JWT_SECRET }}
+      - JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+      - PAYSTACK_KEY=${{ secrets.PAYSTACK_KEY }}
+      - BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+      - BUCKET_REGION=${{ secrets.BUCKET_REGION }}
+      - ACCESS_KEY=${{ secrets.ACCESS_KEY }}
+      - SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}
+    ports:
+      - 3002:3002
+    networks:
+      - my_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+networks:
+  my_network:
+    name: my_network
+    driver: bridge

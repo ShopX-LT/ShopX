@@ -112,7 +112,7 @@ const initTransactionInteractor = async (
 };
 
 const verifyPaymentInteractor = async (
-  { createOrder, verifyPayment, findOrderByReference, getStoreByName, addOrderToStore, updateItemQuanity },
+  { createOrder, verifyPayment, findOrderByReference, getStoreByName, addOrderToStore, updateItemStatistics },
   { reference }
 ) => {
   const paymentDetails = await verifyPayment({ reference });
@@ -128,7 +128,6 @@ const verifyPaymentInteractor = async (
   orderDetails['reference'] = paymentDetails['reference'];
   orderDetails['ip_address'] = paymentDetails['ip_address'];
   orderDetails['fees'] = paymentDetails['fees'];
-  console.log(orderDetails);
   const order = await createOrder({ details: orderDetails });
   if (!order) {
     // reverse payment
@@ -144,7 +143,7 @@ const verifyPaymentInteractor = async (
 
   // update the items
   await updateItemStatistics({ order });
-  await sendNewOrderEmail(order, store.owner);
+  // await sendNewOrderEmail(order, store.owner);
 };
 
 const getBanksInteractors = async ({ getBanks }) => {

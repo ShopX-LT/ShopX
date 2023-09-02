@@ -33,6 +33,14 @@ function Copyright() {
   );
 }
 
+function Warning() {
+  return (
+    <Typography variant="subtitle1" align="center">
+      Note: This is a demo, all transactions will not go through and all accounts will be recreated after launch date,
+    </Typography>
+  );
+}
+
 const SignUp = () => {
   const navigate = useNavigate();
   const navigateTo = '/signin';
@@ -191,6 +199,7 @@ const SignUp = () => {
             </>
           )}
         </Paper>
+        <Warning />
         <Copyright />
       </Container>
     </>

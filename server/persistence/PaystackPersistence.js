@@ -58,7 +58,8 @@ const createRecipient = async ({ recipientDetails }) => {
 
 const transferOut = async ({ transferDetails }) => {
   try {
-    const response = await axios.post(`https://api.paystack.co/transfer`, transferDetails, headers);
+    // const response = await axios.post(`https://api.paystack.co/transfer`, transferDetails, headers);
+    const response = await axios.post(`https://api.paystack.co`, transferDetails, headers);
     return response;
   } catch (error) {
     console.log('transferOut: ', error);

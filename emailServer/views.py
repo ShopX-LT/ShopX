@@ -80,7 +80,36 @@ def send_welcome_email(receiver_email):
     )
 
 
-# def massage_new_order_items(items)
+# ___Subscription Email___
+def send_subscription_email(receiver_email):
+    EMAIL_HEADER = "Welcome to ShopX"
+    SUBJECT = "Thank you for joining our mailing list"
+
+    # Read the HTML template file
+    email_template = render_template("subscription_template.html")
+    email_content_plain = """Hello,
+        
+        Congratulations and a warm welcome to ShopX! We are thrilled to have you on board as our newest user.
+        
+        At ShopX, our mission is to empower entrepreneurs like you with the tools and resources necessary to bring your e-commerce vision to life.
+        
+        Get ready to embark on an exciting journey of entrepreneurship and success!
+        
+        We are set to launch on the 18th of September, but your are free to play around with the demo version we have running.
+
+        Note that you will have to create a new account once we launch. 
+
+        If you would like to leave a feedback you can reply to this email.
+
+        We very much appreciate and value as our customer. 
+        
+        Best regards,
+        Raheem
+        Website: https://myshopx.net
+    """
+    send_email(
+        receiver_email, EMAIL_HEADER, SUBJECT, email_template, email_content_plain
+    )
 
 
 def send_new_order_email(orderData):
@@ -108,6 +137,22 @@ def signup():
         json_obj = json.dumps(response)
     except Exception as e:
         print("Error sending signup email:", e)
+        response = {"success": False}
+        json_obj = json.dumps(response)
+    return json_obj
+
+
+@views.route("/sub", methods=["POST"])
+def subscription():
+    try:
+        data = request.get_json()
+        receiver = data["receiver"]
+
+        send_subscription_email(receiver.strip())
+        response = {"success": True}
+        json_obj = json.dumps(response)
+    except Exception as e:
+        print("Error sending subscription email:", e)
         response = {"success": False}
         json_obj = json.dumps(response)
     return json_obj

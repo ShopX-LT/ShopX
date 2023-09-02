@@ -2,7 +2,7 @@ import { Button, Box, styled, Typography } from '@mui/material';
 
 export const PageContainer = styled(Box)(({ theme, design }) => ({
   maxWidth: '100vw',
-  minHeight: '90vh',
+  minHeight: '85vh',
   display: 'flex',
   alignItems: 'center',
   justifyContent: design?.justifyCenter ? 'center' : '',

@@ -4,12 +4,13 @@ export const CartItemContainer = styled(Box)(({ theme, design }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  marginTop: 3,
-  height: '150px',
+  marginTop: '10px',
+  marginBottom: '30px',
+  height: '100px',
 }));
 
 export const DetailsContainer = styled(Box)(({ theme, design }) => ({
-  border: '1px black solid',
+  // border: '1px black solid',
   height: '100%',
   flex: 1,
   display: 'flex',
@@ -20,8 +21,11 @@ export const DetailsContainer = styled(Box)(({ theme, design }) => ({
 export const Details = styled(Box)(({ theme, design }) => ({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  maxWidth: '125px',
+  alignItems: 'start',
+  justifyContent: 'center',
+  // justifyContent: 'space-between',
+  // maxWidth: '125px',
+  maxWidth: '100%',
   textOverflow: 'ellipsis',
   overflow: 'hidden',
 }));

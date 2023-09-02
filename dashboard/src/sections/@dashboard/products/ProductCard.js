@@ -48,7 +48,7 @@ export default function ShopProductCard({ product }) {
       <Box sx={{ pt: '100%', position: 'relative' }}>
         <Label
           variant="filled"
-          color={discount === 0 ? 'info' : 'error'}
+          color={discount === 0 ? 'info' : 'success'}
           // color={'info'}
           sx={{
             zIndex: 9,
@@ -60,6 +60,22 @@ export default function ShopProductCard({ product }) {
         >
           {discount}%
         </Label>
+
+        {quantity < 5 && (
+          <Label
+            variant="filled"
+            color={'error'}
+            sx={{
+              zIndex: 9,
+              top: 16,
+              right: 64,
+              position: 'absolute',
+              textTransform: 'uppercase',
+            }}
+          >
+            Low Stock ({quantity} left)
+          </Label>
+        )}
 
         <StyledProductImg alt={title} src={imagesUrl[0]} />
       </Box>

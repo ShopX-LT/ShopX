@@ -87,6 +87,14 @@ const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) =>
   return store.itemTemplate;
 };
 
+const addVisitToStoreInteractor = async ({ addVisitToStore, getStoreByName }, { storeName, isNewVisitor }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) return Promise.reject(new Error('Invalid store'));
+  const isUpdated = await addVisitToStore({ store, isNewVisitor });
+  if (!isUpdated) Promise.reject(new Error('Error updating visits'));
+  return;
+};
+
 /**
  *
  * @param {*} store
@@ -94,7 +102,7 @@ const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) =>
  */
 
 const checkStoreNameInteractor = async ({ getStoreByName }, { storeName }) => {
-  const blackList = ['error', 'api'];
+  const blackList = ['error', 'api', 'home'];
   if (blackList.includes(storeName.toLowerCase())) {
     return false;
   }
@@ -143,4 +151,5 @@ module.exports = {
   addFieldToStoreInteractor,
   getFieldFromStoreInteractor,
   checkStoreNameInteractor,
+  addVisitToStoreInteractor,
 };

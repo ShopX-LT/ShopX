@@ -17,14 +17,15 @@ const LegacyCartItem = ({ item }) => {
           {/* <Box sx={{ border: '1px purple solid', width: '100px' }}></Box> */}
           <Details>
             <Box>
-              <Title variant="subtitle1">{item.title}</Title>
-              <Typography variant="subtitle1">{fCurrency(item.price)}</Typography>
+              <Title variant="body1">{item.title}</Title>
+              <Typography variant="body2">{fCurrency(item.price)}</Typography>
             </Box>
 
             <CounterContainer>
               <IconButton
                 aria-label={`decrease ${item.title} item quantity by 1`}
                 onClick={() => decreaseCount(item.itemId)}
+                sx={{ marginLeft: '-8px' }}
               >
                 <RemoveCircleIcon />
               </IconButton>

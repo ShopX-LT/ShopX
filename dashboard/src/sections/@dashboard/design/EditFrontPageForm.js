@@ -6,7 +6,12 @@ import {
   AccordionDetails,
   Box,
   Button,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
   Grid,
+  Radio,
+  RadioGroup,
   Typography,
   TextField,
   TextareaAutosize,
@@ -142,16 +147,18 @@ const EditFrontPageForm = ({ design, handleInputChange, handleFormSubmit }) => {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="Hero's Style"
-                  name="heroStyle"
-                  // error={Boolean(touched.heroStyle) && Boolean(errors.heroStyle)}
-                  // onBlur={handleBlur}
-                  onChange={handleInputChange}
-                  value={design.heroStyle}
-                  fullWidth
-                  disabled
-                />
+                <FormControl>
+                  <FormLabel id="hero style">Select Hero's Style</FormLabel>
+                  <RadioGroup
+                    aria-labelledby="hero style radio label"
+                    name="heroStyle"
+                    onChange={handleInputChange}
+                    value={design.heroStyle}
+                  >
+                    <FormControlLabel value="legacy" control={<Radio />} label="Legacy" />
+                    <FormControlLabel disabled value="minimalist" control={<Radio />} label="Minimalist" />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
 
               {/* IMAGE */}
@@ -213,7 +220,7 @@ const EditFrontPageForm = ({ design, handleInputChange, handleFormSubmit }) => {
                 />
               </Grid>
 
-              <Grid item xs={9} />
+              <Grid item xs={12} />
 
               <Grid item xs={9}>
                 <TextField

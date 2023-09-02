@@ -37,6 +37,7 @@ const {
   addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
+  addVisitToStore,
 } = require('./StorePersistence');
 const {
   createUser,
@@ -62,6 +63,7 @@ module.exports = {
   addFieldValueToStore,
   addOrderToStore,
   editStoreWallet,
+  addVisitToStore,
 
   // USER PERSISTENCE
   createUser,

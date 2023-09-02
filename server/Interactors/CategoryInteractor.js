@@ -86,7 +86,6 @@ const getAllCategoriesInteractor = async ({ getStoreByName, getManyCategories },
 };
 
 const getCustomCategoriesInteractor = async ({ getStoreByName }, { storeName }) => {
-  console.log('category', storeName);
   const store = await getStoreByName({ storeName });
   if (!store) return Promise.reject(new Error('Invalid store'));
   return store.itemTemplateValue;

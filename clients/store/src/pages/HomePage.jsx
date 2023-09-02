@@ -3,7 +3,7 @@ import GeneralHero from '../components/hero/GeneralHero';
 import { Helmet } from 'react-helmet-async';
 import { capitalize } from 'lodash';
 import useStore from '../hooks/useStore';
-import LandingPage from './LandingPage';
+import LandingPage from './landingPage/LandingPage';
 
 const HomePage = () => {
   const { store } = useStore();

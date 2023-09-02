@@ -6,53 +6,42 @@ import Body from '../text/Body';
 import ActionButton from '../button/ActionButton';
 import GeneralButton from '../button/GeneralButton';
 import { ImageCover, MinimalistImageContainer, MinimalistTextContainer, PageContainer } from './styles';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const mock = {
-  heroHeadline: ' Lorem ipsum dolor',
-  heroHeadlineColor: 'white',
-
-  subText: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia quis !',
-  subTextColor: 'white',
-
-  actionButtonStyle: '',
-  actionButtonText: 'Click Me!',
-  actionButtonColor: 'black',
-  actionButtonTextColor: '',
-
-  imageUrl:
-    'https://images.unsplash.com/photo-1682685797366-715d29e33f9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-  imageBlur: '1',
-  coverOpacity: 0.6,
-};
 const MinimalistHero = () => {
+  const heroDesign = useSelector((state) => state.webDesign.hero);
+  const navigate = useNavigate();
   return (
     <PageContainer design={{ justifyCenter: true }}>
       {/* IMAGE */}
 
       <MinimalistImageContainer>
         <img
-          style={{ width: '100%', height: '95%', filter: `blur(${mock.imageBlur}px)` }}
-          src={mock.imageUrl}
+          style={{ width: '100%', height: '95%', filter: `blur(${heroDesign.heroImageBlur}px)` }}
+          src={heroDesign.heroImageUrl}
           alt="background image"
         />
       </MinimalistImageContainer>
-      <ImageCover design={{ coverOpacity: mock.coverOpacity }}></ImageCover>
+      <ImageCover design={{ coverOpacity: heroDesign.heroImageCoverOpacity }}></ImageCover>
       {/* TEXT */}
       <MinimalistTextContainer>
         <BrandHeading
-          text={mock.heroHeadline}
-          textColor={mock.heroHeadlineColor}
+          text={heroDesign.heroHeadline}
+          textColor={heroDesign.heroHeadlineColor}
           weight="500"
           lineHeight={1}
           marginBottom={1}
         />
         <Box sx={{ maxWidth: { xs: '300px', md: '400px' } }}>
-          <Body text={mock.subText} textColor={mock.subTextColor} marginBottom={4} />
+          <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={4} />
         </Box>
         <GeneralButton
           buttonstyle="action"
-          text={mock.actionButtonText}
-          bgColor={mock.actionButtonColor}
+          text={heroDesign.heroActionButtonText}
+          textColor={heroDesign.heroActionButtonTextColor}
+          bgColor={heroDesign.heroActionButtonColor}
+          onClick={() => navigate('/products')}
           width="150px"
         />
       </MinimalistTextContainer>

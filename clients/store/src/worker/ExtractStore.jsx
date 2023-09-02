@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import useStore from '../hooks/useStore';
 import { Navigate, Outlet } from 'react-router-dom';
 import useAxiosWithStore from '../api/apiHooks/useAxiosWithStore';
 import { getStoreDesign } from '../services/webDesignService';
+import { addStoreVisit } from '../services/visitsService';
 import { setupSite } from '../redux/webDesign/webDesignSlice';
+import LandingPage from '../pages/landingPage/LandingPage';
 
 const ExtractStore = () => {
   const dispatch = useDispatch();
@@ -17,17 +20,35 @@ const ExtractStore = () => {
   const getDesign = async () => {
     try {
       const design = await getStoreDesign(axios, storeName);
-      if (design) {
+      if (design && !design?.message) {
         setIsStoreValid(true);
+        await updateStoreVisit();
       }
       dispatch(setupSite(design));
     } catch (error) {
       // console.log(error);
     }
   };
+  const updateStoreVisit = async () => {
+    try {
+      const visitorToken = Cookies.get('nivwo4');
+      if (!visitorToken) {
+        const newVisitorToken = 'nivwo4';
+        Cookies.set('nivwo4', newVisitorToken, { expires: 365 }); // Store the token for a year
+        await addStoreVisit(axios, true);
+      } else {
+        await addStoreVisit(axios, false);
+      }
+    } catch (error) {
+      // console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setStore(storeName);
+    console.log(isStoreValid);
+  }, [isStoreValid]);
+  useEffect(() => {
+    if (storeName !== 'home') setStore(storeName);
   }, [storeName]);
   useEffect(() => {
     getDesign();

@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const morgan = require('morgan');
 const fs = require('fs');
 var path = require('path');
@@ -15,6 +16,7 @@ const adminRoutes = require('./routes/admin');
 const categoryRoutes = require('./routes/category');
 const itemRoutes = require('./routes/item');
 const orderRoutes = require('./routes/order');
+const userRoutes = require('./routes/user');
 const designRoutes = require('./routes/design');
 const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
@@ -39,12 +41,14 @@ function makeApp(database) {
   app.use(bodyParser.json({ limit: '30mb', extended: true }));
   app.use(xssClean());
   app.use(mongoSanitize());
+  app.use(compression());
 
   //ROUTES
   app.use('/api/admin', adminRoutes);
   app.use('/api/category', categoryRoutes);
   app.use('/api/item', itemRoutes);
   app.use('/api/order', orderRoutes);
+  app.use('/api/user', userRoutes);
   app.use('/api/design', designRoutes);
 
   app.use('/api', (req, res) => {

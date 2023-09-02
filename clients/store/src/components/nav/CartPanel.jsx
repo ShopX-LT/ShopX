@@ -17,13 +17,15 @@ import LegacyCartItem from '../cartItem/LegacyCartItem';
 import { fCurrency } from '../../utils/formatNumber';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import useStore from '../../hooks/useStore';
 
 const CartPanel = ({ isOpen, openCart, closeCart }) => {
+  const { store } = useStore();
   const cartItems = useSelector((state) => state.cart.cart);
   const cartTotal = useSelector((state) => state.cart.total);
   const navigate = useNavigate();
   return (
-    <div id="cartpanel">
+    <div>
       <SwipeableDrawer
         anchor="right"
         open={isOpen}
@@ -49,11 +51,16 @@ const CartPanel = ({ isOpen, openCart, closeCart }) => {
           </Typography>
         </Box>
         <Divider />
-        {cartItems.map((item) => (
-          <div key={item.id}>
-            <LegacyCartItem item={item} />
-          </div>
-        ))}
+        {cartItems.map((item) => {
+          if (item.store === store) {
+            return (
+              <div key={item.itemId}>
+                <LegacyCartItem item={item} />
+              </div>
+            );
+          }
+          return null;
+        })}
         <Box px={2} py={2} sx={{ marginTop: 'auto' }}>
           {/* @TODO: Make this a component */}
           <Box mb={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>

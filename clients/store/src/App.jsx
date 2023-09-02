@@ -8,6 +8,8 @@ import ExtractStore from './worker/ExtractStore';
 import LoadingPage from './sections/loadingPage/LoadingPage';
 import { Box, Typography } from '@mui/material';
 import PageNotFound from './pages/PageNotFound';
+import { useEffect } from 'react';
+import LandingPage from './pages/landingPage/LandingPage';
 // components
 
 function App() {
@@ -23,7 +25,9 @@ function App() {
           </ThemeProvider>
         </BrowserRouter>
       ) : (
-        <LoadingPage />
+        <ThemeProvider>
+          <LandingPage />
+        </ThemeProvider>
       )}
     </HelmetProvider>
   );

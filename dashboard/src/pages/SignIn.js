@@ -52,9 +52,9 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const [email, setEmail] = useState('');
-  const [storeName, setStoreName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('kg@shopx.com');
+  const [storeName, setStoreName] = useState('kg-watches');
+  const [password, setPassword] = useState('12345');
   const [errorMessage, setErrorMessage] = useState('');
 
   const togglePersist = () => {

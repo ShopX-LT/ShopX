@@ -3,6 +3,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Credential is incorrect. Use your account password':
       res.status(400).json({ message: error.message });
       break;
+    case 'Error updating visits':
+      res.status(500).json({ message: error.message });
+      break;
     case 'Passwords do not match':
       res.status(400).json({ message: error.message });
       break;

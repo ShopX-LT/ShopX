@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Typography, CardHeader, CardContent } from '@mui/material';
 import { Timeline, TimelineDot, TimelineItem, TimelineContent, TimelineSeparator, TimelineConnector } from '@mui/lab';
 // utils
-import { fDateTime } from '../../../utils/formatTime';
+import { fToNow } from '../../../utils/formatTime';
 import { fCurrency } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
@@ -58,7 +58,7 @@ function OrderItem({ item, isLast }) {
 
       <TimelineContent>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {fDateTime(dateOrdered)}
+          {fToNow(dateOrdered)}
         </Typography>
         <Typography variant="subtitle2">{fCurrency(total)}</Typography>
         {/* <Typography variant="subtitle2">{orderedBy}</Typography> */}
