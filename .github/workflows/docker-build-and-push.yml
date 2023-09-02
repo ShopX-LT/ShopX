@@ -37,7 +37,7 @@ jobs:
         echo "SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}" >> .env
 
     - name: Build the Docker images
-      run:  docker-compose --build
+      run:  docker-compose build --no-cache
 
     - name: Push images to docker hub
       run:  docker-compose push
