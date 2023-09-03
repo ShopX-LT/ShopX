@@ -1,6 +1,7 @@
 # ShopX
-https://myshopx.net
-
+- Landing page: https://myshopx.net
+- Admin Dashboard: https://admin.myshopx.net
+  
 ## Overview
 
 This project is a comprehensive E-Commerce Website Builder and Management Application tailored for entrepreneurs. It empowers users to effortlessly create, manage, and optimize their online stores. With features like payment processing, inventory management, order tracking, product statistics, and website design customization, our application provides a one-stop solution for your e-commerce needs.
