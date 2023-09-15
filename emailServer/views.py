@@ -187,7 +187,7 @@ def new_order():
 
 
 @views.route("/newvisit", methods=["GET"])
-def new_order():
+def new_visit():
     try:
         send_new_visit_email()
         response = {"success": True}
