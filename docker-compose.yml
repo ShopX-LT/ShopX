@@ -4,7 +4,6 @@ services:
       context: ./emailServer
       dockerfile: ./Dockerfile
     image: tosvng/shopx:emailservice
-    env_file: .env
     ports:
       - 8000:8000
     networks:
@@ -38,7 +37,6 @@ services:
       context: ./server
       dockerfile: ./Dockerfile
     image: tosvng/shopx:server
-    env_file: .env
     ports:
       - 3001:3001
     networks:
@@ -50,7 +48,6 @@ services:
       context: ./analysisServer
       dockerfile: ./Dockerfile
     image: tosvng/shopx:analysisServer
-    env_file: .env
     ports:
       - 3002:3002
     networks:
