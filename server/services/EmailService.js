@@ -23,7 +23,16 @@ const sendNewOrderEmail = async (order, receiverEmail) => {
   }
 };
 
+const sendNewVisitEmail = async () => {
+  try {
+    await axios.get(`https://myshopx.net/api/email/newvisit`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   sendSignUpEmail,
   sendNewOrderEmail,
+  sendNewVisitEmail,
 };

@@ -20,6 +20,7 @@ const userRoutes = require('./routes/user');
 const designRoutes = require('./routes/design');
 const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
+const { sendNewVisitEmail } = require('./services/EmailService');
 
 function makeApp(database) {
   dotenv.config();
@@ -50,6 +51,15 @@ function makeApp(database) {
   app.use('/api/order', orderRoutes);
   app.use('/api/user', userRoutes);
   app.use('/api/design', designRoutes);
+
+  app.use('/api/newvisit', async (req, res) => {
+    try {
+      await sendNewVisitEmail();
+      res.sendStatus(200);
+    } catch (error) {
+      console.log('Error sending new Visit email', error);
+    }
+  });
 
   app.use('/api', (req, res) => {
     res.status(200).json({ message: 'Hello' });

@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Box, Container } from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
-import Nav from '../components/nav/Nav';
+import Nav from '../lib/nav/Nav';
 import { useSelector } from 'react-redux';
 
 const LegacyLayout = () => {
