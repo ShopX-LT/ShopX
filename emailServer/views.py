@@ -123,6 +123,13 @@ def send_new_order_email(orderData):
     send_email(receiver_email, EMAIL_HEADER, SUBJECT, email_template)
 
 
+def send_new_visit_email():
+    receiver_email = "myshopxinfo@gmail.com"
+    EMAIL_HEADER = "New Visit"
+    SUBJECT = "New Visit"
+    send_email(receiver_email, EMAIL_HEADER, SUBJECT)
+
+
 """************************Views*************************************"""
 
 
@@ -162,7 +169,7 @@ def subscription():
 def new_order():
     try:
         orderData = request.get_json()
-        print(orderData)
+        # print(orderData)
         ## {receiver:, totalPrice:, storeName:, items:[{title:, quantity, price,}]}
         # totalPrice = orderData['totalPrice']
         # storeName = orderData['storeName']
@@ -174,6 +181,20 @@ def new_order():
 
     except Exception as e:
         print("Error sending new order email:", e)
+        response = {"success": False}
+        json_obj = json.dumps(response)
+    return json_obj
+
+
+@views.route("/newvisit", methods=["GET"])
+def new_order():
+    try:
+        send_new_visit_email()
+        response = {"success": True}
+        json_obj = json.dumps(response)
+
+    except Exception as e:
+        print("Error sending new visit email:", e)
         response = {"success": False}
         json_obj = json.dumps(response)
     return json_obj

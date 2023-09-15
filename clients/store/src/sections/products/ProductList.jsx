@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import useProduct from './hooks/useProduct';
-import GeneralProductContainer from '../../components/ProductContainer/GeneralProductContainer';
+import GeneralProductContainer from '../../lib/ProductContainer/GeneralProductContainer';
 
 const ProductList = ({ products }) => {
   return (

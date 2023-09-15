@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GeneralButton from '../components/button/GeneralButton';
+import GeneralButton from '../lib/button/GeneralButton';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../redux/cart/cartSlice';
 import useAxiosWithStore from '../api/apiHooks/useAxiosWithStore';

@@ -1,5 +1,5 @@
 import React from 'react';
-import GeneralHero from '../components/hero/GeneralHero';
+import GeneralHero from '../lib/hero/GeneralHero';
 import { Helmet } from 'react-helmet-async';
 import { capitalize } from 'lodash';
 import useStore from '../hooks/useStore';

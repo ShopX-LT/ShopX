@@ -93,18 +93,18 @@ const Subscription = () => {
             <form onSubmit={handleFormSubmit}>
               <input
                 placeholder="Enter your email"
-                class="input"
+                className="input"
                 name="email"
                 type="email"
                 value={email}
                 onChange={handleChange}
               />
               <Button variant="contained" sx={{ padding: '15px', marginLeft: '10px' }} type="submit">
-                Get Updates
+                Pre-subscribe
               </Button>
             </form>
           </div>
-          {success && <Typography variant="caption"> You have signed up to receive updates!</Typography>}
+          {success && <Typography variant="caption"> You are subscribed to receive updates!</Typography>}
         </Box>
       </Box>
     </motion.div>

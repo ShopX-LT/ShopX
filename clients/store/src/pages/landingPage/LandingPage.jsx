@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Box, Container, Typography, Stack, Link } from '@mui/material';
+import './styles.css';
 import { delayedFloatIn, floatIn } from './animations';
 import Pitch from './Pitch';
 import AbouAdmin from './AbouAdmin';
 import Subscription from './Subscription';
+import axios from 'axios';
 
 const bgColor = '#000';
 const LandingPage = () => {
+  useEffect(() => {
+    try {
+      axios.get('https://myshopx.net/api/newvisit');
+    } catch (error) {}
+  }, []);
   return (
     <Box sx={{ backgroundColor: bgColor, minHeight: '100vh', maxWidth: '100vw' }}>
       {' '}
@@ -27,7 +34,6 @@ const LandingPage = () => {
               textAlign: 'center',
             }}
           >
-            <Typography variant="body2">(Release date 18th of September)</Typography>
             <Typography
               variant="h1"
               sx={{
@@ -43,10 +49,11 @@ const LandingPage = () => {
                 maxWidth: {
                   xs: '306px',
                   md: '658px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
                 },
+
+                display: { xs: 'none', md: 'flex' },
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
               marginTop={0}
               marginBottom={1}
@@ -60,7 +67,13 @@ const LandingPage = () => {
                 This is ShopX. Your one stop solution to building your online store
               </Typography>
             </Box>
-            <Stack direction={'row'} spacing={{ xs: 2, md: 4, alignItems: 'center' }} useFlexGap flexWrap="wrap">
+            <Stack
+              direction={'row'}
+              spacing={{ xs: 2, md: 4 }}
+              sx={{ alignItems: 'center', justifyContent: 'center' }}
+              useFlexGap
+              flexWrap="wrap"
+            >
               <Link variant="body" href="https://admin.myshopx.net/signup">
                 Create your store (demo)
               </Link>
@@ -68,6 +81,11 @@ const LandingPage = () => {
                 Visit a website (demo)
               </Link>
             </Stack>
+            <Box sx={{ marginTop: '100px' }}>
+              <div className="scroll">
+                <p style={{ marginTop: '40px' }}>More</p>
+              </div>
+            </Box>
           </Box>
 
           <Pitch />
