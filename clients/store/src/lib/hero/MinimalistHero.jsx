@@ -3,7 +3,6 @@ import React from 'react';
 import './oldstyle.css';
 import BrandHeading from '../text/BrandHeading';
 import Body from '../text/Body';
-import ActionButton from '../button/ActionButton';
 import GeneralButton from '../button/GeneralButton';
 import { ImageCover, MinimalistImageContainer, MinimalistTextContainer, PageContainer } from './styles';
 import { useSelector } from 'react-redux';
@@ -13,12 +12,12 @@ const MinimalistHero = () => {
   const heroDesign = useSelector((state) => state.webDesign.hero);
   const navigate = useNavigate();
   return (
-    <PageContainer design={{ justifyCenter: true }}>
+    <PageContainer design={{ justifyCenter: true }} sx={{}}>
       {/* IMAGE */}
 
       <MinimalistImageContainer>
         <img
-          style={{ width: '100%', height: '95%', filter: `blur(${heroDesign.heroImageBlur}px)` }}
+          style={{ objectFit: 'cover', width: '100%', height: '100%', filter: `blur(${heroDesign.heroImageBlur}px)` }}
           src={heroDesign.heroImageUrl}
           alt="background image"
         />
@@ -30,6 +29,8 @@ const MinimalistHero = () => {
           text={heroDesign.heroHeadline}
           textColor={heroDesign.heroHeadlineColor}
           weight="500"
+          xsTextFontSize="60px"
+          smTextFontSize="90px"
           lineHeight={1}
           marginBottom={1}
         />

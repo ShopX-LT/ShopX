@@ -18,7 +18,7 @@ const useCreateStore = () => {
   const [storeUrl, setStoreUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const forbiddenCharsRegex = /^[a-z'-]+$/;
+  const forbiddenCharsRegex = /^[a-z'-]*$/;
 
   const formValidation = () => {
     if (email.includes('<') || email.includes('>') || !email.includes('@')) {
@@ -63,15 +63,13 @@ const useCreateStore = () => {
   };
 
   const handleOnChange = (e) => {
-    let { value } = e.target;
+    const { value } = e.target;
 
     switch (e.target.id) {
       case 'storeName':
-        if (!forbiddenCharsRegex.test(value)) {
-          alert('Invalid characters');
-          value = '';
+        if (forbiddenCharsRegex.test(value)) {
+          setStoreName(value);
         }
-        setStoreName(value);
         break;
       case 'product':
         setProduct(value);

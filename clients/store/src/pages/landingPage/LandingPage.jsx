@@ -74,7 +74,7 @@ const LandingPage = () => {
               useFlexGap
               flexWrap="wrap"
             >
-              <Link variant="body" href="https://admin.myshopx.net/signup">
+              <Link variant="body" href="https://admin.myshopx.net/signin">
                 Create your store (demo)
               </Link>
               <Link variant="body" href="/kg-watches">

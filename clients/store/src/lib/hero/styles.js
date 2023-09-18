@@ -5,6 +5,7 @@ export const PageContainer = styled(Box)(({ theme, design }) => ({
   minHeight: '85vh',
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
   justifyContent: design?.justifyCenter ? 'center' : '',
 }));
 
@@ -26,7 +27,7 @@ export const FlexContainer = styled(Box)(({ theme, design }) => ({
 export const LegacyTextContainer = styled(Box)(({ theme, design }) => ({
   flex: 1,
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: design ? design.justifyContent : 'start',
 }));
 
 export const LegacyImageContainer = styled(Box)(({ theme, design }) => ({
@@ -38,15 +39,15 @@ export const LegacyImageContainer = styled(Box)(({ theme, design }) => ({
 
 export const MinimalistImageContainer = styled(Box)(({ theme, design }) => ({
   position: 'absolute',
-  top: '56px',
+  top: 0,
   left: 0,
   width: '100vw',
-  height: '100vh',
+  height: '95vh',
 }));
 
 export const ImageCover = styled(Box)(({ theme, design }) => ({
   position: 'absolute',
-  top: '56px',
+  top: 0,
   left: 0,
   width: '100vw',
   height: '95vh',
@@ -62,9 +63,6 @@ export const MinimalistTextContainer = styled(Box)(({ theme, design }) => ({
   alignItems: 'center',
   maxWidth: '400px',
   [theme.breakpoints.up('md')]: {
-    maxWidth: '600px',
-  },
-  [theme.breakpoints.up('lg')]: {
-    maxWidth: '700px',
+    maxWidth: '1000px',
   },
 }));

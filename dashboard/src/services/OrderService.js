@@ -13,7 +13,7 @@ export async function getOrders(axiosPrivate) {
     return response.data.orders;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }
@@ -25,7 +25,7 @@ export async function updateOrder(axiosPrivate, toast, id, order) {
     return response.data;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }

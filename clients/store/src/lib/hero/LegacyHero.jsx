@@ -20,16 +20,16 @@ const LegacyHero = () => {
         <FlexContainer>
           <LegacyTextContainer>
             <motion.div initial="initial" animate="animate" variants={floatInAnimationVar1}>
-              <Box sx={{ maxWidth: { xs: '350px', md: '400px' } }}>
+              <Box sx={{ maxWidth: { xs: '350px', sm: '800px' } }}>
                 <BrandHeading
                   text={heroDesign.heroHeadline}
                   textColor={heroDesign.heroHeadlineColor}
-                  weight="500"
+                  weight="600"
                   lineHeight={1}
                   marginTop={4}
-                  marginBottom={1}
+                  marginBottom={2}
                 />
-                <Box sx={{ maxWidth: { xs: '300px', md: '350px' } }}>
+                <Box sx={{ marginBottom: '80px', maxWidth: { xs: '300px', md: '650px' } }}>
                   <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={3} />
                 </Box>
                 <GeneralButton

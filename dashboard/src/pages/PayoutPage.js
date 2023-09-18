@@ -56,7 +56,7 @@ const PayoutPage = () => {
     });
     const payoutResponse = await requestPayout(axiosPrivate, formData);
     if (!payoutResponse) {
-      alert('Something went wrong. Try again later');
+      // alert('Something went wrong. Try again later');
       return;
     }
     onSubmitProps.resetForm();

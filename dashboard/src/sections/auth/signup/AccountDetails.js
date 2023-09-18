@@ -33,17 +33,8 @@ const AccountDetails = ({ accountType, email, password, verifyPassword, onChange
           value={accountType}
           onChange={onAccountTypeChange}
         >
-          <FormControlLabel
-            value="old"
-            control={<Radio />}
-            label="I already have store with ShopX registered to this email address"
-          />
-          <FormControlLabel
-            value="new"
-            control={<Radio />}
-            size="small"
-            label="This is my first time creating a store with ShopX using this email address"
-          />
+          <FormControlLabel value="old" control={<Radio />} label="I am an existing user" />
+          <FormControlLabel value="new" control={<Radio />} size="small" label="I am a new user" />
         </RadioGroup>
       </FormControl>
       <Grid container spacing={3}>

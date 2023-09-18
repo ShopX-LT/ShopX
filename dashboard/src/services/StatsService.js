@@ -6,7 +6,7 @@ export async function getStoreStats(axiosPrivate) {
     return response.data.stats;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }

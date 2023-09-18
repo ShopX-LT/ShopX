@@ -7,7 +7,7 @@ export async function getBankList(axiosPrivate) {
     return response.data.banks;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }
@@ -18,7 +18,7 @@ export async function requestPayout(axiosPrivate, details) {
     return response.data;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }

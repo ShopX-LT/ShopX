@@ -156,7 +156,8 @@ const EditFrontPageForm = ({ design, handleInputChange, handleFormSubmit }) => {
                     value={design.heroStyle}
                   >
                     <FormControlLabel value="legacy" control={<Radio />} label="Legacy" />
-                    <FormControlLabel disabled value="minimalist" control={<Radio />} label="Minimalist" />
+                    <FormControlLabel value="minimalist" control={<Radio />} label="Minimalist" />
+                    <FormControlLabel value="leftText" control={<Radio />} label="Left text" />
                   </RadioGroup>
                 </FormControl>
               </Grid>

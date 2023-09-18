@@ -13,7 +13,7 @@ const WebDesignScheme = new mongoose.Schema({
       type: 'string',
       trim: true,
       default: 'legacy',
-      enum: ['legacy', 'minimalist'],
+      enum: ['legacy', 'minimalist', 'leftText'],
     },
     // HERO TEXT
     heroHeadline: {
