@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 
-const Body = ({ textColor, text, weight, bgColor, ...rest }) => {
+const Body = ({ textColor, text, weight = 400, bgColor, ...rest }) => {
   return (
     <div>
       <Typography variant="body1" fontWeight={weight} sx={{ color: textColor }} {...rest}>

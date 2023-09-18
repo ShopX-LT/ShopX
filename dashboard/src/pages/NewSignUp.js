@@ -136,26 +136,67 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        position: 'relative',
+        height: '100vh',
+      }}
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          zIndex: -2,
+          height: '100%',
+          width: '100vw',
+          filter: 'blur(5px)',
+          backgroundImage: 'url(https://source.unsplash.com/random)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          zIndex: -1,
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100%',
+          background: 'white',
+          opacity: 0.7,
+        }}
+      />
       <CssBaseline />
       <AppBar
         position="absolute"
-        color="default"
-        elevation={0}
+        color="transparent"
+        elevation={3}
         sx={{
           position: 'relative',
+          top: 0,
+          cursor: 'pointer',
           borderBottom: (t) => `1px solid ${t.palette.divider}`,
         }}
       >
         <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            ShopX
+          <Typography
+            variant="h2"
+            sx={{ color: '#000000' }}
+            noWrap
+            tabIndex={0}
+            role="button"
+            onClick={() => navigate('/signin')}
+          >
+            SHOPX
           </Typography>
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Paper elevation={3} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
             Create A New Store
           </Typography>
@@ -199,10 +240,10 @@ const SignUp = () => {
             </>
           )}
         </Paper>
-        <Warning />
+        {/* <Warning /> */}
         <Copyright />
       </Container>
-    </>
+    </Box>
   );
 };
 

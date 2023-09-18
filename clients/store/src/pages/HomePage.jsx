@@ -5,6 +5,8 @@ import { capitalize } from 'lodash';
 import useStore from '../hooks/useStore';
 import LandingPage from './landingPage/LandingPage';
 
+const heroOptions = { minimalist: 'minimalist', legacy: 'legacy', leftText: 'leftText' };
+
 const HomePage = () => {
   const { store } = useStore();
   return (
@@ -14,7 +16,7 @@ const HomePage = () => {
           <Helmet>
             <title>{capitalize(store)} - ShopX</title>
           </Helmet>
-          <GeneralHero heroStyle="legacy" />
+          <GeneralHero heroStyle={heroOptions.leftText} />
         </>
       ) : (
         <LandingPage />

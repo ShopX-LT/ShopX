@@ -45,9 +45,6 @@ const ExtractStore = () => {
   };
 
   useEffect(() => {
-    console.log(isStoreValid);
-  }, [isStoreValid]);
-  useEffect(() => {
     if (storeName !== 'home') setStore(storeName);
   }, [storeName]);
   useEffect(() => {

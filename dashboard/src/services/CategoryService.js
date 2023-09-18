@@ -14,7 +14,7 @@ export async function getCategories(axiosPrivate) {
     return response.data;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }

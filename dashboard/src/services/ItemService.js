@@ -22,7 +22,6 @@ export async function updateItem(axiosPrivate, toast, id, formData) {
     return response.data;
   } catch (error) {
     console.error(error);
-    alert(error.message);
     return null;
   }
 }
@@ -33,7 +32,6 @@ export async function deleteItem(axiosPrivate, id) {
     return response.data;
   } catch (error) {
     console.error(error);
-    alert(error.message);
     return null;
   }
 }
@@ -44,7 +42,6 @@ export async function getAllItems(axiosPrivate) {
     return response.data.items;
   } catch (error) {
     console.error(error);
-    alert(error.message);
     return null;
   }
 }

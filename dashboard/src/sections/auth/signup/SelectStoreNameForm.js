@@ -1,29 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography, Grid, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Grid,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 const SelectStoreNameForm = ({ storeName, product, isStoreNameValid, brandColor, onChange, checkStoreName }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isNameChecked, setIsNameChecked] = useState(false);
 
   const handleOnClick = async () => {
     setIsLoading(true);
     const res = await checkStoreName();
     setIsLoading(false);
+    setIsNameChecked(true);
   };
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Select your store name
-      </Typography>
-      <Typography variant="caption">* Your store name should be in lowercase</Typography>
-      <br />
-      <Typography variant="caption">* Hyphens(-) and apostrophes(') are allowed</Typography>
-      <br />
-      <Typography variant="caption">* Click the Check to see if your name is taken</Typography>
-
-      <Grid container spacing={3} mt={1}>
+      <Box>
+        <List dense>
+          <ListItem disableGutters>
+            <ListItemText secondary="Your store name should be in lowercase" />
+          </ListItem>
+          <ListItem disableGutters>
+            <ListItemText secondary="Only letters, hyphens(-), apostrophes(') are allowed" />
+          </ListItem>
+        </List>
+      </Box>
+      <Grid container spacing={3}>
         <Grid item xs={9}>
           <TextField
             required
@@ -39,9 +52,13 @@ const SelectStoreNameForm = ({ storeName, product, isStoreNameValid, brandColor,
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <ThumbUpAltIcon color="success" /> <Typography variant="caption">Your store name is available</Typography>
             </Box>
-          ) : (
+          ) : isNameChecked ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="caption">This name is taken</Typography>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="caption">Click the Check to see if your name is taken</Typography>
             </Box>
           )}
         </Grid>
@@ -49,30 +66,31 @@ const SelectStoreNameForm = ({ storeName, product, isStoreNameValid, brandColor,
           <Button variant="outlined" onClick={handleOnClick}>
             Check
           </Button>
+          {isLoading && (
+            <Box sx={{ display: 'flex', px: 2, py: 1 }}>
+              <CircularProgress size={30} thickness={4} />
+            </Box>
+          )}
         </Grid>
-        {isLoading && (
-          <Box sx={{ display: 'flex', px: 2, py: 1 }}>
-            <CircularProgress size={30} thickness={4} />
-          </Box>
-        )}
 
         <Grid item xs={9}>
-          {
-            <TextField
-              id="brandColor"
-              name="brandColor"
-              disabled
-              label="Select your brand color"
-              fullWidth
-              variant="standard"
-              value={brandColor}
-              onChange={onChange}
-            />
-          }
+          <TextField
+            id="brandColor"
+            name="brandColor"
+            InputProps={{
+              readOnly: true,
+            }}
+            label="Select your brand color"
+            fullWidth
+            variant="standard"
+            value={brandColor}
+            onChange={onChange}
+          />
         </Grid>
         <Grid item xs={3} sx={{ display: 'flex', alignItems: 'end', justifyContent: 'center' }}>
           <input
             type="color"
+            className="colorPicker"
             id="brandColor"
             name="brandColor"
             value={brandColor}

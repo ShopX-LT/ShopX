@@ -6,7 +6,7 @@ export async function getFields(axiosPrivate) {
     return response.data.fields;
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    // alert(error.message);
     return null;
   }
 }

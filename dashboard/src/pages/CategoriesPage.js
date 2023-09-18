@@ -103,7 +103,7 @@ const CategoriesPage = () => {
       const response = await createCategory(axiosPrivate, toast, formData);
       onSubmitProps.resetForm();
     } catch (error) {
-      alert(error.message);
+      // alert(error.message);
     }
   };
 

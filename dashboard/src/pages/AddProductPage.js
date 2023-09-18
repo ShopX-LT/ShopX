@@ -173,7 +173,7 @@ const AddProductPage = () => {
                 New Product
               </Typography>
               <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleFieldClickOpen}>
-                New Field
+                New Feature
               </Button>
             </Stack>
             <AddField

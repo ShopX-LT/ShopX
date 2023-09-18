@@ -16,14 +16,14 @@ const AddField = (props) => {
     <Box>
       <Dialog open={props.open} onClose={props.close}>
         <DialogTitle align="center">
-          Add New Product Field <Divider />
+          New Feature <Divider />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Enter the name of the new field.</DialogContentText>
+          <DialogContentText>Add a new feature to your product</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            label="Field name"
+            label="Feature name"
             type="text"
             fullWidth
             variant="standard"
