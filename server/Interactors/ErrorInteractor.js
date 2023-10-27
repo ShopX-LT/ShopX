@@ -39,6 +39,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Duplicate payment':
       res.status(400).json({ message: error.message });
       break;
+    case 'No order record':
+      res.status(409).json({ message: error.message });
+      break;
     case 'Error saving new category':
       res.status(400).json({ message: error.message });
       break;
@@ -68,6 +71,9 @@ const handleErrorInteractor = (error, res) => {
       res.status(500).json({ message: error.message });
       break;
     case 'Error creating website':
+      res.sendStatus(500);
+      break;
+    case "Couldn't create new user":
       res.sendStatus(500);
       break;
     default:

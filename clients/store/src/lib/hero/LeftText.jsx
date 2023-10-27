@@ -45,7 +45,7 @@ const LeftText = () => {
                 marginTop={4}
                 marginBottom={2}
               />
-              <Box sx={{ marginBottom: '50px', maxWidth: { xs: '300px', md: '650px' } }}>
+              <Box sx={{ maxWidth: { xs: '300px', md: '650px' } }}>
                 <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={3} />
               </Box>
               <GeneralButton

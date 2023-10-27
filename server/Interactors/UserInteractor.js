@@ -50,6 +50,32 @@ const userLogin = async ({ getUser, verifyPassword }, { email, password }) => {
   return user;
 };
 
+const subscribeToStoreInteractor = async (
+  { getStoreByName, findOrderByReference, createUser, getUser, subscribeToStore },
+  { storeName, reference, email }
+) => {
+  let userEmail = email;
+  const store = await getStoreByName({ storeName });
+  let user = await getUser({ email: userEmail });
+
+  if (!store) return Promise.reject(new Error('Invalid Store'));
+  if (!store.isProMember) return { data: false };
+  if (reference) {
+    const order = await findOrderByReference({ reference });
+    if (!order) return Promise.reject(new Error('No order record'));
+    userEmail = order.orderedBy;
+  }
+
+  if (!user) {
+    user = await createUser({ email: userEmail });
+    if (!user) return Promise.reject(new Error("Couldn't create new user"));
+  }
+  const data = await subscribeToStore({ user, storeName });
+  if (!data) return Promise.reject(new Error('An error occured subscrbing'));
+
+  return { data: data };
+};
+
 const formatUser = (user) => {
   return { email: user.email };
 };
@@ -57,4 +83,5 @@ const formatUser = (user) => {
 module.exports = {
   getOrCreateUserInteractor,
   userLogin,
+  subscribeToStoreInteractor,
 };

@@ -38,7 +38,7 @@ const useDesign = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const formData = { nav: {}, hero: {}, productContainer: {} };
+    const formData = { nav: {}, hero: {}, productContainer: {}, about: {}, contact: {} };
     // Append each form value to the formData object.
     Object.keys(design).forEach((key) => {
       switch (key.slice(0, 3)) {
@@ -51,12 +51,17 @@ const useDesign = () => {
         case 'pro':
           formData.productContainer[key] = design[key];
           break;
+        case 'abo':
+          formData.about[key] = design[key];
+          break;
+        case 'con':
+          formData.contact[key] = design[key];
+          break;
         default:
           formData.hero[key] = design[key];
           break;
       }
     });
-
     await updateDesign(formData);
   };
 

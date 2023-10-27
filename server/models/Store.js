@@ -29,6 +29,7 @@ const StoreSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    isProMember: Boolean,
 
     wallet: {
       type: Number,

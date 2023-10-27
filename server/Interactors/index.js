@@ -40,7 +40,7 @@ const {
   addVisitToStoreInteractor,
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
-const { getOrCreateUserInteractor, userLogin } = require('./UserInteractor');
+const { getOrCreateUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
 const { getStoreDesignInteractor, updateStoreDesignInteractor } = require('./WebDesignInteractor');
 
 module.exports = {
@@ -55,6 +55,7 @@ module.exports = {
   // USER INTERACTORS
   getOrCreateUserInteractor,
   userLogin,
+  subscribeToStoreInteractor,
   //ITEM INTERACTORS
   createItemInteractor,
   getItemInteractor,

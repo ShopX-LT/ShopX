@@ -8,7 +8,7 @@ import useDesign from '../../../sections/@dashboard/design/hooks/useDesign';
 export default function LegacyNav({ design }) {
   //   const { design } = useDesign();
   return (
-    <Box sx={{ flexGrow: 1, width: '375px' }}>
+    <Box sx={{ flexGrow: 1, width: '100%' }}>
       <AppBar position="static" sx={{ background: design.navBackgroundColor, color: design.navTextColor }}>
         <Toolbar>
           <MenuIcon sx={{ mr: 2 }} />
