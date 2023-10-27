@@ -5,9 +5,8 @@ import { capitalize } from 'lodash';
 import useStore from '../hooks/useStore';
 import LandingPage from './landingPage/LandingPage';
 import FeaturedSection from '../lib/FeaturedSection/FeaturedSection';
-import { Container } from '@mui/material';
-import AboutSection from '../lib/AboutSection/AboutSection';
 import ContactSection from '../lib/contactSection/ContactSection';
+import AboutSection from '../lib/aboutSection/AboutSection';
 import { useSelector } from 'react-redux';
 
 const heroOptions = { minimalist: 'minimalist', legacy: 'legacy', leftText: 'leftText' };
