@@ -50,8 +50,6 @@ const Subscription = () => {
     <motion.div initial={{ opacity: 0, y: 200 }} animate={controls} transition={{ duration: 1 }}>
       <Box
         sx={{
-          background: bgColor,
-          color: '#fff',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'start',
@@ -100,7 +98,7 @@ const Subscription = () => {
                 onChange={handleChange}
               />
               <Button variant="contained" sx={{ padding: '15px', marginLeft: '10px' }} type="submit">
-                Pre-subscribe
+                Get Updates!
               </Button>
             </form>
           </div>

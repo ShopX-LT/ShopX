@@ -45,6 +45,7 @@ const {
   getUserByAdminToken,
   setAdminRefreshToken,
   removeAdminRefreshToken,
+  subscribeToStore,
 } = require('./UserPersistence');
 //
 const { saveImagesToS3Bucket, getImagesUrlFromS3Buscket } = require('./AWSPersistence');
@@ -68,6 +69,7 @@ module.exports = {
   // USER PERSISTENCE
   createUser,
   getUser,
+  subscribeToStore,
   getUserByAdminToken,
   setAdminRefreshToken,
   removeAdminRefreshToken,

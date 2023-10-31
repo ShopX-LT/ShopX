@@ -15,8 +15,9 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       min: 5,
-      required: true,
+      // required: true,
     },
+    subscribedTo: [String],
     username: {
       type: String,
       max: 15,

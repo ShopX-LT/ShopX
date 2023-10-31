@@ -29,8 +29,8 @@ const LegacyHero = () => {
                   marginTop={4}
                   marginBottom={2}
                 />
-                <Box sx={{ marginBottom: '80px', maxWidth: { xs: '300px', md: '650px' } }}>
-                  <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={3} />
+                <Box sx={{ maxWidth: { xs: '300px', md: '650px' } }}>
+                  <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={5} />
                 </Box>
                 <GeneralButton
                   buttonstyle="action"

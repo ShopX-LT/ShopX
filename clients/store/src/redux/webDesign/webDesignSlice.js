@@ -27,6 +27,26 @@ const initialState = {
     productStyle: '',
     productSubTextColor: '',
   },
+  contact: {
+    contactBgColor: '',
+    contactStyle: '',
+    contactTextColor: '',
+    contactHeadingColor: '',
+    contactEmail: '',
+    contactInstagram: '',
+    contactTwitter: '',
+    contactWhatsApp: '',
+    contactDescription: '',
+  },
+  about: {
+    aboutStyle: '',
+    aboutHeading: '',
+    aboutHeadingColor: '',
+    aboutDescription: '',
+    aboutBgColor: '',
+    aboutTextColor: '',
+    aboutImage: '',
+  },
   nav: { navBackgroundColor: '', navTextColor: '' },
   mainBackgroundColor: '#ebebeb',
 };
@@ -41,6 +61,8 @@ export const webDesignSlice = createSlice({
       state.hero = { ...payload.hero };
       state.nav = { ...payload.nav };
       state.productContainer = { ...payload.productContainer };
+      state.contact = { ...payload.contact };
+      state.about = { ...payload.about };
     },
   },
 });

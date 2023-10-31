@@ -47,12 +47,12 @@ export default function DashboardAppPage() {
     dispatch(updateOrders(ordersResponse));
     // GET STATS
 
-    const statsResponse = await getStoreStats(axiosPrivate);
-    if (!statsResponse) {
-      dispatch(ordersError('Error getting store details'));
-      return;
-    }
-    dispatch(setStoreStats(statsResponse));
+    // const statsResponse = await getStoreStats(axiosPrivate);
+    // if (!statsResponse) {
+    //   dispatch(ordersError('Error getting store details'));
+    //   return;
+    // }
+    // dispatch(setStoreStats(statsResponse));
   };
 
   useEffect(() => {
@@ -108,9 +108,9 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} lg={4}>
             <AppOrderTimeline title={`New Orders`} list={newOrders.length > 5 ? newOrders.splice(0, 4) : newOrders} />
           </Grid>
-          <Grid item xs={12} sm={6} lg={4}>
+          {/* <Grid item xs={12} sm={6} lg={4}>
             <AppTopSellers title="Top Sellers" list={topSellers} />
-          </Grid>
+          </Grid> */}
 
           {/* <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits

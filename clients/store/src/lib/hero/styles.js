@@ -42,7 +42,7 @@ export const MinimalistImageContainer = styled(Box)(({ theme, design }) => ({
   top: 0,
   left: 0,
   width: '100vw',
-  height: '95vh',
+  height: '85vh',
 }));
 
 export const ImageCover = styled(Box)(({ theme, design }) => ({
@@ -50,7 +50,7 @@ export const ImageCover = styled(Box)(({ theme, design }) => ({
   top: 0,
   left: 0,
   width: '100vw',
-  height: '95vh',
+  height: '85vh',
   background: 'black',
   opacity: design?.coverOpacity,
 }));

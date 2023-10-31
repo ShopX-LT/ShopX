@@ -59,6 +59,17 @@ const getUserByAdminToken = async ({ adminRefreshToken }) => {
   }
 };
 
+const subscribeToStore = async ({ storeName, user }) => {
+  try {
+    user.subscribedTo.push(storeName);
+    await user.save();
+    return true;
+  } catch (error) {
+    console.error('User Persistence error in subscribeToStore()', error);
+    return null;
+  }
+};
+
 const setAdminRefreshToken = async ({ email, refreshToken }) => {
   try {
     const update = { $set: { adminRefreshToken: refreshToken } };
@@ -73,4 +84,11 @@ const removeAdminRefreshToken = async ({ refreshToken }) => {
   const user = await User.findOneAndUpdate({ adminRefreshToken: refreshToken }, update, { new: true });
 };
 
-module.exports = { createUser, getUser, getUserByAdminToken, setAdminRefreshToken, removeAdminRefreshToken };
+module.exports = {
+  createUser,
+  getUser,
+  subscribeToStore,
+  getUserByAdminToken,
+  setAdminRefreshToken,
+  removeAdminRefreshToken,
+};

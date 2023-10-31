@@ -12,7 +12,7 @@ const MinimalistHero = () => {
   const heroDesign = useSelector((state) => state.webDesign.hero);
   const navigate = useNavigate();
   return (
-    <PageContainer design={{ justifyCenter: true }} sx={{}}>
+    <PageContainer design={{ justifyCenter: true }}>
       {/* IMAGE */}
 
       <MinimalistImageContainer>

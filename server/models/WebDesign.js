@@ -140,6 +140,73 @@ const WebDesignScheme = new mongoose.Schema({
       default: '#ffffff',
     },
   },
+
+  contact: {
+    contactBgColor: { type: 'string', trim: true, default: '#000000' },
+    contactStyle: {
+      type: 'string',
+      trim: true,
+      default: 'default',
+      enum: ['default'],
+    },
+    contactTextColor: {
+      type: 'string',
+      trim: true,
+      default: '#ffffff',
+    },
+    contactHeadingColor: {
+      type: 'string',
+      trim: true,
+      default: '#ffffff',
+    },
+    contactImage: {
+      type: 'string',
+      trim: true,
+    },
+    contactEmail: {
+      type: 'string',
+      trim: true,
+    },
+    contactInstagram: {
+      type: 'string',
+      trim: true,
+    },
+    contactTwitter: {
+      type: 'string',
+      trim: true,
+    },
+    contactWhatsApp: {
+      type: 'string',
+      trim: true,
+    },
+    contactDescription: {
+      type: 'string',
+      trim: true,
+    },
+  },
+  about: {
+    aboutStyle: {
+      type: 'string',
+      trim: true,
+      default: 'default',
+      enum: ['default'],
+    },
+    aboutHeading: {
+      type: 'string',
+      trim: true,
+    },
+    aboutHeadingColor: { type: 'string', trim: true, default: '#ffffff' },
+    aboutDescription: {
+      type: 'string',
+      trim: true,
+    },
+    aboutBgColor: { type: 'string', trim: true, default: '#000000' },
+    aboutTextColor: { type: 'string', trim: true, default: '#ffffff' },
+    aboutImage: {
+      type: 'string',
+      trim: true,
+    },
+  },
   nav: {
     navTextColor: {
       type: 'string',

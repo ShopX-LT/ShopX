@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Card, Stack, Link, Typography, styled, Button } from '@mui/material';
+import Carousel from 'react-material-ui-carousel';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { fCurrency } from '../../utils/formatNumber';
 import ActionButton from '../button/ActionButton';
@@ -11,11 +12,11 @@ import useStore from '../../hooks/useStore';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({
-  top: 0,
+  // top: 0,
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  position: 'absolute',
+  // position: 'absolute',
 });
 
 // ----------------------------------------------------------------------
@@ -68,7 +69,11 @@ const SimpleContainer = ({ product }) => {
         )}
       </Box>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        <StyledProductImg alt={title} src={imagesUrl[0]} />
+        <Carousel navButtonsAlwaysVisible={true} sx={{ position: 'absolute', width: '100%', height: '100%', top: 0 }}>
+          {imagesUrl.map((imageUrl, index) => {
+            return <StyledProductImg key={index} alt={title} src={imageUrl} />;
+          })}
+        </Carousel>
       </Box>
       <Stack spacing={2} direction="row" alignItems={'center'} justifyContent={'space-between'}>
         <Stack

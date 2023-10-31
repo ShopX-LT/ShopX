@@ -21,6 +21,21 @@ export const INITIAL_STATE = {
   productSubTextColor: '',
   productActionButtonColor: '',
   productActionButtonTextColor: '',
+  contactBgColor: '',
+  contactTextColor: '',
+  contactHeadingColor: '',
+  contactImage: '',
+  contactEmail: '',
+  contactInstagram: '',
+  contactTwitter: '',
+  contactWhatsApp: '',
+  contactDescription: '',
+  aboutHeading: '',
+  aboutHeadingColor: '',
+  aboutDescription: '',
+  aboutBgColor: '',
+  aboutTextColor: '',
+  aboutImage: '',
 };
 
 export const designReducer = (state, action) => {
@@ -31,6 +46,8 @@ export const designReducer = (state, action) => {
         ...action.payload.hero,
         ...action.payload.nav,
         ...action.payload.productContainer,
+        ...action.payload.about,
+        ...action.payload.contact,
         mainBackgroundColor: action.payload.mainBackgroundColor,
       };
     case CHANGE_INPUT:

@@ -4,11 +4,19 @@ import { Helmet } from 'react-helmet-async';
 import { capitalize } from 'lodash';
 import useStore from '../hooks/useStore';
 import LandingPage from './landingPage/LandingPage';
+import FeaturedSection from '../lib/FeaturedSection/FeaturedSection';
+import ContactSection from '../lib/contactSection/ContactSection';
+import AboutSection from '../lib/aboutSection/AboutSection';
+import { useSelector } from 'react-redux';
 
 const heroOptions = { minimalist: 'minimalist', legacy: 'legacy', leftText: 'leftText' };
 
+const mock = { style: 'default' };
+
 const HomePage = () => {
   const { store } = useStore();
+  const design = useSelector((state) => state.webDesign);
+
   return (
     <div>
       {store ? (
@@ -16,7 +24,10 @@ const HomePage = () => {
           <Helmet>
             <title>{capitalize(store)} - ShopX</title>
           </Helmet>
-          <GeneralHero heroStyle={heroOptions.leftText} />
+          <GeneralHero heroStyle={design.hero.heroStyle} />
+          <FeaturedSection select={mock.style} />
+          <AboutSection select={design.about.aboutStyle} />
+          <ContactSection select={design.contact.contactStyle} />
         </>
       ) : (
         <LandingPage />
