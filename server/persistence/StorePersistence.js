@@ -164,6 +164,21 @@ const addVisitToStore = async ({ store, isNewVisitor }) => {
   }
 };
 
+const updateStoreDeliveryFee = async ({ storeName, deliveryFee }) => {
+  try {
+    const store = await Store.findOne({ name: storeName });
+    if (!store) {
+      return false;
+    }
+    store.deliveryFee = deliveryFee;
+    await store.save();
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in updateStoreDeliveryFee()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createStore,
   getStoreByName,
@@ -174,4 +189,5 @@ module.exports = {
   addOrderToStore,
   editStoreWallet,
   addVisitToStore,
+  updateStoreDeliveryFee,
 };

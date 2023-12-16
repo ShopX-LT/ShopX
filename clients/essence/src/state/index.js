@@ -31,7 +31,6 @@ export const userSlice = createSlice({
 
     increaseItemCount: (state, action) => {
       const { id } = action.payload;
-      console.log(id);
       const item = state.cart.find((item) => item.itemId === id);
       if (item) {
         state.total += item.price;

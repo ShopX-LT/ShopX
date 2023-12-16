@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useSelector } from 'react-redux';
 import { fCurrency } from '../utils/formatNumber';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { getBankList, requestPayout } from '../services/PaymentService';
@@ -26,6 +27,8 @@ const detailsSchema = Yup.object().shape({
 
 const PayoutPage = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { wallet } = useSelector((state) => state.stats.store);
+
   const [banks, setBanks] = useState([]);
 
   // Initial values
@@ -120,9 +123,10 @@ const PayoutPage = () => {
                 })}
               </Select>
 
-              <Button variant="contained" sx={{ mt: 4, mx: 4, width: 'fit-content' }} type="submit">
-                Withdraw
+              <Button variant="contained" sx={{ mt: 4, width: 'fit-content' }} type="submit">
+                Withdraw - {fCurrency(wallet * 0.99)}
               </Button>
+              <Typography variant="caption">1% service fee applied</Typography>
             </Card>
           </Container>
         </form>

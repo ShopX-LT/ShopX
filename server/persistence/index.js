@@ -23,9 +23,11 @@ const {
   updateItemStatistics,
 } = require('./ItemPersistence');
 
-const { createPayout } = require('./PayoutPersistence');
-const { initiateTransaction, verifyPayment, getBanks, createRecipient, transferOut } = require('./PaystackPersistence');
 const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
+const { createPayout } = require('./PayoutPersistence');
+const { createCheckoutUrl } = require('./StripePersistence');
+const { initiateTransaction, verifyPayment, getBanks, createRecipient, transferOut } = require('./PaystackPersistence');
+const { createReview, getProductReviews } = require('./ReviewPersistence');
 const { createWebDesign, getStoreDesign, updateStoreDesign } = require('./WebDesignPersistence');
 
 const {
@@ -38,6 +40,7 @@ const {
   addOrderToStore,
   editStoreWallet,
   addVisitToStore,
+  updateStoreDeliveryFee,
 } = require('./StorePersistence');
 const {
   createUser,
@@ -65,6 +68,7 @@ module.exports = {
   addOrderToStore,
   editStoreWallet,
   addVisitToStore,
+  updateStoreDeliveryFee,
 
   // USER PERSISTENCE
   createUser,
@@ -104,6 +108,9 @@ module.exports = {
   // PAYOUT PERSISTENCE
   createPayout,
 
+  // STRIPE PERSISTENCE
+  createCheckoutUrl,
+
   //AWS PERSISTENCE
   saveImagesToS3Bucket,
   getImagesUrlFromS3Buscket,
@@ -115,6 +122,10 @@ module.exports = {
   // PAYSTACK PERSISTENCE
   initiateTransaction,
   verifyPayment,
+
+  // REVIEW PERSISTENCE
+  createReview,
+  getProductReviews,
 
   // WEBDESIGN PERSISTENCE
   createWebDesign,

@@ -141,3 +141,12 @@ describe('createItemInteractor', () => {
 
   // Add more test cases here for edge and normal cases
 });
+
+/*
+ * TEST CASES:
+ * 1. Error saving images test case
+ * 2. Error saving fields test case
+ * 3. Updates an order
+ * 4. Update an order that does not exist
+ * 5. Get orders from a store that does not exist
+ */

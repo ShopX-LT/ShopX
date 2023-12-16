@@ -20,14 +20,14 @@ const NavForm = ({ design, handleInputChange }) => {
           <TabContext value={tabValue}>
             <Box>
               <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="nav tabs">
-                <Tab label="Layout" value="1" />
-                <Tab label="Customize" value="2" />
+                <Tab label="Customize" value="1" />
+                {/* <Tab label="Layout" value="2" /> */}
               </TabList>
             </Box>
-            <TabPanel value="1">Layout</TabPanel>
-            <TabPanel value="2">
+            <TabPanel value="1">
               <CustomizeTab design={design} handleInputChange={handleInputChange} />
             </TabPanel>
+            {/* <TabPanel value="2">Layout</TabPanel> */}
           </TabContext>
         </Box>
       </Box>

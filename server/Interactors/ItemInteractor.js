@@ -10,6 +10,19 @@
  * @param {string} store - The name of the store the
  * @returns {Object} - the newly created object
  */
+
+const getImagesUrl = async (formattedItems, getImagesUrlFromS3Buscket) => {
+  const itemsWithImageUrlPromises = formattedItems.map((item) => {
+    return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
+      item.imagesUrl = urls;
+      return item;
+    });
+  });
+  const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
+  return itemsWithImageUrl;
+};
+
+// Consider making a SaveImage class, the class woll be initialized in the controller file and passed here instead of saveImageToS3Bucket. SaveImage should then have a funtion that accepts images and saves the images
 const createItemInteractor = async (
   { createItem, getStoreByName, saveImagesToS3Bucket, addFieldValueToStore },
   itemData
@@ -94,13 +107,7 @@ const getQueryItemsInteractor = async (
     });
   }
 
-  const itemsWithImageUrlPromises = formattedItems.map((item) => {
-    return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
-      item.imagesUrl = urls;
-      return item;
-    });
-  });
-  const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
+  const itemsWithImageUrl = await getImagesUrl(formattedItems, getImagesUrlFromS3Buscket);
 
   return itemsWithImageUrl;
 };
@@ -134,13 +141,7 @@ const getSearchItemsInteractor = async (
     });
   }
 
-  const itemsWithImageUrlPromises = formattedItems.map((item) => {
-    return getImagesUrlFromS3Buscket({ images: item.images }).then((urls) => {
-      item.imagesUrl = urls;
-      return item;
-    });
-  });
-  const itemsWithImageUrl = await Promise.all(itemsWithImageUrlPromises);
+  const itemsWithImageUrl = await getImagesUrl(formattedItems, getImagesUrlFromS3Buscket);
 
   return itemsWithImageUrl;
 };

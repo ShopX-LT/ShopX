@@ -20,24 +20,47 @@ const getSubTotal = (items) => {
   return subTotal;
 };
 
-const massageItems = (items) => {
+const massageItems = (items, stripeItem = false) => {
   const orderItems = items.map((item) => {
-    return {
-      itemId: item._id,
-      title: item.title,
-      discount: item.discount,
-      price: item.price,
-      paid: priceAfterDiscount(item.price, item.discount),
-      quantity: item.purchasedQuantity,
-    };
+    if (stripeItem) {
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.title,
+            // images: item.images,
+            metadata: {
+              itemId: item._id,
+              title: item.title,
+              discount: item.discount,
+              price: item.price,
+              paid: priceAfterDiscount(item.price, item.discount),
+              quantity: item.purchasedQuantity,
+            },
+          },
+          unit_amount: priceAfterDiscount(item.price, item.discount) * 100,
+        },
+        quantity: item.purchasedQuantity,
+      };
+    } else {
+      return {
+        itemId: item._id,
+        title: item.title,
+        discount: item.discount,
+        price: item.price,
+        paid: priceAfterDiscount(item.price, item.discount),
+        quantity: item.purchasedQuantity,
+      };
+    }
   });
   return orderItems;
 };
 
 const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) => {
   const { email, address1, address2, city, state, country, notes } = userDetails;
-  const serviceFee = 1.05;
-  const total = (subTotal + deliveryFee * 100) * serviceFee;
+  const serviceFee = 1.1;
+  // const total = (subTotal + deliveryFee * 100) * serviceFee;
+  const total = Math.round(subTotal * serviceFee);
   const body = {
     email: email,
     amount: total,
@@ -77,6 +100,8 @@ const verifyUserDetails = (userDetails) => {
   return true;
 };
 
+// @ TO-DO: Change function to accept storeName instead of using derefenced Items
+// @ TO-DO: Add delivery fee when ready
 const initTransactionInteractor = async (
   { initiateTransaction, getGroupedItems, getStoreByName },
   { items, userDetails }
@@ -102,7 +127,7 @@ const initTransactionInteractor = async (
     userDetails: userDetails,
     items: massagedItems,
     subTotal: subTotal,
-    deliveryFee: 1500,
+    // deliveryFee: 1500,
     storeName: store.name,
   });
 
@@ -143,7 +168,7 @@ const verifyPaymentInteractor = async (
 
   // update the items
   await updateItemStatistics({ order });
-  // await sendNewOrderEmail(order, store.owner);
+  await sendNewOrderEmail(order, store.owner);
 };
 
 const getBanksInteractors = async ({ getBanks }) => {
@@ -180,8 +205,8 @@ const payoutInteractor = async (
   // do transfer --------
   const transferDetails = {
     source: 'balance',
-    // amount: store.wallet * 100 * 0.05, // Collect service fee agreeded by store
-    amount: 0, // Collect service fee agreeded by store
+    amount: store.wallet * 100 * 0.01, // Collect service fee agreeded by store
+    // amount: 0, // Collect service fee agreeded by store
     recipient: recipientCode,
   };
   const transferResponse = await transferOut({ transferDetails });
@@ -199,9 +224,30 @@ const payoutInteractor = async (
   return payout;
 };
 
+// =======STRIP INTERACTOR =========
+
+const createCheckout = async (
+  { createCheckoutUrl, getGroupedItems, getStoreByName },
+  { items, storeName, userDetails }
+) => {
+  // verify store
+  const store = await getStoreByName({ storeName: storeName });
+  if (!store) {
+    return Promise.reject(new Error('Invalid store'));
+  }
+  if (items.length <= 0 || !verifyUserDetails(userDetails)) {
+    return 'https://myshopx.net';
+  }
+  const dereferencedItems = await getGroupedItems(items);
+  const massagedItems = massageItems(dereferencedItems, true);
+  const url = await createCheckoutUrl({ lineItems: massagedItems, userDetails, storeName });
+  return url;
+};
+
 module.exports = {
   initTransactionInteractor,
   verifyPaymentInteractor,
   payoutInteractor,
   getBanksInteractors,
+  createCheckout,
 };

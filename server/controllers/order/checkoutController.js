@@ -2,6 +2,7 @@ const {
   // PAYSTACK INTERACTORS
   initTransactionInteractor,
   verifyPaymentInteractor,
+  createCheckout,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
@@ -9,9 +10,15 @@ const persistence = require('../../persistence/index');
 
 const handleCheckout = async (req, res) => {
   try {
+    let url = null;
+    const storeName = req.header('store');
+    const type = req.params?.paymentType;
     const { items, userDetails } = req.body;
-
-    const url = await initTransactionInteractor(persistence, { items, userDetails });
+    if (type === 'stripe') {
+      url = await createCheckout(persistence, { items, storeName, userDetails });
+    } else {
+      url = await initTransactionInteractor(persistence, { items, userDetails });
+    }
     res.status(200).json({ url });
   } catch (error) {
     console.error(error);

@@ -12,7 +12,6 @@ const handleStoreVisit = async (req, res) => {
   try {
     const store = req.header('store');
     const { isNewVisitor } = req.body;
-    console.log(isNewVisitor);
     await addVisitToStoreInteractor(persistence, { storeName: store, isNewVisitor });
     res.sendStatus(200);
   } catch (error) {

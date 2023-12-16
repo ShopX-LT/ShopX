@@ -33,12 +33,12 @@ const AboutForm = ({ design, handleInputChange }) => {
           <TabContext value={tabValue}>
             <Box>
               <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="contact tabs">
-                <Tab label="Layout" value="1" />
-                <Tab label="Customize" value="2" />
+                <Tab label="Customize" value="1" />
+                {/* <Tab label="Layout" value="2" /> */}
               </TabList>
             </Box>
-            <TabPanel value="1">Layout</TabPanel>
-            <TabPanel value="2">
+            <TabPanel value="1">
+              {/* <TabPanel value="2">Layout</TabPanel> */}
               <CustomizeTab design={design} handleInputChange={handleInputChange} />
             </TabPanel>
           </TabContext>
@@ -55,7 +55,7 @@ function CustomizeTab({ design, handleInputChange }) {
     <Box>
       <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
         <Grid item xs={12}>
-          <Typography variant="subtitle">Description</Typography>
+          <Typography variant="subtitle">Heading</Typography>
         </Grid>
         <Grid item xs={12}>
           <TextArea
@@ -73,6 +73,9 @@ function CustomizeTab({ design, handleInputChange }) {
           value={design.aboutHeadingColor}
         />
 
+        <Grid item xs={12} marginTop={8}>
+          <Typography variant="subtitle">Description</Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextArea
             name="aboutDescription"

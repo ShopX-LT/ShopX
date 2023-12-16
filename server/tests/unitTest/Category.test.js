@@ -1,32 +1,11 @@
 const { createCategoryInteractor, getAllCategoriesInteractor } = require('../../Interactors/CategoryInteractor');
+const { getStoreByNameAndEmail, addCategoryToStore, createCategory } = require('../mockData/MockCategoryPersistence');
 
 let goodInput = { storeName: 'valid store', email: 'admin@test.com', category: 'category new' };
 
 const store = {
   name: 'valid store',
   categories: [],
-};
-const storeWithBadCategory = {
-  name: 'store with bad category',
-  categories: 'should be an array',
-};
-//   MOCK PERSISTENCE
-const getStoreByNameAndEmail = async ({ storeName, email }) => {
-  if (storeName === 'valid store') return store;
-  if (storeName === 'store with bad category') return storeWithBadCategory;
-  return null;
-};
-const addCategoryToStore = async ({ store, categoryId }) => {
-  try {
-    store.categories.push(categoryId);
-    return true;
-  } catch (error) {
-    return null;
-  }
-};
-const createCategory = async ({ name, storeName, creatorsEmail }) => {
-  if (!name || !storeName || !creatorsEmail) return null;
-  return { id: 'goodid', name: name, storeName: storeName, creatorsEmail: creatorsEmail };
 };
 
 describe('createCategoryInteractor', () => {
@@ -36,9 +15,9 @@ describe('createCategoryInteractor', () => {
   test('should successfully create a category', async () => {
     const newCategory = await createCategoryInteractor(
       {
-        addCategoryToStore: addCategoryToStore,
-        getStoreByNameAndEmail: getStoreByNameAndEmail,
-        createCategory: createCategory,
+        addCategoryToStore,
+        getStoreByNameAndEmail,
+        createCategory,
       },
       goodInput
     );
@@ -56,14 +35,15 @@ describe('createCategoryInteractor', () => {
     await expect(async () => {
       await createCategoryInteractor(
         {
-          addCategoryToStore: addCategoryToStore,
-          getStoreByNameAndEmail: getStoreByNameAndEmail,
-          createCategory: createCategory,
+          addCategoryToStore,
+          getStoreByNameAndEmail,
+          createCategory,
         },
         badInput
       );
     }).rejects.toThrow('Invalid store');
   });
+
   test('should throw error creating new category', async () => {
     // should throw a save category error
     const badInput = { storeName: 'valid store', email: 'admin@test.com' };
@@ -71,9 +51,9 @@ describe('createCategoryInteractor', () => {
     await expect(async () => {
       await createCategoryInteractor(
         {
-          addCategoryToStore: addCategoryToStore,
-          getStoreByNameAndEmail: getStoreByNameAndEmail,
-          createCategory: createCategory,
+          addCategoryToStore,
+          getStoreByNameAndEmail,
+          createCategory,
         },
         badInput
       );
@@ -86,9 +66,9 @@ describe('createCategoryInteractor', () => {
     await expect(async () => {
       await createCategoryInteractor(
         {
-          addCategoryToStore: addCategoryToStore,
-          getStoreByNameAndEmail: getStoreByNameAndEmail,
-          createCategory: createCategory,
+          addCategoryToStore,
+          getStoreByNameAndEmail,
+          createCategory,
         },
         badInput
       );

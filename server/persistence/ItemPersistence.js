@@ -141,7 +141,6 @@ const updateItemStatistics = async ({ order }) => {
     await Promise.all(
       order.itemsOrdered.map(async (item) => {
         const itemToUpdate = await Item.findById(item.itemId);
-        console.log(itemToUpdate);
         itemToUpdate.quantity -= item.quantity;
         itemToUpdate.sales += item.quantity;
         itemToUpdate.salesIpAddresses.push(order.ip_address);

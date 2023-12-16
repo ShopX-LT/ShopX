@@ -55,6 +55,13 @@ describe('getStoreOrdersInteractor', () => {
     expect(getAllStoreOrdersMock).toHaveBeenCalledWith({ storeName });
     expect(formatOrder).not.toHaveBeenCalled();
   });
-
-  // Add more test cases here for edge and normal cases
 });
+
+/*
+ * TEST CASES:
+ * 1. Creates an order
+ * 2. Retrivies orders for a store
+ * 3. Updates an order
+ * 4. Update an order that does not exist
+ * 5. Get orders from a store that does not exist
+ */

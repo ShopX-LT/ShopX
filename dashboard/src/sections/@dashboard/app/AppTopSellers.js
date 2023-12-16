@@ -7,7 +7,7 @@ import { fNumber } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
-function AppTopSellers({ title, subheader, list, ...other }) {
+function AppTopSellers({ title, subheader, list = [], ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -26,7 +26,7 @@ function AppTopSellers({ title, subheader, list, ...other }) {
 AppTopSellers.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
+  list: PropTypes.array,
 };
 
 //  ------------------------
