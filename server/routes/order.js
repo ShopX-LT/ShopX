@@ -4,6 +4,7 @@ const { handleCheckout, handleverifyPayment } = require('../controllers/order/ch
 const router = express.Router();
 
 router.post('/checkout', handleCheckout);
+router.post('/checkout/:paymentType', handleCheckout);
 router.post('/verify-payment', handleverifyPayment);
 
 module.exports = router;

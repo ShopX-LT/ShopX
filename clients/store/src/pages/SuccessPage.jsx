@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GeneralButton from '../lib/button/GeneralButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from '../redux/cart/cartSlice';
 import useAxiosWithStore from '../api/apiHooks/useAxiosWithStore';
 import { verifyPayment } from '../services/checkoutService';
@@ -11,6 +11,7 @@ const SuccessPage = () => {
   const axios = useAxiosWithStore();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const heroDesign = useSelector((state) => state.webDesign.hero);
   const [firstRender, setFirstRender] = useState(true);
 
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -41,8 +42,14 @@ const SuccessPage = () => {
           textAlign: 'center',
         }}
       >
-        <Typography variant="h3">Thank you for shopping with ShopX!</Typography>
-        <GeneralButton buttonstyle={'action'} onClick={() => navigate('/home')}>
+        <Typography variant="h3" sx={{ color: heroDesign.heroHeadlineColor }}>
+          Thank you for shopping with ShopX!
+        </Typography>
+        <GeneralButton
+          buttonstyle={'action'}
+          onClick={() => navigate('/home')}
+          sx={{ background: heroDesign.heroActionButtonColor, color: heroDesign.heroActionButtonTextColor }}
+        >
           Continue Shopping!
         </GeneralButton>
       </Box>

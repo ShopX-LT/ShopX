@@ -29,6 +29,7 @@ const StoreSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    deliveryFee: { type: Number, default: 1500 },
     isProMember: Boolean,
 
     wallet: {

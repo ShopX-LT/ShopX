@@ -116,6 +116,15 @@ const checkStoreNameInteractor = async ({ getStoreByName }, { storeName }) => {
   return true;
 };
 
+const updateStoreDeliveryFeeInteractor = async ({ updateStoreDeliveryFee }, { storeName, update }) => {
+  const { deliveryFee } = update;
+  const updatedStore = await updateStoreDeliveryFee({ storeName, deliveryFee });
+  if (!updatedStore) {
+    throw new Error('Failed to update Store Delivery Fee');
+  }
+  return updatedStore.deliveryFee;
+};
+
 const formatStore = (store) => {
   return {
     name: store?.name,
@@ -152,4 +161,5 @@ module.exports = {
   getFieldFromStoreInteractor,
   checkStoreNameInteractor,
   addVisitToStoreInteractor,
+  updateStoreDeliveryFeeInteractor,
 };

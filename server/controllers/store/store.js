@@ -8,6 +8,7 @@ const {
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,
+  updateStoreDeliveryFeeInteractor,
   //ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,
@@ -141,9 +142,20 @@ const handleUpdateDesign = async (req, res) => {
   try {
     const storeName = req.auth?.store;
     const update = req.body;
-    console.log(req.body);
     const design = await updateStoreDesignInteractor(persistence, { storeName, update });
     return res.status(200).json(design);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+const handleSetDeliveryFee = async (req, res) => {
+  try {
+    const storeName = req.auth?.store;
+    const update = req.body;
+    const deliveryFee = await updateStoreDeliveryFeeInteractor(persistence, { storeName, update });
+    return res.status(200).json(deliveryFee);
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);
@@ -160,4 +172,5 @@ module.exports = {
   handleCheckStoreName,
   handleGetDesign,
   handleUpdateDesign,
+  handleSetDeliveryFee,
 };

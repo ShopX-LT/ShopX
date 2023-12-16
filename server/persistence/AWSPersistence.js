@@ -6,6 +6,7 @@
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { v4: uuidv4 } = require('uuid');
+// const { ImageStorage } = require('custommodules');
 
 /**
  * Saves the given files to an S3 bucket specified in the environment variables.
@@ -15,6 +16,9 @@ const { v4: uuidv4 } = require('uuid');
  */
 const saveImagesToS3Bucket = async (files) => {
   try {
+    // const s3client = new ImageStorage();
+    // const images = await s3client.saveImages(files);
+    // return images;
     const images = []; // new name for the images
     const commands = []; //commands that will be sent synchronously
     const bucketName = process.env.BUCKET_NAME;
@@ -57,6 +61,9 @@ const saveImagesToS3Bucket = async (files) => {
 
 const getImagesUrlFromS3Buscket = async ({ images }) => {
   try {
+    // const s3client = new ImageStorage();
+    // const imagesUrl = await s3client.getImages({ images });
+    // return imagesUrl;
     const bucketName = process.env.BUCKET_NAME;
     const bucketRegion = process.env.BUCKET_REGION;
     const accessKey = process.env.ACCESS_KEY;

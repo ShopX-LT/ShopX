@@ -18,6 +18,7 @@ const itemRoutes = require('./routes/item');
 const orderRoutes = require('./routes/order');
 const userRoutes = require('./routes/user');
 const designRoutes = require('./routes/design');
+const reviewRoutes = require('./routes/review');
 const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
 const { sendNewVisitEmail } = require('./services/EmailService');
@@ -51,6 +52,7 @@ function makeApp(database) {
   app.use('/api/order', orderRoutes);
   app.use('/api/user', userRoutes);
   app.use('/api/design', designRoutes);
+  app.use('/api/review', reviewRoutes);
 
   app.use('/api/newvisit', async (req, res) => {
     try {

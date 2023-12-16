@@ -29,7 +29,9 @@ const {
   verifyPaymentInteractor,
   payoutInteractor,
   getBanksInteractors,
+  createCheckout,
 } = require('./PaystackInteractor');
+const { getItemReviewsInteractor, createReviewInteractor } = require('./ReviewInteractor');
 const {
   createStoreInteractor,
   storeLogin,
@@ -38,6 +40,7 @@ const {
   getStoreStatsInteractor,
   checkStoreNameInteractor,
   addVisitToStoreInteractor,
+  updateStoreDeliveryFeeInteractor,
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
 const { getOrCreateUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
@@ -52,6 +55,7 @@ module.exports = {
   getStoreStatsInteractor,
   checkStoreNameInteractor,
   addVisitToStoreInteractor,
+  updateStoreDeliveryFeeInteractor,
   // USER INTERACTORS
   getOrCreateUserInteractor,
   userLogin,
@@ -75,6 +79,10 @@ module.exports = {
   verifyPaymentInteractor,
   payoutInteractor,
   getBanksInteractors,
+  createCheckout,
+  // REVIEW INTERACTORS
+  getItemReviewsInteractor,
+  createReviewInteractor,
   // TOKEN INTERACTORS
   generateTokensInteractor,
   adminRefreshTokenInteractor,

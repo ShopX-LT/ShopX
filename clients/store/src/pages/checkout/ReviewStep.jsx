@@ -8,9 +8,10 @@ export default function Review({ email, address1, address2, city, state, country
   const { store } = useStore();
   const cartItems = useSelector((state) => state.cart.cart);
   const cartTotal = useSelector((state) => state.cart.total);
-  const deleveryFee = 1500;
+  const deliveryFee = 1500;
   const serviceFee = cartTotal * 0.05;
-  const total = cartTotal + serviceFee + deleveryFee;
+  // const total = cartTotal + serviceFee + deliveryFee;
+  const total = cartTotal + serviceFee;
   return (
     <Fragment>
       <Typography variant="h6" gutterBottom>
@@ -28,10 +29,10 @@ export default function Review({ email, address1, address2, city, state, country
           }
           return null;
         })}
-        <ListItem sx={{ py: 1, px: 0 }}>
+        {/* <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Delivery" />
-          <Typography variant="body2">{fCurrency(deleveryFee)}</Typography>
-        </ListItem>
+          <Typography variant="body2">{fCurrency(deliveryFee)}</Typography>
+        </ListItem> */}
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Service Fee" />
           <Typography variant="body2">{fCurrency(serviceFee)}</Typography>

@@ -13,6 +13,7 @@ const {
   handleCheckStoreName,
   handleGetDesign,
   handleUpdateDesign,
+  handleSetDeliveryFee,
 } = require('../controllers/store/store');
 const { handleRefreshToken } = require('../controllers/refreshController');
 const { handleLogout } = require('../controllers/logoutController');
@@ -34,6 +35,7 @@ router.put('/design', verifyToken, handleUpdateDesign);
 router.get('/order', verifyToken, handleGetAllOrders);
 router.post('/payout', verifyToken, handlePayout);
 router.get('/bank-list', verifyToken, handleGetBankList);
+router.put('/delivery-fee', verifyToken, handleSetDeliveryFee);
 router.put('/update-order/:id', verifyToken, handleUpdateOrder);
 
 module.exports = router;

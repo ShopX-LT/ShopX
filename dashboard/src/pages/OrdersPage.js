@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { murmur3 } from 'murmurhash-js';
 
 import { Container, Card, Stack, Table, TableBody, TableContainer, Typography } from '@mui/material';
 
+import { ordersError, updateOrders } from '../redux';
 import { getOrders, updateOrder } from '../services/OrderService';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 // components
@@ -19,6 +20,8 @@ function hashArrayOfOrders(arr) {
 
 const OrdersPage = () => {
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch();
+
   const orders = useSelector((state) => state.orders.orders);
 
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
@@ -85,6 +88,19 @@ const OrdersPage = () => {
     }
     setFirstRender(false);
   }, [arrayHash]);
+
+  useEffect(() => {
+    // GET ORDERS
+    const handleGetOrders = async () => {
+      const ordersResponse = await getOrders(axiosPrivate);
+      if (!ordersResponse) {
+        dispatch(ordersError('Error getting orders'));
+        return;
+      }
+      dispatch(updateOrders(ordersResponse));
+    };
+    handleGetOrders();
+  }, []);
 
   return (
     <div>

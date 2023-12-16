@@ -48,6 +48,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Error creating new category':
       res.status(400).json({ message: error.message });
       break;
+    case 'Failed to update Store Delivery Fee':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Failed to create order':
       res.status(400).json({ message: error.message });
       break;

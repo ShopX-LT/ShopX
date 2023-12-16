@@ -1,6 +1,10 @@
 import React from 'react';
 import { Box, Card, Stack, Link, Typography, styled, Button } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { fCurrency } from '../../utils/formatNumber';
 import ActionButton from '../button/ActionButton';
@@ -9,6 +13,8 @@ import useCart from '../../sections/cart/hooks/useCart';
 import { useSelector } from 'react-redux';
 import Label from '../label';
 import useStore from '../../hooks/useStore';
+import { useState } from 'react';
+import DescriptionPage from '../../pages/DescriptionPage';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({
@@ -21,16 +27,6 @@ const StyledProductImg = styled('img')({
 
 // ----------------------------------------------------------------------
 
-const mock = {
-  backgroundColor: 'white',
-  mainTextColor: 'black',
-  subTextColor: 'grey',
-  actionButtonStyle: '',
-  actionButtonText: 'ADD TO CART',
-  actionButtonColor: 'black',
-  actionButtonTextColor: 'white',
-};
-
 const SimpleContainer = ({ product }) => {
   const { store } = useStore();
   const { title, imagesUrl, price, discount, quantity } = product;
@@ -38,6 +34,15 @@ const SimpleContainer = ({ product }) => {
   const priceAtferDiscount = price * (1 - discount / 100);
   const { handleAddToCart } = useCart();
   const containerDesign = useSelector((state) => state.webDesign.productContainer);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleDialogClickOpen = () => {
+    setIsDialogOpen(true);
+  };
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
 
   const handleOnClick = () => {
     handleAddToCart({
@@ -51,6 +56,7 @@ const SimpleContainer = ({ product }) => {
 
   return (
     <Card sx={{ background: containerDesign.productBackgroundColor }}>
+      <DescriptionPage isOpen={isDialogOpen} handleClose={handleDialogClose} product={product} />
       <Box sx={{ position: 'relative' }}>
         {quantity < 5 && (
           <Label
@@ -69,11 +75,22 @@ const SimpleContainer = ({ product }) => {
         )}
       </Box>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        <Carousel navButtonsAlwaysVisible={true} sx={{ position: 'absolute', width: '100%', height: '100%', top: 0 }}>
+        <Swiper
+          loop={true}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Pagination]}
+          style={{ position: 'absolute', width: '100%', height: '100%', top: 0 }}
+        >
           {imagesUrl.map((imageUrl, index) => {
-            return <StyledProductImg key={index} alt={title} src={imageUrl} />;
+            return (
+              <SwiperSlide key={imageUrl}>
+                <StyledProductImg alt={title} src={imageUrl} onClick={handleDialogClickOpen} />
+              </SwiperSlide>
+            );
           })}
-        </Carousel>
+        </Swiper>
       </Box>
       <Stack spacing={2} direction="row" alignItems={'center'} justifyContent={'space-between'}>
         <Stack

@@ -35,7 +35,7 @@ const OrderSchema = new mongoose.Schema(
     billingAddress: {},
 
     //PAYMENT DETAILS
-    reference: String,
+    reference: { type: String, unique: true },
     ip_address: String,
     fees: Number,
     notes: String,

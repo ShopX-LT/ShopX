@@ -21,7 +21,7 @@ const FrontPage = () => {
         <Typography variant="h4" gutterBottom>
           Front Page
         </Typography>
-        <Button variant="contained">Preview</Button>
+        {/* <Button variant="contained">Preview</Button> */}
       </Stack>
       <Paper
         elevation={3}

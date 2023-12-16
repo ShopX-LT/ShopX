@@ -62,7 +62,6 @@ const handleSearch = async (req, res) => {
     const { searchParam } = req.params;
 
     const items = await getSearchItemsInteractor(persistence, { storeName: store, searchParam }, true);
-    console.log(items);
     return res.status(200).json({ items });
   } catch (error) {
     console.error(error);
