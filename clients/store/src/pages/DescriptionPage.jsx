@@ -98,11 +98,11 @@ const DescriptionPage = ({ isOpen, handleClose, product }) => {
                 >
                   {fCurrency(product.price)}
                 </Typography>
-                {product.discount && (
+                {product.discount ? (
                   <Typography variant="h6" fontWeight={300}>
                     {fCurrency(product.price * (1 - product.discount / 100))}
                   </Typography>
-                )}
+                ) : null}
               </Box>
             </Box>
 

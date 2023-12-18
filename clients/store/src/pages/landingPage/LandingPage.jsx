@@ -9,7 +9,7 @@ import Main from './Main';
 const LandingPage = () => {
   useEffect(() => {
     try {
-      // axios.get('https://myshopx.net/api/newvisit');
+      axios.get('https://myshopx.net/api/newvisit');
     } catch (error) {}
   }, []);
   const bgColor = ({ gl }) => {

@@ -71,7 +71,7 @@ function makeApp(database) {
   });
 
   //MONGOSSE SETUP
-  database.connect(process.env.MONGO_URL, {
+  database.connect(process.env.PROD_MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
