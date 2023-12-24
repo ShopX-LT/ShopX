@@ -85,28 +85,6 @@ const SignIn = () => {
     }
   };
 
-  const setup = async () => {
-    // GET ORDERS
-    const ordersResponse = await getOrders(axiosPrivate);
-    if (!ordersResponse) {
-      dispatch(ordersError('Error getting orders'));
-      return;
-    }
-    dispatch(updateOrders(ordersResponse));
-    // GET STATS
-
-    const statsResponse = await getStoreStats(axiosPrivate);
-    if (!statsResponse) {
-      dispatch(ordersError('Error getting store details'));
-      return;
-    }
-    dispatch(setStoreStats(statsResponse));
-  };
-
-  useEffect(() => {
-    setup();
-  }, [auth.token, auth.admin, auth.store]);
-
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
