@@ -27,6 +27,8 @@ const FrontPage = () => {
         elevation={3}
         sx={{
           p: 2,
+          minWidth: '800px',
+          overflowX: 'scroll',
         }}
       >
         <Box sx={{ flexGrow: 1, display: 'flex' }}>
