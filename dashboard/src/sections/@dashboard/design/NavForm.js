@@ -15,17 +15,17 @@ const NavForm = ({ design, handleInputChange }) => {
   return (
     <>
       <Box>
-        <Typography variant="h6">Nav bar</Typography>
+        <Typography variant="h6">Customize Navbar</Typography>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={tabValue}>
             <Box>
               <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="nav tabs">
-                <Tab label="Customize" value="1" />
+                <Tab label="Colors" value="1" />
                 {/* <Tab label="Layout" value="2" /> */}
               </TabList>
             </Box>
             <TabPanel value="1">
-              <CustomizeTab design={design} handleInputChange={handleInputChange} />
+              <ColorTab design={design} handleInputChange={handleInputChange} />
             </TabPanel>
             {/* <TabPanel value="2">Layout</TabPanel> */}
           </TabContext>
@@ -37,7 +37,7 @@ const NavForm = ({ design, handleInputChange }) => {
 
 export default NavForm;
 
-function CustomizeTab({ design, handleInputChange }) {
+function ColorTab({ design, handleInputChange }) {
   return (
     <Box>
       <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>

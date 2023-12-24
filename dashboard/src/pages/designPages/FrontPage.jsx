@@ -42,8 +42,8 @@ const FrontPage = () => {
           >
             <Tab label="Nav bar" />
             <Tab label="Hero" />
-            <Tab label="Contact" />
             <Tab label="About Us" />
+            <Tab label="Contact" />
           </Tabs>
           <TabPanel value={tabValue} index={0}>
             <NavForm design={design} handleInputChange={handleInputChange} />
@@ -52,10 +52,10 @@ const FrontPage = () => {
             <HeroForm design={design} handleInputChange={handleInputChange} />
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-            <ContactForm design={design} handleInputChange={handleInputChange} />
+            <AboutForm design={design} handleInputChange={handleInputChange} />
           </TabPanel>
           <TabPanel value={tabValue} index={3}>
-            <AboutForm design={design} handleInputChange={handleInputChange} />
+            <ContactForm design={design} handleInputChange={handleInputChange} />
           </TabPanel>
         </Box>
         <Button sx={{ marginLeft: 1 }} variant="contained" onClick={handleFormSubmit}>
