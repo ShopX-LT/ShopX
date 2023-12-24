@@ -17,7 +17,7 @@ const handleCheckout = async (req, res) => {
     if (type === 'stripe') {
       url = await createCheckout(persistence, { items, storeName, userDetails });
     } else {
-      url = await initTransactionInteractor(persistence, { items, userDetails });
+      url = await initTransactionInteractor(persistence, { items, userDetails, storeName });
     }
     res.status(200).json({ url });
   } catch (error) {

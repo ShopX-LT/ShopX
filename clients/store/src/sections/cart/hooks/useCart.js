@@ -1,10 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { addToCart, increaseItemCount, decreaseItemCount } from '../../../redux/cart/cartSlice';
+import { addToCart, increaseItemCount, decreaseItemCount, getCartTotal } from '../../../redux/cart/cartSlice';
 
 const useCart = () => {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cart);
+
   const handleAddToCart = ({ id, title, discountedPrice, availableQuantity, store }) => {
     dispatch(
       addToCart({
@@ -24,7 +26,17 @@ const useCart = () => {
   const decreaseCount = (id) => {
     dispatch(decreaseItemCount({ id: id }));
   };
-  return { handleAddToCart, increaseCount, decreaseCount };
+  const handleGetCartTotal = (store) => {
+    dispatch(getCartTotal(store));
+  };
+  const getItemsInCartCount = (store) => {
+    let count = 0;
+    cartItems.forEach((item) => {
+      if (item.store === store) count++;
+    });
+    return count;
+  };
+  return { handleAddToCart, increaseCount, decreaseCount, handleGetCartTotal, getItemsInCartCount };
 };
 
 export default useCart;

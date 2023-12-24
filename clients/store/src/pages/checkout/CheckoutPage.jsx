@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from '../../redux/cart/cartSlice';
 import { updateUser } from '../../redux/user/userSlice';
 import { createOrder } from '../../services/checkoutService';
+import useCart from '../../sections/cart/hooks/useCart';
+import useStore from '../../hooks/useStore';
 
 function Copyright() {
   return (
@@ -37,9 +39,12 @@ function Copyright() {
 const steps = ['Shipping address', 'Review your order'];
 
 export default function CheckoutPage() {
+  const { store } = useStore();
   const axios = useAxiosWithStore();
   const dispatch = useDispatch();
+  const { getItemsInCartCount } = useCart();
   const cartItems = useSelector((state) => state.cart.cart);
+  const cartLength = getItemsInCartCount(store);
   const storedUserDetails = useSelector((state) => state.user);
   const [activeStep, setActiveStep] = useState(0);
   const [email, setEmail] = useState(storedUserDetails.email);
@@ -109,7 +114,7 @@ export default function CheckoutPage() {
     }
   }
 
-  const isDisabled = Boolean(cartItems.length === 0 || !email || !address1 || !city || !state || !country);
+  const isDisabled = Boolean(cartLength === 0 || !email || !address1 || !city || !state || !country);
 
   const handleSubmit = async () => {
     const userDetails = {
@@ -193,7 +198,7 @@ export default function CheckoutPage() {
                   {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
               </Box>
-              {cartItems.length === 0 && <Typography variant="caption">*Your cart is empty</Typography>}
+              {cartLength === 0 && <Typography variant="caption">*Your cart is empty</Typography>}
             </Fragment>
           )}
         </Paper>

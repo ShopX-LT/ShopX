@@ -104,14 +104,20 @@ const verifyUserDetails = (userDetails) => {
 // @ TO-DO: Add delivery fee when ready
 const initTransactionInteractor = async (
   { initiateTransaction, getGroupedItems, getStoreByName },
-  { items, userDetails }
+  { items, userDetails, storeName }
 ) => {
   if (items.length <= 0 || !verifyUserDetails(userDetails)) {
     return 'https://myshopx.net';
   }
+  const itemsNeeded = items.filter((item) => {
+    item.store === storeName;
+  });
+  if (itemsNeeded.length <= 0) {
+    return 'https://myshopx.net';
+  }
 
   // get the items based of the ids and massage them
-  const dereferencedItems = await getGroupedItems(items);
+  const dereferencedItems = await getGroupedItems(itemsNeeded);
   const massagedItems = massageItems(dereferencedItems);
 
   // get the subtotal
