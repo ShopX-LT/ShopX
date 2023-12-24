@@ -31,6 +31,7 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { createItem } from '../services/ItemService';
 import { getCategories } from '../services/CategoryService';
 import { getFields, creatField } from '../services/FieldService';
+import ImageUploadBox from '../components/image-upload-box';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
@@ -283,63 +284,14 @@ const AddProductPage = () => {
                 </Grid>
               </Grid>
               {/* ************************** */}
-              <Box gridColumn="span 4" border={`1px solid black`} borderRadius="5px" p="1rem" m="1rem">
-                <Dropzone
-                  acceptedFiles=".jpg,.jpeg,.png"
-                  multiple
-                  onDrop={(newImages) => {
-                    setProductImages((prevState) => {
-                      const newState = [...prevState, ...newImages];
-                      return newState;
-                    });
-                    setFieldValue('images', [...productImages, ...newImages]);
-                  }}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <Box
-                      {...getRootProps()}
-                      border={`1px dashed black`}
-                      p="1rem"
-                      sx={{ '&:hover': { cursor: 'pointer' } }}
-                    >
-                      <input {...getInputProps()} />
+              <ImageUploadBox
+                setImages={setProductImages}
+                images={productImages}
+                setFieldValue={setFieldValue}
+                uploadedImages={values.images}
+                field="images"
+              />
 
-                      <p>Add Picture Here</p>
-                    </Box>
-                  )}
-                </Dropzone>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
-                  {values.images.map((image, index) => {
-                    return (
-                      <Box key={image.name}>
-                        <img src={URL.createObjectURL(image)} alt={image.name} width={200} height={200} />
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 1,
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Typography>{image.name}</Typography>
-                          <IconButton
-                            onClick={() => {
-                              const newFiles = [...productImages];
-                              newFiles.splice(index, 1);
-                              setProductImages(newFiles);
-                              setTimeout(() => {
-                                setFieldValue('images', newFiles);
-                              }, 0);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Box>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
               <Box sx={{ mx: 'auto' }}>
                 <Button variant="contained" sx={{ mt: 4 }} type="submit" fullWidth>
                   Save

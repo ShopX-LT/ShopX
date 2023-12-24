@@ -108,7 +108,7 @@ export default function ShopProductCard({ product }) {
             <DeleteIcon />
           </Button>
         </Stack>
-        <Drawer title="Edit Product" openDrawer={openDrawer} onCloseDrawer={handleCloseDrawer} width={450}>
+        <Drawer title="Edit Product" openDrawer={openDrawer} onCloseDrawer={handleCloseDrawer} width={350}>
           <EditProductForm product={product} onCloseDrawer={handleCloseDrawer} />
         </Drawer>
       </Stack>

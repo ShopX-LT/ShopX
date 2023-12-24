@@ -161,6 +161,25 @@ const validateStore = async (getStoreByName, store) => {
   return validStore;
 };
 
+const updateItemImagesInteractor = async ({ updateItemImages, saveImagesToS3Bucket }, { id, images }) => {
+  try {
+    const savedImages = await saveImagesToS3Bucket(images);
+    if (!savedImages) {
+      return Promise.reject(new Error('Error saving images'));
+    }
+
+    const item = await updateItemImages({
+      id,
+      images: savedImages,
+    });
+    const formattedItem = formatItemForStore(item);
+    return formattedItem;
+  } catch (error) {
+    console.log('Item Interact error in createItemInteractor()', error);
+    return null;
+  }
+};
+
 const updateItemByIdInteractor = async (
   { updateItemById, getImagesUrlFromS3Buscket },
   { id, storeName, updatedItem }
@@ -232,6 +251,7 @@ module.exports = {
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
 };

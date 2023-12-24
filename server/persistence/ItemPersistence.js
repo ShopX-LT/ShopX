@@ -117,9 +117,21 @@ const getItemsByQuery = async ({ query, store }) => {
   }
 };
 
+const updateItemImages = async ({ id, images }) => {
+  try {
+    const item = await Item.findOne({ _id: id });
+    item.images.push(...images);
+    const savedItem = await item.save();
+    return savedItem;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemImages()', error);
+    return null;
+  }
+};
+
 const updateItemById = async ({ id, storeName, updatedItem }) => {
   try {
-    const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, { new: true });
+    const item = await Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, { new: true });
     return item;
   } catch (error) {
     console.error('Item Persistence error in updateItemById()', error);
@@ -161,6 +173,7 @@ module.exports = {
   getItemsByQuery,
   getGroupedItems,
   getItemById,
+  updateItemImages,
   updateItemById,
   updateItemStatistics,
   deleteItemById,

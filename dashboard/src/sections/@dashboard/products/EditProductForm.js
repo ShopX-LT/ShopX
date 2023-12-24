@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import { updateItem } from '../../../services/ItemService';
+import { updateItem, updateItemImages } from '../../../services/ItemService';
+import ImageUploadBox from '../../../components/image-upload-box';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
@@ -18,12 +19,20 @@ const itemShema = Yup.object().shape({
 const EditProductForm = ({ product, onCloseFilter }) => {
   const axiosPrivate = useAxiosPrivate();
   const { title, price, discount, quantity, id } = product;
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   // use api to get the items info
   const initialValueItem = {
     title,
     price,
     quantity,
     discount,
+  };
+
+  const handleOpenUploadModal = () => {
+    setIsUploadModalOpen(true);
+  };
+  const handleCloseUploadModal = () => {
+    setIsUploadModalOpen(false);
   };
 
   /**
@@ -42,7 +51,7 @@ const EditProductForm = ({ product, onCloseFilter }) => {
     // Send formData object to server to create item.
     await updateItem(axiosPrivate, toast, id, formData);
     // set the drawer to close and reload the page
-    onCloseFilter();
+    // onCloseFilter();
     window.location.reload();
     onSubmitProps.resetForm();
   };
@@ -61,6 +70,9 @@ const EditProductForm = ({ product, onCloseFilter }) => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
+          <Button variant="outlined" sx={{ mb: 4 }} fullWidth onClick={handleOpenUploadModal}>
+            Edit Images
+          </Button>
           <TextField
             margin="dense"
             label="Title"
@@ -101,6 +113,10 @@ const EditProductForm = ({ product, onCloseFilter }) => {
             value={values.discount}
             fullWidth
           />
+
+          <Modal open={isUploadModalOpen} onClose={handleCloseUploadModal} aria-labelledby="upload-images-modal">
+            <UploadImages product={product} closeUploadModal={handleCloseUploadModal} />
+          </Modal>
           <Box sx={{ mx: 'auto' }}>
             <Button variant="contained" sx={{ mt: 4 }} type="submit" fullWidth>
               Save
@@ -113,3 +129,97 @@ const EditProductForm = ({ product, onCloseFilter }) => {
 };
 
 export default EditProductForm;
+
+function UploadImages({ product, closeUploadModal }) {
+  const [productImages, setProductImages] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+
+  // YUP DECLERACTIONS
+  const imageShema = Yup.object().shape({
+    images: Yup.array(),
+  });
+
+  const initialValueItem = {
+    images: [],
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: { xs: 300, md: 800 },
+    height: '700px',
+    overflowY: 'scroll',
+    bgcolor: 'background.paper',
+    border: '1px solid #000',
+    borderRadius: '8px',
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
+
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    const formData = new FormData();
+
+    // Append each image file to the formData object.
+    values.images.forEach((image) => {
+      formData.append('images', image);
+    });
+
+    await updateItemImages(axiosPrivate, toast, product.id, formData);
+    onSubmitProps.resetForm();
+    setProductImages((prevState) => {
+      const newState = [];
+      return newState;
+    });
+    closeUploadModal();
+  };
+
+  return (
+    <Formik onSubmit={handleFormSubmit} initialValues={initialValueItem} validationSchema={imageShema}>
+      {({
+        values,
+        errors,
+        touched,
+        isValidating,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        setFieldValue,
+        resetForm,
+      }) => (
+        <Box sx={{ ...style }}>
+          <Typography variant="h3" sx={{ borderBottom: '1px solid black', marginBottom: 2 }}>
+            Edit Images
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <ImageUploadBox
+              setImages={setProductImages}
+              images={productImages}
+              setFieldValue={setFieldValue}
+              uploadedImages={values.images}
+              field="images"
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap', marginTop: 4 }}>
+              {product.imagesUrl.map((url, index) => (
+                <img
+                  style={{ width: '100px', height: '100px' }}
+                  src={url}
+                  key={product.images[index]}
+                  alt={product.images[index]}
+                />
+              ))}
+            </Box>
+
+            <Box sx={{ mx: 'auto' }}>
+              <Button variant="contained" sx={{ mt: 4 }} type="submit" fullWidth>
+                Save
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      )}
+    </Formik>
+  );
+}

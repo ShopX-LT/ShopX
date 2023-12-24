@@ -18,6 +18,7 @@ const {
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
 } = require('./ItemInteractor');
@@ -65,6 +66,7 @@ module.exports = {
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
   // CATEGORY INTERCATORS
