@@ -58,7 +58,7 @@ export const cartSlice = createSlice({
     },
     clearCart: (state, action) => {
       const newCart = state.cart.filter((item) => {
-        item.store !== action.payload;
+        return item.store !== action.payload;
       });
       state.cart = newCart;
       state.total = 0;

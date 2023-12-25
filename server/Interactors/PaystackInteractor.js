@@ -110,7 +110,7 @@ const initTransactionInteractor = async (
     return 'https://myshopx.net';
   }
   const itemsNeeded = items.filter((item) => {
-    item.store === storeName;
+    return item.store === storeName;
   });
   if (itemsNeeded.length <= 0) {
     return 'https://myshopx.net';
