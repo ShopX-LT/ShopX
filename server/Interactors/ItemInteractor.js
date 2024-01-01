@@ -180,6 +180,20 @@ const updateItemImagesInteractor = async ({ updateItemImages, saveImagesToS3Buck
   }
 };
 
+const deleteImageFromItemInteractor = async ({ deleteImageFromItem }, { itemId, imageId }) => {
+  // TODO remove from AWS bucket
+  try {
+    const item = await deleteImageFromItem({ itemId, imageId });
+    if (!item) {
+      console.log(`ImageId: ${imageId}, itemId: ${itemId}`);
+      return Promise.reject(new Error('Error deleting an image'));
+    }
+    return true;
+  } catch (error) {
+    console.log('Erorr on deleteImageFromItem', error);
+  }
+};
+
 const updateItemByIdInteractor = async (
   { updateItemById, getImagesUrlFromS3Buscket },
   { id, storeName, updatedItem }
@@ -254,4 +268,5 @@ module.exports = {
   updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
 };

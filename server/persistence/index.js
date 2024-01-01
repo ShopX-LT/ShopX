@@ -22,6 +22,7 @@ const {
   updateItemById,
   deleteItemById,
   updateItemStatistics,
+  deleteImageFromItem,
 } = require('./ItemPersistence');
 
 const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
@@ -89,6 +90,7 @@ module.exports = {
   updateItemById,
   deleteItemById,
   updateItemStatistics,
+  deleteImageFromItem,
 
   // CATEGORY PERSISTENCE
   createCategory,

@@ -21,6 +21,7 @@ const {
   updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
 } = require('./ItemInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
 
@@ -69,6 +70,7 @@ module.exports = {
   updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,

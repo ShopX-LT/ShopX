@@ -7,6 +7,7 @@ const {
   getAllItemsForUser,
   deleteById,
   updateItemImages,
+  deleteItemImage,
   updateItemById,
   handleSearch,
 } = require('../controllers/item/item');
@@ -36,7 +37,8 @@ const router = express.Router();
 
 // STORE ONLY ROUTES
 router.post('/create', verifyToken, upload.array('images'), createItem);
-router.post('/update/:id', verifyToken, upload.array('images'), updateItemImages);
+router.post('/image/update/:id', verifyToken, upload.array('images'), updateItemImages);
+router.delete('/image/delete/:itemId/:imageId', verifyToken, deleteItemImage);
 // router.get('/store/:id', verifyToken, getItem);
 router.get('/store/items', verifyToken, getAllItemsForStore);
 router.put('/store/update/:id', verifyToken, updateItemById);

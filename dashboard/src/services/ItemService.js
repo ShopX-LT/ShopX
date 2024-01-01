@@ -1,6 +1,7 @@
 const CREAT_ITEM_URL = '/api/item/create';
 const UPDATE_ITEM_URL = '/api/item/store/update';
-const UPDATE_ITEM_IMAGE_URL = '/api/item/update';
+const UPDATE_ITEM_IMAGE_URL = '/api/item/image/update';
+const DELETE_ITEM_IMAGE_URL = '/api/item/image/delete';
 const DELETE_ITEM_URL = '/api/item/store/remove';
 const GET_ALL_ITEMS_URL = '/api/item/store/items';
 
@@ -27,14 +28,25 @@ export async function updateItem(axiosPrivate, toast, id, formData) {
   }
 }
 
-export async function updateItemImages(axiosPrivate, toast, id, formData) {
+export async function updateItemImages(axiosPrivate, toast, itemId, formData) {
   try {
-    console.log(formData);
-    const response = await axiosPrivate.post(`${UPDATE_ITEM_IMAGE_URL}/${id}`, formData);
+    const response = await axiosPrivate.post(`${UPDATE_ITEM_IMAGE_URL}/${itemId}`, formData);
     toast.success('Images Updated');
     return response.data;
   } catch (error) {
     toast.error('Failed to update images');
+    console.error(error);
+    return null;
+  }
+}
+
+export async function deleteItemImage(axiosPrivate, toast, itemId, imageId) {
+  try {
+    const response = await axiosPrivate.delete(`${DELETE_ITEM_IMAGE_URL}/${itemId}/${imageId}`);
+    toast.success(`Image Deleted`);
+    return response.data;
+  } catch (error) {
+    toast.error('Failed to delete image');
     console.error(error);
     return null;
   }

@@ -139,6 +139,16 @@ const updateItemById = async ({ id, storeName, updatedItem }) => {
   }
 };
 
+const deleteImageFromItem = async ({ itemId, imageId }) => {
+  try {
+    const item = await Item.updateOne({ _id: itemId }, { $pull: { images: imageId } });
+    return item;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemImages()', error);
+    return null;
+  }
+};
+
 const deleteItemById = async ({ id, storeName }) => {
   try {
     await Item.deleteOne({ _id: id, store: storeName });
@@ -177,4 +187,5 @@ module.exports = {
   updateItemById,
   updateItemStatistics,
   deleteItemById,
+  deleteImageFromItem,
 };

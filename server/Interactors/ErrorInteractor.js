@@ -54,6 +54,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Failed to create order':
       res.status(400).json({ message: error.message });
       break;
+    case 'Error deleting an image':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Invalid store creation details':
       res.status(400).json({ message: error.message });
     case 'Invalid account details':
