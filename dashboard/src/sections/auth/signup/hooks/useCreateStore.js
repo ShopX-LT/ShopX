@@ -18,7 +18,7 @@ const useCreateStore = () => {
   const [storeUrl, setStoreUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const forbiddenCharsRegex = /^[a-z'-]*$/;
+  const forbiddenCharsRegex = /^[a-zA-Z0-9@'_-]*$/;
 
   const formValidation = () => {
     if (email.includes('<') || email.includes('>') || !email.includes('@')) {

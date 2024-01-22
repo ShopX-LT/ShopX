@@ -32,7 +32,7 @@ const SelectStoreNameForm = ({ storeName, product, isStoreNameValid, brandColor,
             <ListItemText secondary="Your store name should be in lowercase" />
           </ListItem>
           <ListItem disableGutters>
-            <ListItemText secondary="Only letters, hyphens(-), apostrophes(') are allowed" />
+            <ListItemText secondary="Use only letters, numbers, hyphens(-), apostrophes(') or @" />
           </ListItem>
         </List>
       </Box>
