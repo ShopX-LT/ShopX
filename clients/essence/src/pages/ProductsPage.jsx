@@ -144,7 +144,7 @@ const ProductsPage = () => {
           <Item
             key={item.id}
             name={item.title}
-            description={""}
+            description={item.description}
             price={item.price}
             discount={item.discount}
             id={item.id}

@@ -234,7 +234,7 @@ const SignUp = () => {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 2 ? 'Create Store' : 'Next'}
+                  {activeStep === steps.length - 2 ? 'Create Store' : 'Login'}
                 </Button>
               </Box>
             </>
