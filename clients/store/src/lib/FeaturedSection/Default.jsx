@@ -21,7 +21,7 @@ const Default = () => {
   const products = items.length > 3 ? items.slice(0, 3) : items;
 
   return (
-    <Container>
+    <Container sx={{ mt: 8 }}>
       <Typography
         variant="h2"
         sx={{ fontWeight: 'bold', borderBottom: 1, borderColor: 'divider', color: heroDesign.heroHeadlineColor }}

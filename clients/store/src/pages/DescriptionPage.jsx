@@ -84,7 +84,7 @@ const DescriptionPage = ({ isOpen, handleClose, product }) => {
                 alignItems: 'start',
               }}
             >
-              <Box>
+              <Box sx={{ maxWidth: '99vw' }}>
                 <ImageSwiper product={product} />
               </Box>
               <Box>
@@ -107,12 +107,22 @@ const DescriptionPage = ({ isOpen, handleClose, product }) => {
             </Box>
 
             <Box my={4}>
-              <Typography variant="h3" fontWeight={700} marginBottom={1}>
+              <Typography
+                variant="h3"
+                fontWeight={700}
+                marginBottom={1}
+                sx={{ borderBottom: 1, borderColor: 'divider' }}
+              >
                 Description
               </Typography>
               <Typography variant="body1">{product.description}</Typography>
-
-              <Typography variant="h3" fontWeight={700} marginTop={4} marginBottom={1}>
+              <Typography
+                variant="h3"
+                fontWeight={700}
+                marginTop={4}
+                marginBottom={1}
+                sx={{ borderBottom: 1, borderColor: 'divider' }}
+              >
                 Reviews
               </Typography>
               <Box>

@@ -233,6 +233,7 @@ const formatItemForStore = (item) => {
     amount: item?.amount, // amount is here for legacy support, delete it when project is ready for prod
     discount: item?.discount,
     quantity: item?.quantity,
+    description: item?.description,
     sales: item?.sales,
     displayPrice: item?.price * (1 - item.discount / 100),
   };
@@ -247,6 +248,7 @@ const formatItemForUser = (item) => {
     amount: item?.amount,
     discount: item?.discount,
     quantity: item?.quantity,
+    description: item?.description,
     displayPrice: item?.price * (1 - item.discount / 100),
   };
 };
