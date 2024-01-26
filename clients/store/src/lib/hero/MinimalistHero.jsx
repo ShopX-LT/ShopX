@@ -34,7 +34,7 @@ const MinimalistHero = () => {
           lineHeight={1}
           marginBottom={1}
         />
-        <Box sx={{ maxWidth: { xs: '300px', md: '400px' } }}>
+        <Box sx={{ maxWidth: { xs: '300px', md: '600px' } }}>
           <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={4} />
         </Box>
         <GeneralButton

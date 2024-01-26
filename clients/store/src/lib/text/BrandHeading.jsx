@@ -7,7 +7,7 @@ const BrandHeading = ({
   text,
   weight = '700',
   xsTextFontSize = '80px',
-  smTextFontSize = '120px',
+  smTextFontSize = '52px',
   bgColor,
   ...rest
 }) => {

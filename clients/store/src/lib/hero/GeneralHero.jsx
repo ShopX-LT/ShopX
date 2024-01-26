@@ -2,6 +2,7 @@ import React from 'react';
 import LegacyHero from './LegacyHero';
 import MinimalistHero from './MinimalistHero';
 import LeftText from './LeftText';
+import BottomLeft from './BottomLeft';
 
 const selecHero = (props) => {
   switch (props.heroStyle) {
@@ -11,6 +12,8 @@ const selecHero = (props) => {
       return <MinimalistHero />;
     case 'leftText':
       return <LeftText />;
+    case 'bottomLeft':
+      return <BottomLeft />;
     default:
       return <LegacyHero {...props} />;
   }

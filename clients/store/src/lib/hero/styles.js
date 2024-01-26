@@ -9,6 +9,15 @@ export const PageContainer = styled(Box)(({ theme, design }) => ({
   justifyContent: design?.justifyCenter ? 'center' : '',
 }));
 
+export const PageContainerAlignEnd = styled(Box)(({ theme, design }) => ({
+  maxWidth: '100vw',
+  minHeight: '85vh',
+  display: 'flex',
+  alignItems: 'end',
+  position: 'relative',
+  justifyContent: design?.justifyCenter ? 'center' : '',
+}));
+
 export const FlexContainer = styled(Box)(({ theme, design }) => ({
   width: '100%',
   display: 'flex',

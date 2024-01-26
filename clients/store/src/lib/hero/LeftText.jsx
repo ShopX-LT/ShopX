@@ -41,6 +41,7 @@ const LeftText = () => {
                 text={heroDesign.heroHeadline}
                 textColor={heroDesign.heroHeadlineColor}
                 weight="600"
+                smTextFontSize="100px"
                 lineHeight={1}
                 marginTop={4}
                 marginBottom={2}

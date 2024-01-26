@@ -20,6 +20,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import minimal from './images/minimal.png';
 import legacy from './images/legacy.png';
 import leftText from './images/leftText.png';
+import bottomLeft from './images/bottomLeft.png';
 import ColorPicker from '../../../components/colorPicker';
 import ImageRadio from '../../../components/image-radio';
 import TextArea from '../../../components/textArea';
@@ -80,8 +81,13 @@ function StyleTab({ design, handleInputChange }) {
     },
     {
       image: leftText,
-      label: 'LeftText',
+      label: 'Left Text',
       value: 'leftText',
+    },
+    {
+      image: bottomLeft,
+      label: 'Bottom Left',
+      value: 'bottomLeft',
     },
   ];
 

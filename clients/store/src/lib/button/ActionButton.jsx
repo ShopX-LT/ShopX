@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { ButtonStyle } from './styles';
 
-const ActionButton = ({ bgColor = 'primary', text, textColor, children, hover = false, width, onClick, ...rest }) => {
+const ActionButton = ({
+  bgColor = 'primary',
+  size = 'medium',
+  text,
+  textColor,
+  children,
+  hover = false,
+  width,
+  onClick,
+  ...rest
+}) => {
   return (
     <div>
       <ButtonStyle
         variant="contained"
-        size="medium"
+        size={size}
         onClick={onClick}
         design={{ bgColor, text, textColor, children, hover, width }}
         {...rest}
