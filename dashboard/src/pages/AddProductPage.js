@@ -19,6 +19,8 @@ import {
   IconButton,
   OutlinedInput,
   styled,
+  ListSubheader,
+  InputBase,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import _ from 'lodash';
@@ -29,9 +31,10 @@ import Iconify from '../components/iconify';
 import { AddField } from '../sections/@dashboard/products';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { createItem } from '../services/ItemService';
-import { getCategories } from '../services/CategoryService';
+import { getCategories, createCategory } from '../services/CategoryService';
 import { getFields, creatField } from '../services/FieldService';
 import ImageUploadBox from '../components/image-upload-box';
+import { AddCategory } from '../sections/@dashboard/category';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
@@ -65,6 +68,7 @@ const AddProductPage = () => {
   const [productImages, setProductImages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [storeFields, setStoreFields] = useState([]);
+  const [newCategoryAdded, setNewCategoryAdded] = useState(0); // This is to make the category selections reload when a new one is created
   const [field, setField] = useState('');
   const [openFieldDialog, setOpenFieldDialog] = useState(false);
 
@@ -108,6 +112,8 @@ const AddProductPage = () => {
   // USE EFFECT
   useEffect(() => {
     retreiveCategories();
+  }, [newCategoryAdded]);
+  useEffect(() => {
     retreiveTemplate();
   }, []);
 
@@ -151,6 +157,23 @@ const AddProductPage = () => {
       const newState = [];
       return newState;
     });
+  };
+
+  // TODO: Take this out into a category funtion file, this is duplicate code from the CategoryPage
+  // CREATING A NEW CATEGORY
+  const handleNewCategorySubmitForm = async (values, onSubmitProps) => {
+    const formData = {};
+    // Append each form value to the formData object.
+    Object.keys(values).forEach((key) => {
+      formData[key] = values[key];
+    });
+    try {
+      const response = await createCategory(axiosPrivate, toast, formData);
+      onSubmitProps.resetForm();
+      setNewCategoryAdded(newCategoryAdded + 1);
+    } catch (error) {
+      // alert(error.message);
+    }
   };
 
   // RETURN
@@ -209,9 +232,7 @@ const AddProductPage = () => {
                       onChange={handleChange}
                       value={values.category}
                     >
-                      <MenuItem value="">
-                        <em>Select Category</em>
-                      </MenuItem>
+                      <ListSubheader>Select Category</ListSubheader>
                       {categories.map((category) => {
                         return (
                           <MenuItem key={category.name} value={category.name} sx={{ textTransform: 'capitalize' }}>
@@ -220,6 +241,8 @@ const AddProductPage = () => {
                           </MenuItem>
                         );
                       })}
+                      <ListSubheader>Create Category</ListSubheader>
+                      <AddCategory handleSubmitForm={handleNewCategorySubmitForm} />
                     </Select>
                   </FormControl>
                 </Grid>

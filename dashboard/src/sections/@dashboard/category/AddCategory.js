@@ -26,20 +26,21 @@ const AddCategory = (props) => {
         resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={4} padding={2} alignItems="center" justifyContent="center">
-            <Grid item xs={12} md={5}>
+          <Grid container p={2} alignItems="center" justifyContent="start">
+            <Grid item xs={8} md={6}>
               <TextField
                 label="Category name"
                 name="name"
                 error={Boolean(touched.name) && Boolean(errors.name)}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                onKeyDown={(e) => e.stopPropagation()}
                 value={values.name}
                 fullWidth
               />
             </Grid>
 
-            <Grid item xs={12} md={5}>
+            <Grid item xs={4} md={4}>
               <Box sx={{ margin: 'auto' }} align="center">
                 <Button variant="contained" type="submit">
                   Save

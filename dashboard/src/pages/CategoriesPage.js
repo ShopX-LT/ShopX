@@ -93,7 +93,7 @@ const CategoriesPage = () => {
   const isNotFound = !filteredCategory.length && !!FilterCategory;
 
   // CREATING A NEW CATEGORY
-  const handleSubmitForm = async (values, onSubmitProps) => {
+  const handleNewCategorySubmitForm = async (values, onSubmitProps) => {
     const formData = {};
     // Append each form value to the formData object.
     Object.keys(values).forEach((key) => {
@@ -128,16 +128,16 @@ const CategoriesPage = () => {
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h4" gutterBottom>
             Categories
           </Typography>
         </Stack>
 
         <Card>
-          <CategoryListToolbar FilterCategory={FilterCategory} onFilterCategory={handleFilterByName} />
+          {/* <CategoryListToolbar FilterCategory={FilterCategory} onFilterCategory={handleFilterByName} /> */}
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer>
               <Table>
                 <CategoryListHead
                   order={order}
@@ -151,19 +151,20 @@ const CategoriesPage = () => {
                     const { _id, name } = row;
                     return (
                       <TableRow hover key={name} tabIndex={-1}>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+                        <TableCell padding="checkbox" />
+                        <TableCell component="th" scope="row">
+                          <Stack direction="row" alignItems="center" justifyContent="start">
                             <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>
                               {name}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="right">
+                        {/* <TableCell align="right">
                           <IconButton size="large" color="inherit">
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     );
                   })}
@@ -213,7 +214,7 @@ const CategoriesPage = () => {
           Add Category
         </Typography>
         <Card>
-          <AddCategory handleSubmitForm={handleSubmitForm} />
+          <AddCategory handleSubmitForm={handleNewCategorySubmitForm} />
         </Card>
       </Container>
     </>
