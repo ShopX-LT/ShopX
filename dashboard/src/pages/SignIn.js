@@ -156,10 +156,10 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox checked={persist} onChange={togglePersist} color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
