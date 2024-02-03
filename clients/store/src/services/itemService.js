@@ -46,9 +46,9 @@ export async function getItem(axios, { id }) {
 const buildQuery = (category, fields) => {
   const params = new URLSearchParams();
 
-  Object.entries(fields).forEach(([key, values]) => {
+  Object.entries(fields).forEach(([feature, values]) => {
     values.forEach((value) => {
-      params.append(key, value);
+      params.append(feature, value);
     });
   });
 

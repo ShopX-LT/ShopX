@@ -50,9 +50,9 @@ const getCategoryForUsers = async (req, res) => {
 const getCustomCategories = async (req, res) => {
   try {
     const store = req.header('store');
-    const fields = await getCustomCategoriesInteractor(persistence, { storeName: store });
+    const options = await getCustomCategoriesInteractor(persistence, { storeName: store });
 
-    return res.status(200).json(fields);
+    return res.status(200).json(options);
   } catch (error) {
     console.error(error);
     handleErrorInteractor(error, res);

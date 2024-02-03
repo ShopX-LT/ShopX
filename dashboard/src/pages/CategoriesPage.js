@@ -25,8 +25,9 @@ import Iconify from '../components/iconify';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { getCategories, createCategory } from '../services/CategoryService';
-import { AddCategory, CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
+import { CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
 import Scrollbar from '../components/scrollbar/Scrollbar';
+import SingleValueTextFieldForm from '../components/singleValueTextFieldForm';
 
 const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }];
 
@@ -214,7 +215,7 @@ const CategoriesPage = () => {
           Add Category
         </Typography>
         <Card>
-          <AddCategory handleSubmitForm={handleNewCategorySubmitForm} />
+          <SingleValueTextFieldForm label="Category Name" handleSubmitForm={handleNewCategorySubmitForm} />
         </Card>
       </Container>
     </>

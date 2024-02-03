@@ -3,7 +3,7 @@
  * @module interactors
  * @property {function} createStoreInteractor - A function that creates a store interactor.
  * @property {function} storeLogin - A function that logs in to the store.
- * @property {function} addFieldToStoreInteractor - A function that adds a field to the store interactor.
+ * @property {function} addOptionToStoreInteractor - A function that adds a field to the store interactor.
  * @property {function} getFieldFromStoreInteractor - A function that gets a field from the store interactor.
  * @property {function} getOrCreateUserInteractor - A function that gets or creates a user interactor.
  * @property {function}
@@ -37,7 +37,9 @@ const { getItemReviewsInteractor, createReviewInteractor } = require('./ReviewIn
 const {
   createStoreInteractor,
   storeLogin,
-  addFieldToStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,
@@ -52,7 +54,9 @@ module.exports = {
   // STORE INTERACRORS
   createStoreInteractor,
   storeLogin,
-  addFieldToStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,

@@ -20,22 +20,11 @@ const AddField = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Add a new feature to your product</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Feature name"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={props.handleChange}
-          />
+          {props.children}
         </DialogContent>
         <DialogActions>
           <Button onClick={props.close} color="error">
             Cancel
-          </Button>
-          <Button onClick={props.save} color="primary">
-            Save
           </Button>
         </DialogActions>
       </Dialog>

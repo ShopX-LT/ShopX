@@ -24,21 +24,21 @@ const useProduct = ({ selectedCustomCategories, customCategories, selectedCatego
   };
 
   // @TODO move this to a helper file
-  const filterObject = (array, object) => {
-    const filteredObject = {};
+  const buildCustomCategoryQuery = (selectedCategories, customCategories) => {
+    const queryObject = {}; // {'feature': ['selected value']}
 
-    Object.entries(object).forEach(([key, values]) => {
-      const matchingValues = values.filter((value) => array.includes(value));
-      if (matchingValues.length > 0) {
-        filteredObject[key] = matchingValues;
+    customCategories.forEach((option) => {
+      const selectedValues = option.values.filter((value) => selectedCategories.includes(value));
+      if (selectedValues.length > 0) {
+        queryObject[option.feature] = selectedValues;
       }
     });
 
-    return filteredObject;
+    return queryObject;
   };
 
   const retreiveQueryItems = async () => {
-    const customFields = filterObject(selectedCustomCategories, customCategories);
+    const customFields = buildCustomCategoryQuery(selectedCustomCategories, customCategories);
 
     const response = await queryItems(axios, selectedCategory, customFields);
     if (!response) {

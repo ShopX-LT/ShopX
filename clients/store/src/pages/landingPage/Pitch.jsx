@@ -59,7 +59,7 @@ const Pitch = () => {
           <Typography variant="body">{salesPitch}</Typography>
           <Grid container mt={2} gap={4} justifyContent={'center'}>
             <Grid item xs={12}>
-              <Link variant="body" href="/jay-shop">
+              <Link variant="body" href="/laprisa">
                 See a demo site
               </Link>
             </Grid>

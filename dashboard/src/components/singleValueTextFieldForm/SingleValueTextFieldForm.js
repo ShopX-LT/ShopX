@@ -7,7 +7,7 @@ const itemShema = Yup.object().shape({
   name: Yup.string().required('required'),
 });
 
-const AddCategory = (props) => {
+const SingleValueTextFieldForm = (props) => {
   const initialValueItem = {
     name: '',
   };
@@ -29,7 +29,7 @@ const AddCategory = (props) => {
           <Grid container p={2} alignItems="center" justifyContent="start">
             <Grid item xs={8} md={6}>
               <TextField
-                label="Category name"
+                label={props.label || 'Category name'}
                 name="name"
                 error={Boolean(touched.name) && Boolean(errors.name)}
                 onBlur={handleBlur}
@@ -54,4 +54,4 @@ const AddCategory = (props) => {
   );
 };
 
-export default AddCategory;
+export default SingleValueTextFieldForm;

@@ -1,5 +1,5 @@
-const GET_CATEGORIES_URL = "/api/category/user";
-const GET_CUSTOM_CATEGORIES_URL = "/api/category/custom";
+const GET_CATEGORIES_URL = '/api/category/user';
+const GET_CUSTOM_CATEGORIES_URL = '/api/category/custom';
 
 export async function getAllCategories(axios) {
   try {

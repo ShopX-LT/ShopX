@@ -3,8 +3,9 @@ const express = require('express');
 // CONTROLLERS
 const { handleSignUp, handleSignIn } = require('../controllers/store/storeAuth');
 const {
-  handleAddField,
-  handleGetField,
+  handleAddFeature,
+  handleGetOptions,
+  handleAddFeatureValue,
   handleGetAllOrders,
   handlePayout,
   handleGetBankList,
@@ -28,8 +29,9 @@ router.get('/refresh', handleRefreshToken);
 router.get('/logout', handleLogout);
 router.post('/checkstorename', handleCheckStoreName);
 router.get('/stats', verifyToken, handleGetStoreStats);
-router.post('/field', verifyToken, handleAddField);
-router.get('/field', verifyToken, handleGetField);
+router.post('/options', verifyToken, handleAddFeature);
+router.post('/options/value', verifyToken, handleAddFeatureValue);
+router.get('/options', verifyToken, handleGetOptions);
 router.get('/design', verifyToken, handleGetDesign);
 router.put('/design', verifyToken, handleUpdateDesign);
 router.get('/order', verifyToken, handleGetAllOrders);

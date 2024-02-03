@@ -16,25 +16,20 @@ import {
   Grid,
   ListItemText,
   Checkbox,
-  IconButton,
-  OutlinedInput,
   styled,
   ListSubheader,
-  InputBase,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Dropzone from 'react-dropzone';
 import Iconify from '../components/iconify';
 import { AddField } from '../sections/@dashboard/products';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { createItem } from '../services/ItemService';
 import { getCategories, createCategory } from '../services/CategoryService';
-import { getFields, creatField } from '../services/FieldService';
+import { getFields, createFeature, createFeatureValue } from '../services/FieldService';
 import ImageUploadBox from '../components/image-upload-box';
-import { AddCategory } from '../sections/@dashboard/category';
+import SingleValueTextFieldForm from '../components/singleValueTextFieldForm';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
@@ -67,10 +62,10 @@ const AddProductPage = () => {
   const axiosPrivate = useAxiosPrivate();
   const [productImages, setProductImages] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [storeFields, setStoreFields] = useState([]);
+  const [storeOptions, setStoreOptions] = useState([]);
   const [newCategoryAdded, setNewCategoryAdded] = useState(0); // This is to make the category selections reload when a new one is created
   const [field, setField] = useState('');
-  const [openFieldDialog, setOpenFieldDialog] = useState(false);
+  const [openNewFeatureDialog, setOpenNewFeatureDialog] = useState(false);
 
   // GET ALL THE CATEGORIES
   const retreiveCategories = async () => {
@@ -83,29 +78,43 @@ const AddProductPage = () => {
   };
 
   // FIELD DIALOG CONTROLLER
-  const handleFieldClickOpen = () => {
-    setOpenFieldDialog(true);
+  const handleOpenNewFeatureDialog = () => {
+    setOpenNewFeatureDialog(true);
   };
   const handleFieldClose = () => {
-    setOpenFieldDialog(false);
+    setOpenNewFeatureDialog(false);
   };
 
-  // CREATING A FIELD
-  const handleFieldSave = async () => {
-    const newFields = await creatField(axiosPrivate, toast, field);
-    setStoreFields(newFields);
-    setOpenFieldDialog(false);
+  // CREATING A FEATURE
+  const handleNewFeatureSave = async (values, onSubmitProps) => {
+    try {
+      const options = await createFeature(axiosPrivate, toast, values.name);
+      setStoreOptions(options);
+      setOpenNewFeatureDialog(false);
+      onSubmitProps.resetForm();
+    } catch (error) {
+      // alert(error.message);
+    }
   };
-  const handleFieldChange = (event) => {
-    setField(event.target.value);
+
+  // CREATING A FEATURE VALUE
+  const handleNewFeatureValue = async (values, onSubmitProps, feature) => {
+    try {
+      const options = await createFeatureValue(axiosPrivate, toast, feature, values.name);
+      setStoreOptions(options);
+      onSubmitProps.resetForm();
+    } catch (error) {
+      // alert(error.message);
+    }
   };
+
   // GET THE ITEM TEMPLATE
   const retreiveTemplate = async () => {
     const response = await getFields(axiosPrivate);
     if (!response) {
-      setStoreFields([]);
+      setStoreOptions([]);
     } else {
-      setStoreFields(response);
+      setStoreOptions(response);
     }
   };
 
@@ -118,10 +127,11 @@ const AddProductPage = () => {
   }, []);
 
   // Initial Values
-  const fields = storeFields.reduce((obj, key) => {
-    obj[key] = '';
-    return obj;
+  const options = storeOptions.reduce((objectOfFeatures, currentOption) => {
+    objectOfFeatures[currentOption.feature] = [];
+    return objectOfFeatures;
   }, {});
+
   const initialValueItem = {
     title: '',
     category: [],
@@ -130,7 +140,7 @@ const AddProductPage = () => {
     price: '',
     quantity: '',
     discount: 0,
-    ...fields,
+    ...options,
   };
   /**
    * Handle form submit event.
@@ -196,16 +206,17 @@ const AddProductPage = () => {
               <Typography variant="h4" gutterBottom>
                 New Product
               </Typography>
-              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleFieldClickOpen}>
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="eva:plus-fill" />}
+                onClick={handleOpenNewFeatureDialog}
+              >
                 New Feature
               </Button>
             </Stack>
-            <AddField
-              open={openFieldDialog}
-              close={handleFieldClose}
-              save={handleFieldSave}
-              handleChange={handleFieldChange}
-            />
+            <AddField open={openNewFeatureDialog} close={handleFieldClose}>
+              <SingleValueTextFieldForm handleSubmitForm={handleNewFeatureSave} label="Feature Name" />
+            </AddField>
             <Paper elevation={3} sx={{ p: 5, mb: 1 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
@@ -242,7 +253,7 @@ const AddProductPage = () => {
                         );
                       })}
                       <ListSubheader>Create Category</ListSubheader>
-                      <AddCategory handleSubmitForm={handleNewCategorySubmitForm} />
+                      <SingleValueTextFieldForm handleSubmitForm={handleNewCategorySubmitForm} />
                     </Select>
                   </FormControl>
                 </Grid>
@@ -279,17 +290,50 @@ const AddProductPage = () => {
                     fullWidth
                   />
                 </Grid>
-                {storeFields.map((val, index) => {
+                {storeOptions.map((option) => {
                   return (
-                    <Grid key={val} item xs={12} md={6}>
-                      <TextField
-                        label={val}
-                        name={val}
+                    <Grid key={option.feature} item xs={12} md={6}>
+                      {/* <TextField
+                        label={_.upperFirst(option.feature)}
+                        name={option.feature}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values[val]}
+                        value={values[option.feature]}
                         fullWidth
-                      />
+                      /> */}
+
+                      <FormControl fullWidth>
+                        <InputLabel id={option.feature}>{_.upperFirst(option.feature)}</InputLabel>
+                        <Select
+                          labelId={_.upperFirst(option.feature)}
+                          name={option.feature}
+                          renderValue={(selected) => _.upperFirst(selected)}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values[option.feature]}
+                        >
+                          <ListSubheader>Select {option.feature}</ListSubheader>
+                          {option.values.map((value) => {
+                            return (
+                              <MenuItem
+                                key={`${option.feature}-${value}`}
+                                value={value}
+                                sx={{ textTransform: 'capitalize' }}
+                              >
+                                {/* <Checkbox checked={values.category.indexOf(category.name) > -1} /> */}
+                                <ListItemText primary={value} />
+                              </MenuItem>
+                            );
+                          })}
+                          <ListSubheader>Create a new {option.feature} option</ListSubheader>
+                          <SingleValueTextFieldForm
+                            handleSubmitForm={(values, onSubmitProps) => {
+                              handleNewFeatureValue(values, onSubmitProps, option.feature);
+                            }}
+                            label="New option"
+                          />
+                        </Select>
+                      </FormControl>
                     </Grid>
                   );
                 })}
