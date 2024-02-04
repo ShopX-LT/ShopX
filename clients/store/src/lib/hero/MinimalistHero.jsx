@@ -28,9 +28,9 @@ const MinimalistHero = () => {
         <BrandHeading
           text={heroDesign.heroHeadline}
           textColor={heroDesign.heroHeadlineColor}
-          weight="500"
-          xsTextFontSize="60px"
-          smTextFontSize="90px"
+          weight="700"
+          xsTextFontSize="52px"
+          smTextFontSize="72px"
           lineHeight={1}
           marginBottom={1}
         />

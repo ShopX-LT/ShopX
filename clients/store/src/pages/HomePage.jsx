@@ -24,7 +24,8 @@ const HomePage = () => {
           <Helmet>
             <title>{capitalize(store)} - ShopX</title>
           </Helmet>
-          <GeneralHero heroStyle={design.hero.heroStyle} />
+          {/* <GeneralHero heroStyle={design.hero.heroStyle} /> */}
+          <GeneralHero heroStyle="minimalist" />
           <FeaturedSection select={mock.style} />
           <AboutSection select={design.about.aboutStyle} />
           <ContactSection select={design.contact.contactStyle} />

@@ -5,9 +5,9 @@ import { Typography } from '@mui/material';
 const BrandHeading = ({
   textColor,
   text,
-  weight = '700',
-  xsTextFontSize = '80px',
-  smTextFontSize = '52px',
+  weight = '500',
+  xsTextFontSize = '36px',
+  smTextFontSize = '48px',
   bgColor,
   ...rest
 }) => {

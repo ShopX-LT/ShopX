@@ -38,8 +38,8 @@ const BottomLeft = () => {
             <BrandHeading
               text={heroDesign.heroHeadline}
               textColor={heroDesign.heroHeadlineColor}
-              weight="600"
-              xsTextFontSize="48px"
+              weight="500"
+              xsTextFontSize="36px"
               lineHeight={1}
               marginTop={4}
               marginBottom={1}
