@@ -5,7 +5,7 @@
  * @property {function} storeLogin - A function that logs in to the store.
  * @property {function} addOptionToStoreInteractor - A function that adds a field to the store interactor.
  * @property {function} getFieldFromStoreInteractor - A function that gets a field from the store interactor.
- * @property {function} getOrCreateUserInteractor - A function that gets or creates a user interactor.
+ * @property {function} createUserInteractor - A function that gets or creates a user interactor.
  * @property {function}
  */
 const {
@@ -47,7 +47,7 @@ const {
   updateStoreDeliveryFeeInteractor,
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
-const { getOrCreateUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
+const { createUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
 const { getStoreDesignInteractor, updateStoreDesignInteractor } = require('./WebDesignInteractor');
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
   addVisitToStoreInteractor,
   updateStoreDeliveryFeeInteractor,
   // USER INTERACTORS
-  getOrCreateUserInteractor,
+  createUserInteractor,
   userLogin,
   subscribeToStoreInteractor,
   //ITEM INTERACTORS

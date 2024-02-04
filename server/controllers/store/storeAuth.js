@@ -4,7 +4,7 @@ const {
   createStoreInteractor,
   storeLogin,
   // USER INTERACTORS
-  getOrCreateUserInteractor,
+  createUserInteractor,
   userLogin,
   // TOKEN INTERACTORS
   generateTokensInteractor,
@@ -41,9 +41,9 @@ const handleSignIn = async (req, res) => {
 //CREATE A STORE
 const handleSignUp = async (req, res) => {
   try {
-    const { storeName, email, password, verPassword, accountType, product, brandColor } = req.body;
+    const { storeName, email, password, verPassword, product, brandColor } = req.body;
     // Create a new user or verify the current user
-    const admin = await getOrCreateUserInteractor(persistence, { email, password, verPassword, accountType });
+    const admin = await createUserInteractor(persistence, { email, password, verPassword });
 
     if (admin) {
       // create the store

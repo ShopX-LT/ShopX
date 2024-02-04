@@ -100,14 +100,7 @@ const SignUp = () => {
         );
       case 1:
         return (
-          <AccountDetails
-            accountType={accountType}
-            email={email}
-            password={password}
-            verifyPassword={verifyPassword}
-            onChange={handleOnChange}
-            onAccountTypeChange={handleAccountTypeChange}
-          />
+          <AccountDetails email={email} password={password} verifyPassword={verifyPassword} onChange={handleOnChange} />
         );
       case 2:
         return <Review storeUrl={storeUrl} />;
