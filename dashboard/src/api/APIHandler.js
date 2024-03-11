@@ -42,12 +42,12 @@ export default class APIHandler {
       const response = await axios.post(this.API.SIGNUP, signupDetails, {
         withCredentials: true,
       });
-      const token = response?.data?.token;
+      const success = response?.data?.success;
       const url = response?.data?.url;
       const admin = response?.data?.admin.email;
       const store = response?.data?.store?.name;
 
-      return { token, admin, store, url };
+      return { success, admin, store, url };
     } catch (error) {
       if (!error.response) {
         const displayError = 'Server are down, please try again later';

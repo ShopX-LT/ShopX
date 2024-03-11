@@ -25,7 +25,12 @@ function App() {
         </BrowserRouter>
       );
     } else if (store && !isStoreValid) {
-      return <p>Loading ...</p>;
+      alert('This store does not exist');
+      return (
+        <ThemeProvider>
+          <LandingPage />
+        </ThemeProvider>
+      );
     } else if (!store) {
       return (
         <ThemeProvider>

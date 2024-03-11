@@ -1,9 +1,6 @@
 const { sendSignUpEmail } = require('../services/EmailService');
 
-const createUserInteractor = async (
-  { getUser, verifyPassword, createUser, encryptPassword },
-  { email, password, verPassword }
-) => {
+const createUserInteractor = async ({ getUser, createUser, encryptPassword }, { email, password, verPassword }) => {
   //check if the user already has an account
   let user = await getUser({ email });
 

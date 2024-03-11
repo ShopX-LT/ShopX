@@ -30,7 +30,7 @@ const useCreateStore = () => {
 
   const handleSubmit = async () => {
     if (formValidation()) {
-      const { token, url, error } = await apiHandler.signup({
+      const { success, url, error } = await apiHandler.signup({
         email,
         password,
         storeName,
@@ -39,7 +39,7 @@ const useCreateStore = () => {
         brandColor,
         verPassword: verifyPassword,
       });
-      if (token) {
+      if (success) {
         setStoreUrl(url);
         return true;
       }
@@ -56,7 +56,6 @@ const useCreateStore = () => {
 
   const handleAccountTypeChange = (e) => {
     const { value } = e.target;
-    console.log(value);
     if (value === 'new' || value === 'old') {
       setAccountType(value);
     }

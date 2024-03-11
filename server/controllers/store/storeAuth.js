@@ -23,8 +23,6 @@ const handleSignIn = async (req, res) => {
     const admin = await userLogin(persistence, { email, password });
     const store = await storeLogin(persistence, { storeName, email });
 
-    console.log(`HandleSignIn in Controller email: ${email}, admin: ${admin}`);
-
     // set the refresh and access tokens
     const tokens = await generateTokensInteractor(
       persistence,
@@ -50,14 +48,9 @@ const handleSignUp = async (req, res) => {
     if (admin) {
       // create the store
       const { store, url } = await createStoreInteractor(persistence, { storeName, email, product, brandColor });
-      // set the refresh and access tokens
-      const tokens = generateTokensInteractor(
-        { tokenizer: jwt },
-        { adminEmail: admin.email, storeName: store.name, res: res }
-      );
 
       // send response
-      res.status(200).json({ token: tokens, admin: admin, store: store, url: url });
+      res.status(200).json({ success: true, admin: admin, store: store, url: url });
     }
 
     // @INFO: If there is no admin it will throw an error and it will be handled by the error handler
