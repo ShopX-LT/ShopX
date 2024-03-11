@@ -44,7 +44,17 @@ const Main = () => {
                 <Typography
                   variant="h1"
                   sx={{
-                    fontSize: { xs: '94px', md: '140px', lg: '150px' },
+                    fontSize: { xs: '48px', md: '52px', lg: '52px' },
+                  }}
+                >
+                  Welcome to
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontSize: { xs: '52px', md: '48px', lg: '48px' },
                     fontWeight: '400',
                   }}
                 >
@@ -69,6 +79,9 @@ const Main = () => {
           </Box>
 
           <Grid container sx={{ justifyContent: 'center', gap: { xs: 8, sm: 2 } }}>
+            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+              <Typography variant="body">Here's what you get with ShopX:</Typography>
+            </Grid>
             <Grid item xs={12} sm={3}>
               <Card
                 icon={<TuneIcon fontSize={'large'} />}

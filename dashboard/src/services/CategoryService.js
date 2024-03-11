@@ -1,5 +1,7 @@
 const GET_CATEGORIES_URL = '/api/category';
 const POST_CATEGORIES_URL = '/api/category';
+const DELETE_CATEGORIES_URL = '/api/category';
+const EDIT_CATEGORIES_URL = '/api/category';
 
 /**
  * Retrieves the categories from the server using the provided axios instance.
@@ -37,3 +39,27 @@ export async function createCategory(axiosPrivate, toast, category) {
     return null;
   }
 }
+
+export async function deleteCategory(axiosPrivate, toast, categoryId, categoryName) {
+  try {
+    const response = await axiosPrivate.delete(DELETE_CATEGORIES_URL, { data: { id: categoryId } });
+    toast.success(`${categoryName} category deleted`);
+    return response.data;
+  } catch (error) {
+    toast.error('Error deleting Category, wait a moment and try again');
+
+    return null;
+  }
+}
+
+// export async function editCategory(axiosPrivate, toast, category) {
+//   try {
+//     const response = await axiosPrivate.patch(EDIT_CATEGORIES_URL, category);
+//     toast.success(`${category} category changed`);
+//     return response.data;
+//   } catch (error) {
+//     toast.error('Error changing Category, wait a moment and try again');
+
+//     return null;
+//   }
+// }

@@ -1,5 +1,6 @@
-import { Box, Button, Container, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { Box, Button, Container, Modal, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import TabPanel from '../../components/tabPanel/TabPanel';
 import useDesign from '../../sections/@dashboard/design/hooks/useDesign';
 import NavForm from '../../sections/@dashboard/design/NavForm';
@@ -10,6 +11,10 @@ import AboutForm from '../../sections/@dashboard/design/AboutForm';
 const FrontPage = () => {
   const { design, handleInputChange, handleFormSubmit } = useDesign();
   const [tabValue, setTabValue] = useState(0);
+  const [openStorePreview, setOpenStorePreview] = useState(false);
+
+  const handleOpenStorePreview = () => setOpenStorePreview(true);
+  const handleCloseStorePreview = () => setOpenStorePreview(false);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -21,7 +26,9 @@ const FrontPage = () => {
         <Typography variant="h4" gutterBottom>
           Front Page
         </Typography>
-        {/* <Button variant="contained">Preview</Button> */}
+        <Button variant="contained" onClick={handleOpenStorePreview} sx={{ display: 'flex', gap: 1 }}>
+          Preview <VisibilityIcon />
+        </Button>
       </Stack>
       <Paper
         elevation={3}
@@ -62,6 +69,31 @@ const FrontPage = () => {
           Save
         </Button>
       </Paper>
+      <Modal
+        open={openStorePreview}
+        onClose={handleCloseStorePreview}
+        aria-labelledby="modal-store-preview"
+        aria-describedby="modal-preview-saved-changes"
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+          }}
+        >
+          <Button variant="contained" onClick={handleCloseStorePreview}>
+            Close
+          </Button>
+          <iframe width="900" height="500" src="https://myshopx.net/laprisa" title="Store Site" />
+        </Box>
+      </Modal>
     </>
   );
 };
