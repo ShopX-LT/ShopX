@@ -177,6 +177,18 @@ const updateItemStatistics = async ({ order }) => {
   }
 };
 
+const removeCategoryFromItems = async ({ storeName, category }) => {
+  try {
+    const categoryToDelete = category;
+    const filterItemsOptions = { store: storeName };
+    await Item.updateMany(filterItemsOptions, { $pull: { category: categoryToDelete } }, { new: true });
+    return;
+  } catch (error) {
+    console.error('Item Persistence error in removeCategoryFromItems()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createItem,
   getItemsBySearch,
@@ -188,4 +200,5 @@ module.exports = {
   updateItemStatistics,
   deleteItemById,
   deleteImageFromItem,
+  removeCategoryFromItems,
 };

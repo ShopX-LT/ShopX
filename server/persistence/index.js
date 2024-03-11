@@ -10,7 +10,7 @@
  * @property {function} createUser - creates a new user
  * @property {function} getUser - retrieves a user by email
  */
-const { createCategory, getManyCategories } = require('./CategoryPersistence');
+const { createCategory, getManyCategories, deleteCategory } = require('./CategoryPersistence');
 const { generateText } = require('./ChatGPTPersistence');
 const {
   createItem,
@@ -23,6 +23,7 @@ const {
   deleteItemById,
   updateItemStatistics,
   deleteImageFromItem,
+  removeCategoryFromItems,
 } = require('./ItemPersistence');
 
 const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
@@ -94,10 +95,12 @@ module.exports = {
   deleteItemById,
   updateItemStatistics,
   deleteImageFromItem,
+  removeCategoryFromItems,
 
   // CATEGORY PERSISTENCE
   createCategory,
   getManyCategories,
+  deleteCategory,
 
   // ORDER PERSISTENCE
   createOrder,

@@ -12,6 +12,7 @@ const {
   createCategoryInteractor,
   getAllCategoriesInteractor,
   getCustomCategoriesInteractor,
+  deleteCategoryInteractor,
 } = require('./CategoryInteractor');
 const {
   createItemInteractor,
@@ -75,10 +76,12 @@ module.exports = {
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
   deleteImageFromItemInteractor,
+
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
   getCustomCategoriesInteractor,
+  deleteCategoryInteractor,
   // ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,

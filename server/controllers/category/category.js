@@ -3,6 +3,7 @@ const {
   createCategoryInteractor,
   getAllCategoriesInteractor,
   getCustomCategoriesInteractor,
+  deleteCategoryInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 } = require('../../Interactors/index');
@@ -59,9 +60,23 @@ const getCustomCategories = async (req, res) => {
   }
 };
 
+const handleDeleteCategory = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { admin, store } = req.auth;
+    const options = await deleteCategoryInteractor(persistence, { storeName: store, categoryId: id });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 module.exports = {
   createCategory: createCategory,
   getCategory: getCategory,
   getCategoryForUsers,
   getCustomCategories,
+  handleDeleteCategory,
 };

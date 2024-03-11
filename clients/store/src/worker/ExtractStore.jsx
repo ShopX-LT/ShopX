@@ -19,12 +19,14 @@ const ExtractStore = () => {
 
   const getDesign = async () => {
     try {
-      const design = await getStoreDesign(axios, storeName);
-      if (design && !design?.message) {
-        setIsStoreValid(true);
-        await updateStoreVisit();
+      if (storeName) {
+        const design = await getStoreDesign(axios, storeName);
+        if (design && !design?.message) {
+          setIsStoreValid(true);
+          // await updateStoreVisit();
+        }
+        dispatch(setupSite(design));
       }
-      dispatch(setupSite(design));
     } catch (error) {
       // console.log(error);
     }

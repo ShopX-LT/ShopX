@@ -8,7 +8,7 @@ const {
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
-const handleStoreVisit = async (req, res) => {
+const handleStoreVisits = async (req, res) => {
   try {
     const store = req.header('store');
     const { isNewVisitor } = req.body;
@@ -32,6 +32,6 @@ const handleSubscribeToStore = async (req, res) => {
 };
 
 module.exports = {
-  handleStoreVisit,
+  handleStoreVisits,
   handleSubscribeToStore,
 };

@@ -15,20 +15,34 @@ import LandingPage from './pages/landingPage/LandingPage';
 function App() {
   const { store, isStoreValid } = useStore();
 
-  return (
-    <HelmetProvider>
-      <ExtractStore />
-      {isStoreValid ? (
+  const renderPage = () => {
+    if (store && isStoreValid) {
+      return (
         <BrowserRouter basename={`${store}`}>
           <ThemeProvider>
             <Router />
           </ThemeProvider>
         </BrowserRouter>
-      ) : (
+      );
+    } else if (store && !isStoreValid) {
+      return <p>Loading ...</p>;
+    } else if (!store) {
+      return (
         <ThemeProvider>
           <LandingPage />
         </ThemeProvider>
-      )}
+      );
+    } else {
+      <ThemeProvider>
+        <LandingPage />
+      </ThemeProvider>;
+    }
+  };
+
+  return (
+    <HelmetProvider>
+      <ExtractStore />
+      {renderPage()}
     </HelmetProvider>
   );
 }

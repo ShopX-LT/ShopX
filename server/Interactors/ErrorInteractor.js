@@ -30,6 +30,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Item not found':
       res.status(400).json({ message: error.message });
       break;
+    case 'Invalid cart item':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Order not found':
       res.status(400).json({ message: error.message });
       break;

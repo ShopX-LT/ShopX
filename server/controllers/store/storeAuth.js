@@ -23,6 +23,8 @@ const handleSignIn = async (req, res) => {
     const admin = await userLogin(persistence, { email, password });
     const store = await storeLogin(persistence, { storeName, email });
 
+    console.log(`HandleSignIn in Controller email: ${email}, admin: ${admin}`);
+
     // set the refresh and access tokens
     const tokens = await generateTokensInteractor(
       persistence,
