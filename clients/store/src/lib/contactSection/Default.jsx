@@ -51,7 +51,7 @@ const Default = () => {
               }}
             >
               {contactDesign.contactEmail ? (
-                <a href={contactDesign.contactEmail}>
+                <a href={`mailto:${contactDesign.contactEmail}`}>
                   <Tooltip title="email" placement="top">
                     <MailIcon sx={iconsAnimation} />
                   </Tooltip>
@@ -59,7 +59,11 @@ const Default = () => {
               ) : null}
 
               {contactDesign.contactInstagram ? (
-                <a href={contactDesign.contactInstagram}>
+                <a
+                  href={`https://www.instagram.com/${contactDesign.contactInstagram}`}
+                  target="_blank"
+                  rel={'external'}
+                >
                   <Tooltip title="Instagram" placement="top">
                     <InstagramIcon sx={iconsAnimation} />
                   </Tooltip>
@@ -67,7 +71,7 @@ const Default = () => {
               ) : null}
 
               {contactDesign.contactTwitter ? (
-                <a href={contactDesign.contactTwitter}>
+                <a href={`https://www.twitter.com/${contactDesign.contactTwitter}`} target="_blank" rel={'external'}>
                   <Tooltip title="Twitter" placement="top">
                     <TwitterIcon sx={iconsAnimation} />
                   </Tooltip>
