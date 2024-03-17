@@ -30,7 +30,7 @@ const createStoreInteractor = async (
   }
 
   const formattedStore = formatStore(newStore);
-  return { store: formattedStore, url: `https://myshopx.net/${formattedStore.name}` };
+  return { store: formattedStore, url: `https://${formattedStore.name}.myshopx.net` };
 };
 
 const getStoreStatsInteractor = async ({ getStoreByName }, { storeName }) => {

@@ -15,34 +15,35 @@ import LandingPage from './pages/landingPage/LandingPage';
 function App() {
   const { store, isStoreValid } = useStore();
 
-  const renderPage = () => {
-    if (store && isStoreValid) {
-      return (
-        <BrowserRouter basename={`${store}`}>
-          <ThemeProvider>
-            <Router />
-          </ThemeProvider>
-        </BrowserRouter>
-      );
-    } else if (store && !isStoreValid) {
-      return <p>Loading ...</p>;
-    } else if (!store) {
+  const renderPage = (store) => {
+    if (store === 'myshopx' || store === 'www') {
       return (
         <ThemeProvider>
           <LandingPage />
         </ThemeProvider>
       );
-    } else {
-      <ThemeProvider>
-        <LandingPage />
-      </ThemeProvider>;
+    }
+    if (store && isStoreValid) {
+      return (
+        <BrowserRouter>
+          <ThemeProvider>
+            <Router />
+          </ThemeProvider>
+        </BrowserRouter>
+      );
+    }
+    if (!store) {
+      return <p>Loading ...</p>;
+    }
+    if (!isStoreValid) {
+      return <p>Invalid page. Please create a website for free</p>;
     }
   };
 
   return (
     <HelmetProvider>
       <ExtractStore />
-      {renderPage()}
+      {store ? renderPage(store) : null}
     </HelmetProvider>
   );
 }

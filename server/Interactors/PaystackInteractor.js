@@ -66,7 +66,7 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
     email: email,
     amount: total,
     ref: uuidv4(),
-    callback_url: `https://myshopx.net/${storeName}/payment-success`,
+    callback_url: `https://${storeName}.myshopx.net/payment-success`,
     // callback_url: `http://localhost:4000/${storeName}/payment-success`,
     metadata: {
       custom_fields: [
