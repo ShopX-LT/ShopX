@@ -30,9 +30,14 @@ function makeApp(database, databaseConnectionString = process.env.PROD_MONGO_URL
   app.use(cors(corsOptions));
   // app.use(cors());
   app.use(express.json());
+
   // log all requests to access.log
+  // Define a custom token for Morgan to access the client's IP address
+  morgan.token('client-ip', function (req, res) {
+    return req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  });
   app.use(
-    morgan('common', {
+    morgan(':client-ip - - [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms', {
       stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
     })
   );

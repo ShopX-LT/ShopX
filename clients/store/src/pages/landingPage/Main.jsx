@@ -1,8 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Box, Container, Typography, Grid, Button } from '@mui/material';
+import { Box, Container, Typography, Grid, Button, Paper, AppBar, Toolbar } from '@mui/material';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import TuneIcon from '@mui/icons-material/Tune';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import salesImage from './images/sales.jpg';
+import welcomeImage from './images/welcome.jpg';
+import crossroadsImage from './images/crossroads.jpg';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import './styles.css';
 import { floatIn } from './animations';
@@ -10,6 +17,7 @@ import Pitch from './Pitch';
 import AbouAdmin from './AbouAdmin';
 import Subscription from './Subscription';
 import Card from './components/Card';
+import FeatureStoreCard from './components/FeatureStoreCard';
 
 const bgColor = '#000';
 
@@ -18,7 +26,7 @@ const Main = () => {
     <Box
       sx={{
         backgroundColor: 'transparent',
-        color: '#fff',
+        color: '#f1f2ee',
         minHeight: '100vh',
         maxWidth: '100vw',
         position: 'relative',
@@ -27,6 +35,22 @@ const Main = () => {
       {' '}
       {/* This will prevent the white sides that are left from using container, it can be removed when the body css is set*/}
       <Container>
+        <Box marginBottom={5}>
+          <AppBar
+            sx={{
+              background: 'rgb(20,20,20)',
+              backdropFilter: 'blur( 6.5px )',
+            }}
+          >
+            <Toolbar>
+              <Container>
+                <Typography variant="h6" component="div">
+                  SHOPX
+                </Typography>
+              </Container>
+            </Toolbar>
+          </AppBar>
+        </Box>
         <motion.div initial="initial" animate="animate" variants={floatIn}>
           <Box
             sx={{
@@ -34,44 +58,76 @@ const Main = () => {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '90vh',
+              minHeight: '100vh',
               width: '100%',
               textAlign: 'center',
+              position: 'relative',
             }}
           >
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: { xs: '48px', md: '52px', lg: '52px' },
-                  }}
-                >
-                  Welcome to
-                </Typography>
+            <Typography variant="h3">Are you a business owner without a website?</Typography>
+            <Typography variant="body">Create a FREE website effortlessly with SHOPX</Typography>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, width: '100%' }}>
+              <Grid container gap={3} alignItems={'center'} justifyContent={'center'} marginTop={8} marginBottom={8}>
+                <Grid item sm={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <FeatureStoreCard
+                    imageSource="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D"
+                    storeName="La Prisa"
+                    grossIncome="₦1.5m"
+                  />
+                </Grid>
+                <Grid item sm={3}>
+                  <Paper elevation={3}>
+                    <img
+                      style={{ objectFit: 'cover', width: '300px', height: '300px', borderRadius: '5px' }}
+                      src={welcomeImage}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item sm={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <FeatureStoreCard
+                    imageSource="https://images.unsplash.com/photo-1624489173879-7cc62610ddea?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    storeName="Five-Girls"
+                    grossIncome="#1.8m"
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: { xs: '52px', md: '48px', lg: '48px' },
-                    fontWeight: '400',
-                  }}
-                >
-                  SHOPX
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body">Your one stop solution to building an online store</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body">Effortlessly create a FREE website today</Typography>
-              </Grid>
-            </Grid>
+            </Box>
+
+            <Box sx={{ display: { md: 'none' }, width: '100%' }}>
+              <Swiper
+                loop={true}
+                pagination={{
+                  dynamicBullets: true,
+                }}
+                modules={[Pagination]}
+              >
+                <SwiperSlide>
+                  <FeatureStoreCard
+                    imageSource="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D"
+                    storeName="La Prisa"
+                    grossIncome="₦1.5m"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Paper elevation={3}>
+                    <img
+                      style={{ objectFit: 'cover', width: '300px', height: '300px', borderRadius: '5px' }}
+                      src={welcomeImage}
+                    />
+                  </Paper>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <FeatureStoreCard
+                    imageSource="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D"
+                    storeName="Five-Girls"
+                    grossIncome="#1.8m"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            </Box>
             <Button
               variant="contained"
-              color="secondary"
-              sx={{ margin: '40px', background: 'rgb( 31, 110, 38 )' }}
+              sx={{ background: 'rgb( 31, 110, 38 )' }}
               href="https://admin.myshopx.net/signup"
             >
               Get your free website!

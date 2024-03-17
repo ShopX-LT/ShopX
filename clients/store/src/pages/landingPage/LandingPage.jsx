@@ -13,7 +13,7 @@ const LandingPage = () => {
     } catch (error) {}
   }, []);
   const bgColor = ({ gl }) => {
-    gl.setClearColor('#000000', 1);
+    gl.setClearColor('#1c1c1c', 1);
   };
   return (
     <>
