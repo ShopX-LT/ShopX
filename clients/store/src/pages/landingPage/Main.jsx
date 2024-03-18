@@ -105,7 +105,8 @@ const Main = () => {
                   <FeatureStoreCard
                     imageSource="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D"
                     storeName="La Prisa"
-                    grossIncome="₦1.5m"
+                    grossIncome="₦1m"
+                    link="https://laprisa.myshopx.net"
                   />
                 </SwiperSlide>
                 <SwiperSlide>
@@ -120,7 +121,8 @@ const Main = () => {
                   <FeatureStoreCard
                     imageSource="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D"
                     storeName="Five-Girls"
-                    grossIncome="#1.8m"
+                    grossIncome="₦200k"
+                    link="https://five-girls.myshopx.net"
                   />
                 </SwiperSlide>
               </Swiper>

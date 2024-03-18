@@ -11,9 +11,7 @@ import {
   imageStyle,
 } from './styles';
 
-const imageSource =
-  'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D';
-const FeatureStoreCard = ({ imageSource, storeName, grossIncome }) => {
+const FeatureStoreCard = ({ imageSource, storeName, link, grossIncome }) => {
   return (
     <GroupContainer>
       <ItemContainer>
@@ -31,7 +29,9 @@ const FeatureStoreCard = ({ imageSource, storeName, grossIncome }) => {
           </Typography>
         </TextContainer>
       </ItemContainer>
-      <VisitButton variant="outlined">Visit Store</VisitButton>
+      <VisitButton variant="outlined" href={link}>
+        Visit Store
+      </VisitButton>
     </GroupContainer>
   );
 };
