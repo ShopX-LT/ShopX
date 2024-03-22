@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { Box, Typography, Button, Grid, Link } from '@mui/material';
 import { delayedFloatIn, floatIn } from './animations';
+import { ActionButton } from './styles';
 
 const salesPitch =
   'Our motivation? We want to simplify your life. No technical hurdles. No hassle of maintenance Don’t overlook this chance!';
@@ -57,22 +58,10 @@ const Pitch = () => {
         </Typography>
         <Box sx={{ width: { xs: '350px', md: '500px' }, textAlign: 'center' }}>
           <Typography variant="body">{salesPitch}</Typography>
-          {/* <Grid container mt={2} gap={4} justifyContent={'center'}>
-            <Grid item xs={12}>
-              <Link variant="body" href="/laprisa">
-                See a demo site
-              </Link>
-            </Grid>
-          </Grid> */}
         </Box>
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ margin: '40px', background: 'rgb( 31, 110, 38 )' }}
-          href="https://admin.myshopx.net/signup"
-        >
+        <ActionButton variant="contained" sx={{ margin: '40px' }} href="https://admin.myshopx.net/signup">
           Create your free website!
-        </Button>
+        </ActionButton>
       </Box>
     </motion.div>
   );

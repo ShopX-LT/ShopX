@@ -9,7 +9,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import SignIn from './pages/SignIn';
-import SignUp from './pages/NewSignUp';
+import SignUp from './pages/SignUp';
 import AddProductPage from './pages/AddProductPage';
 import CategoriesPage from './pages/CategoriesPage';
 import OrdersPage from './pages/OrdersPage';

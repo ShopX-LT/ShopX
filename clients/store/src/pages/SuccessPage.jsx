@@ -21,12 +21,11 @@ const SuccessPage = () => {
       try {
         // Make the backend call only if it hasn't been made before
         const response = await verifyPayment(axios, transactionRef);
-        console.log('response');
+        // console.log('response');
       } catch (error) {
-        console.error('Error:', error);
+        // console.error('Error:', error);
       }
     };
-
     callVerifyPayment();
   }, []);
   dispatch(clearCart());
