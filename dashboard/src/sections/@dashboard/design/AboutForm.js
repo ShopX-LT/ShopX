@@ -12,6 +12,8 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
+  Container,
+  Paper,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -26,33 +28,43 @@ const AboutForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Customize About Us</Typography>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="contact tabs">
-                <Tab label="Texts" value="1" />
-                <Tab label="Colors" value="2" />
-                <Tab label="Image" value="3" />
-                {/* <Tab label="Layout" value="2" /> */}
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <TextsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="2">
-              <ColorsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="3">
-              <ImageTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            {/* <TabPanel value="2">Layout</TabPanel> */}
-          </TabContext>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize About Us
+          </Typography>
+          <Box>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="contact tabs">
+                  <Tab label="Texts" value="1" />
+                  <Tab label="Colors" value="2" />
+                  <Tab label="Image" value="3" />
+                  {/* <Tab label="Layout" value="2" /> */}
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <TextsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="2">
+                <ColorsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="3">
+                <ImageTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              {/* <TabPanel value="2">Layout</TabPanel> */}
+            </TabContext>
+          </Box>
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Container>
   );
 };
 
@@ -61,7 +73,7 @@ export default AboutForm;
 function TextsTab({ design, handleInputChange }) {
   return (
     <Box>
-      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
+      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
         <Grid item xs={12}>
           <Typography variant="subtitle">Heading</Typography>
         </Grid>

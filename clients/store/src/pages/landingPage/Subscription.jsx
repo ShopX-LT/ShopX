@@ -90,7 +90,7 @@ const Subscription = () => {
             Get Latest Updates On Features Or Contact Us
           </Typography>
           <Box sx={{ display: 'flex', gap: 5 }}>
-            <a href={`https://www.instagram.com/shopx-lt`} target="_blank" rel={'external'}>
+            <a href={`https://www.instagram.com/shopx_lt`} target="_blank" rel={'external'}>
               <Tooltip title="Instagram" placement="top">
                 <InstagramIcon />
               </Tooltip>

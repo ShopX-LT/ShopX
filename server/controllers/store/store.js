@@ -21,6 +21,7 @@ const {
   // WEBDESIGN INTERACTORS
   getStoreDesignInteractor,
   updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
@@ -179,6 +180,16 @@ const handleCheckStoreName = async (req, res) => {
   }
 };
 
+const handleGetStoreName = async (req, res) => {
+  try {
+    const storename = req.auth?.store;
+    return res.status(200).json({ storename });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 const handleGetDesign = async (req, res) => {
   try {
     const storeName = req.auth?.store;
@@ -213,6 +224,17 @@ const handleSetDeliveryFee = async (req, res) => {
     handleErrorInteractor(error, res);
   }
 };
+
+const handleGetAllColorSchemes = async (req, res) => {
+  try {
+    const baseColor = req.params.baseColor;
+    const colorSchemes = await getAllColorSchemesInteractor(persistence, { baseColor });
+    return res.status(200).json(colorSchemes);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
 module.exports = {
   handleAddField,
   handleGetField,
@@ -228,4 +250,6 @@ module.exports = {
   handleGetDesign,
   handleUpdateDesign,
   handleSetDeliveryFee,
+  handleGetAllColorSchemes,
+  handleGetStoreName,
 };

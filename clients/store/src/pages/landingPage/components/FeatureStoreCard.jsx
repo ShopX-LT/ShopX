@@ -29,7 +29,12 @@ const FeatureStoreCard = ({ imageSource, storeName, link, grossIncome }) => {
           </Typography>
         </TextContainer>
       </ItemContainer>
-      <VisitButton variant="outlined" href={link}>
+      <VisitButton
+        variant="outlined"
+        onClick={() => {
+          window.open(link);
+        }}
+      >
         Visit Store
       </VisitButton>
     </GroupContainer>

@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography, Box } from '@mui/material';
 import { ordersError, updateOrders, setStoreStats } from '../redux';
 // components
 import Iconify from '../components/iconify';
@@ -79,7 +79,39 @@ export default function DashboardAppPage() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 2,
+                overflowX: 'scroll',
+              }}
+            >
+              <Box flex={1}>
+                <AppWidgetSummary title="Weekly Sales" total={0} icon={'mdi:money'} />
+              </Box>
+              <Box flex={1}>
+                <AppWidgetSummary
+                  title="Website Visits"
+                  total={Math.round(totalVisits / 3) || 0}
+                  color="info"
+                  icon={'tabler:mood-happy-filled'}
+                />
+              </Box>
+              <Box flex={1}>
+                <AppWidgetSummary
+                  title="Item sold"
+                  total={totalSales || 0}
+                  color="warning"
+                  icon={'clarity:shopping-bag-solid'}
+                />
+              </Box>
+              <Box flex={1}>
+                <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
+              </Box>
+            </Box>
+          </Grid>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Weekly Sales" total={0} icon={'mdi:money'} />
           </Grid>
 
@@ -103,7 +135,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Wallet" total={wallet || 0} color="error" icon={'ion:wallet'} />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} sm={6} lg={4}>
             <AppOrderTimeline title={`New Orders`} list={newOrders.length > 5 ? newOrders.splice(0, 4) : newOrders} />

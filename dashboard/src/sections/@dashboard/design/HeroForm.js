@@ -13,6 +13,8 @@ import {
   TextareaAutosize,
   Typography,
   Slider,
+  Container,
+  Paper,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -33,35 +35,45 @@ const HeroForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Customize Hero</Typography>
-        <Box sx={{ maxWidth: '90%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-                <Tab label="Layout" value="1" />
-                <Tab label="Texts" value="2" />
-                <Tab label="Colors" value="3" />
-                <Tab label="Image" value="4" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <StyleTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="2">
-              <TextsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="3">
-              <ColorsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="4">
-              <ImageTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-          </TabContext>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize Hero
+          </Typography>
+          <Box sx={{ typography: 'body1' }}>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+                  <Tab label="Layout" value="1" />
+                  <Tab label="Texts" value="2" />
+                  <Tab label="Colors" value="3" />
+                  <Tab label="Image" value="4" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <StyleTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="2">
+                <TextsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="3">
+                <ColorsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="4">
+                <ImageTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+            </TabContext>
+          </Box>
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Container>
   );
 };
 

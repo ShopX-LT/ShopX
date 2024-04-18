@@ -18,7 +18,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     try {
-      // axios.get('https://myshopx.net/api/newvisit');
+      axios.get('https://myshopx.net/api/newvisit');
     } catch (error) {}
   }, []);
 

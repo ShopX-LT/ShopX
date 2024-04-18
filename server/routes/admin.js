@@ -15,6 +15,8 @@ const {
   handleGetDesign,
   handleUpdateDesign,
   handleSetDeliveryFee,
+  handleGetAllColorSchemes,
+  handleGetStoreName,
 } = require('../controllers/store/store');
 const { handleRefreshToken } = require('../controllers/refreshController');
 const { handleLogout } = require('../controllers/logoutController');
@@ -28,6 +30,7 @@ router.post('/signin', handleSignIn);
 router.get('/refresh', handleRefreshToken);
 router.get('/logout', handleLogout);
 router.post('/checkstorename', handleCheckStoreName);
+router.get('/storename', verifyToken, handleGetStoreName);
 router.get('/stats', verifyToken, handleGetStoreStats);
 router.post('/options', verifyToken, handleAddFeature);
 router.post('/options/value', verifyToken, handleAddFeatureValue);
@@ -38,6 +41,7 @@ router.get('/order', verifyToken, handleGetAllOrders);
 router.post('/payout', verifyToken, handlePayout);
 router.get('/bank-list', verifyToken, handleGetBankList);
 router.put('/delivery-fee', verifyToken, handleSetDeliveryFee);
+router.get('/colorscheme/:baseColor', handleGetAllColorSchemes);
 router.put('/update-order/:id', verifyToken, handleUpdateOrder);
 
 module.exports = router;
