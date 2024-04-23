@@ -50,7 +50,7 @@ export const TextContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'start',
+  alignItems: 'center',
   width: '100%',
   padding: '5px',
   borderRadius: '5px',

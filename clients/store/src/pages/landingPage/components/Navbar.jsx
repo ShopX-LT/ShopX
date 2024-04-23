@@ -9,7 +9,7 @@ const Navbar = () => {
         <Toolbar>
           <Container>
             <Typography variant="h6" component="div">
-              SHOPX
+              {/* SHOPX */}
             </Typography>
           </Container>
         </Toolbar>

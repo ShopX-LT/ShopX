@@ -9,8 +9,10 @@ export const MainContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const AppBarStyled = styled(AppBar)(({ theme }) => ({
-  background: 'rgb(20,20,20)',
-  backdropFilter: 'blur( 6.5px )',
+  background: 'transparent',
+  // backdropFilter: 'blur( 6.5px )',
+  position: 'relative',
+  boxShadow: 'none',
 }));
 
 export const HeroContainer = styled(Box)(({ theme }) => ({
@@ -18,7 +20,7 @@ export const HeroContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  minHeight: '100vh',
+  minHeight: '50vh',
   width: '100%',
   textAlign: 'center',
   position: 'relative',

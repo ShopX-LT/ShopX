@@ -24,26 +24,56 @@ const Main = () => {
     <MainContainer>
       {' '}
       {/* This will prevent the white sides that are left from using container, it can be removed when the body css is set*/}
+      <Navbar />
       <Container>
-        <Navbar />
         <motion.div initial="initial" animate="animate" variants={floatIn}>
           <HeroContainer>
-            <Typography variant="h3">Are you a business owner without a website?</Typography>
-            <Typography variant="body">Create a FREE website effortlessly with SHOPX</Typography>
+            <Typography
+              my={2}
+              align="center"
+              variant="h1"
+              sx={{
+                fontSize: { xs: '52px', md: '120px', lg: '150px' },
+                fontWeight: 'bold',
+              }}
+            >
+              SHOPX
+            </Typography>
+            <Box marginTop={2}>
+              <Typography variant="h6">Start Building Your Success Story Today—Sell online with ShopX!</Typography>
+              <Typography sx={{ display: { xs: 'none', sm: 'block' } }} my={1} variant="body1">
+                Create a FREE website effortlessly with SHOPX
+              </Typography>
+            </Box>
+            <ActionButton
+              variant="contained"
+              sx={{ background: 'rgb( 31, 110, 38 )', marginY: 4 }}
+              href="https://admin.myshopx.net/signup"
+            >
+              Get your free website!
+            </ActionButton>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, width: '100%' }}>
               <Grid container gap={3} alignItems={'center'} justifyContent={'center'} marginTop={8} marginBottom={8}>
                 <Grid item sm={3} sx={{ display: 'flex', justifyContent: 'center' }}>
                   {displayFeatureStore(0)}
                 </Grid>
-                <Grid item sm={3}>
-                  {displayMeme(welcomeImage)}
-                </Grid>
+                {/* <Grid item sm={3}> */}
+                {/* {displayMeme(welcomeImage)} */}
+                {/* <Typography
+                    variant="h6"
+                    sx={{
+                      fontSize: { xs: '52px', md: '48px', lg: '24px' },
+                      fontWeight: '400',
+                    }}
+                  >
+                    Featured Stores
+                  </Typography> */}
+                {/* </Grid> */}
                 <Grid item sm={3} sx={{ display: 'flex', justifyContent: 'center' }}>
                   {displayFeatureStore(1)}
                 </Grid>
               </Grid>
             </Box>
-
             <Box sx={{ display: { md: 'none' }, width: '100%' }}>
               <Swiper
                 loop={true}
@@ -53,17 +83,10 @@ const Main = () => {
                 modules={[Pagination]}
               >
                 <SwiperSlide>{displayFeatureStore(0)}</SwiperSlide>
-                <SwiperSlide>{displayMeme(welcomeImage)}</SwiperSlide>
+                {/* <SwiperSlide>{displayMeme(welcomeImage)}</SwiperSlide> */}
                 <SwiperSlide>{displayFeatureStore(1)}</SwiperSlide>
               </Swiper>
             </Box>
-            <ActionButton
-              variant="contained"
-              sx={{ background: 'rgb( 31, 110, 38 )' }}
-              href="https://admin.myshopx.net/signup"
-            >
-              Get your free website!
-            </ActionButton>
           </HeroContainer>
 
           <Grid container sx={{ justifyContent: 'center', gap: { xs: 8, sm: 2 } }}>

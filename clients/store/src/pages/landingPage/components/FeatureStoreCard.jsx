@@ -21,12 +21,12 @@ const FeatureStoreCard = ({ imageSource, storeName, link, grossIncome }) => {
           </ImageContainer>
         </ImageRelativeContainer>
         <TextContainer>
-          <Typography variant="subtitle2" fontWeight={500}>
+          <Typography variant="subtitle1" fontWeight={500}>
             {storeName}
           </Typography>
-          <Typography align="left" variant="subtitle2" fontWeight={300}>
+          {/* <Typography align="left" variant="subtitle2" fontWeight={300}>
             Gross Income: {grossIncome}
-          </Typography>
+          </Typography> */}
         </TextContainer>
       </ItemContainer>
       <VisitButton
