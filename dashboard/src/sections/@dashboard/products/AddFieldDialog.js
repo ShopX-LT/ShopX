@@ -11,19 +11,19 @@ import {
   Button,
 } from '@mui/material';
 
-const AddField = (props) => {
+const AddFieldDialog = ({ children, close, open }) => {
   return (
     <Box>
-      <Dialog open={props.open} onClose={props.close}>
+      <Dialog open={open} onClose={close}>
         <DialogTitle align="center">
           New Feature <Divider />
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Add a new feature to your product</DialogContentText>
-          {props.children}
+          {children}
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close} color="error">
+          <Button onClick={close} color="error">
             Cancel
           </Button>
         </DialogActions>
@@ -32,4 +32,4 @@ const AddField = (props) => {
   );
 };
 
-export default AddField;
+export default AddFieldDialog;

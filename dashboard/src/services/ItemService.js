@@ -5,16 +5,12 @@ const DELETE_ITEM_IMAGE_URL = '/api/item/image/delete';
 const DELETE_ITEM_URL = '/api/item/store/remove';
 const GET_ALL_ITEMS_URL = '/api/item/store/items';
 
-export async function createItem(axiosPrivate, toast, formData) {
-  try {
-    const response = await axiosPrivate.post(CREAT_ITEM_URL, formData);
-    toast.success('Item Created');
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    toast.error(error.message);
-    return null;
-  }
+export async function createItem(axiosPrivate, formData) {
+  const response = await axiosPrivate.post(CREAT_ITEM_URL, formData);
+  const newItem = response.data;
+  if (!newItem) throw new Error('Failed to create item');
+
+  return newItem;
 }
 
 export async function updateItem(axiosPrivate, toast, id, formData) {
