@@ -1,4 +1,4 @@
-import { Box, Container, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import { AppBarStyled } from '../styles';
 
@@ -8,9 +8,15 @@ const Navbar = () => {
       <AppBarStyled>
         <Toolbar>
           <Container>
-            <Typography variant="h6" component="div">
-              {/* SHOPX */}
-            </Typography>
+            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+              <Typography variant="h6" component="div">
+                SHOPX
+              </Typography>
+              <Stack direction={'row'} gap={2}>
+                <Button variant="outlined">Login</Button>
+                <Button variant="outlined">SignUp</Button>
+              </Stack>
+            </Box>
           </Container>
         </Toolbar>
       </AppBarStyled>

@@ -6,6 +6,8 @@ import { ActionButton } from './styles';
 
 const salesPitch =
   'Our motivation? We want to simplify your life. No technical hurdles. No hassle of maintenance Don’t overlook this chance!';
+const insentive =
+  'The average cost of a complete e-commerce platform is ₦30k per month but for a limited time we are making it completely FREE.';
 
 const Pitch = () => {
   const controls = useAnimation();
@@ -56,9 +58,13 @@ const Pitch = () => {
         >
           Skyrocket Sales!
         </Typography>
+        <Box mb={5} sx={{ width: { xs: '350px', md: '500px' }, textAlign: 'center' }}>
+          <Typography variant="body">{insentive}</Typography>
+        </Box>
         <Box sx={{ width: { xs: '350px', md: '500px' }, textAlign: 'center' }}>
           <Typography variant="body">{salesPitch}</Typography>
         </Box>
+
         <ActionButton variant="contained" sx={{ margin: '40px' }} href="https://admin.myshopx.net/signup">
           Create your free website!
         </ActionButton>
