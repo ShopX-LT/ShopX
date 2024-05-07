@@ -1,6 +1,6 @@
 import { AppBar, Box, styled } from '@mui/material';
 
-export const BackgroundStyle = styled(Box)(({ theme }) => ({
+export const BackgroundStyle = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   zIndex: -2,
@@ -14,7 +14,7 @@ export const BackgroundStyle = styled(Box)(({ theme }) => ({
   backgroundPosition: 'center',
 }));
 
-export const BackgroundTintOverlay = styled(Box)(({ theme }) => ({
+export const BackgroundTintOverlay = styled(Box)(() => ({
   position: 'absolute',
   zIndex: -1,
   top: 0,
@@ -25,7 +25,7 @@ export const BackgroundTintOverlay = styled(Box)(({ theme }) => ({
   opacity: 0.7,
 }));
 
-export const AppBarStyled = styled(AppBar)(({ theme }) => ({
+export const AppBarStyled = styled(AppBar)(() => ({
   position: 'relative',
   top: 0,
   cursor: 'pointer',
