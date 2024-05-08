@@ -54,10 +54,9 @@ const ExtractStore = () => {
     }
   }, [storeName]);
   useEffect(() => {
-    if (storeName !== 'myshopx' && storeName !== 'www') console.log(storeName);
-
     if (storeName !== 'myshopx' && storeName !== 'www') {
       getDesign();
+      updateStoreVisit();
     }
     setIsLoading(false);
   }, [store]);

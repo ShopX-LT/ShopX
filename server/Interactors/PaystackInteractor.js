@@ -67,7 +67,7 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
     amount: total,
     ref: uuidv4(),
     callback_url: `https://${storeName}.myshopx.net/payment-success`,
-    // callback_url: `http://localhost:4000/${storeName}/payment-success`,
+    // callback_url: `http://${storeName}.localhost:4000/payment-success`,
     metadata: {
       custom_fields: [
         {
@@ -109,13 +109,13 @@ const initTransactionInteractor = async (
   { items, userDetails, storeName }
 ) => {
   if (items.length <= 0 || !verifyUserDetails(userDetails)) {
-    return 'https://myshopx.net';
+    return 'https://www.myshopx.net';
   }
   const cartItemsFromCurrentStore = items.filter((item) => {
     return item.store === storeName;
   });
   if (cartItemsFromCurrentStore.length <= 0) {
-    return 'https://myshopx.net';
+    return 'https://www.myshopx.net';
   }
   // get the items based of the ids and massage them
   const dereferencedItems = await getGroupedItems(cartItemsFromCurrentStore);
