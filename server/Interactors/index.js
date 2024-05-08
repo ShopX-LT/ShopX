@@ -3,23 +3,26 @@
  * @module interactors
  * @property {function} createStoreInteractor - A function that creates a store interactor.
  * @property {function} storeLogin - A function that logs in to the store.
- * @property {function} addFieldToStoreInteractor - A function that adds a field to the store interactor.
+ * @property {function} addOptionToStoreInteractor - A function that adds a field to the store interactor.
  * @property {function} getFieldFromStoreInteractor - A function that gets a field from the store interactor.
- * @property {function} getOrCreateUserInteractor - A function that gets or creates a user interactor.
+ * @property {function} createUserInteractor - A function that gets or creates a user interactor.
  * @property {function}
  */
 const {
   createCategoryInteractor,
   getAllCategoriesInteractor,
   getCustomCategoriesInteractor,
+  deleteCategoryInteractor,
 } = require('./CategoryInteractor');
 const {
   createItemInteractor,
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
 } = require('./ItemInteractor');
 const { handleErrorInteractor } = require('./ErrorInteractor');
 
@@ -35,7 +38,9 @@ const { getItemReviewsInteractor, createReviewInteractor } = require('./ReviewIn
 const {
   createStoreInteractor,
   storeLogin,
-  addFieldToStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,
@@ -43,21 +48,27 @@ const {
   updateStoreDeliveryFeeInteractor,
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
-const { getOrCreateUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
-const { getStoreDesignInteractor, updateStoreDesignInteractor } = require('./WebDesignInteractor');
+const { createUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
+const {
+  getStoreDesignInteractor,
+  updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
+} = require('./WebDesignInteractor');
 
 module.exports = {
   // STORE INTERACRORS
   createStoreInteractor,
   storeLogin,
-  addFieldToStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getFieldFromStoreInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,
   addVisitToStoreInteractor,
   updateStoreDeliveryFeeInteractor,
   // USER INTERACTORS
-  getOrCreateUserInteractor,
+  createUserInteractor,
   userLogin,
   subscribeToStoreInteractor,
   //ITEM INTERACTORS
@@ -65,12 +76,16 @@ module.exports = {
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
+
   // CATEGORY INTERCATORS
   createCategoryInteractor,
   getAllCategoriesInteractor,
   getCustomCategoriesInteractor,
+  deleteCategoryInteractor,
   // ORDER INTERACTORS
   getStoreOrdersInteractor,
   updateOrderInteractor,
@@ -90,6 +105,7 @@ module.exports = {
   // WEBDESIGN INTERACTOR
   getStoreDesignInteractor,
   updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 };

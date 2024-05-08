@@ -41,12 +41,14 @@ const LeftText = () => {
                 text={heroDesign.heroHeadline}
                 textColor={heroDesign.heroHeadlineColor}
                 weight="600"
+                smTextFontSize="72px"
+                xsTextFontSize="36px"
                 lineHeight={1}
                 marginTop={4}
                 marginBottom={2}
               />
               <Box sx={{ maxWidth: { xs: '300px', md: '650px' } }}>
-                <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={3} />
+                <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={4} />
               </Box>
               <GeneralButton
                 buttonstyle="action"

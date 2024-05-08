@@ -19,6 +19,7 @@ const WebDesignScheme = new mongoose.Schema({
     heroHeadline: {
       trim: true,
       type: String,
+      default: 'Add Your Headline Here!',
     },
     heroHeadlineColor: {
       trim: true,
@@ -28,6 +29,7 @@ const WebDesignScheme = new mongoose.Schema({
     heroSubText: {
       trim: true,
       type: String,
+      default: 'Add a short store description here!',
     },
     heroSubTextColor: {
       trim: true,
@@ -182,6 +184,7 @@ const WebDesignScheme = new mongoose.Schema({
     contactDescription: {
       type: 'string',
       trim: true,
+      default: 'Tell us more about how to contact you',
     },
   },
   about: {
@@ -194,11 +197,13 @@ const WebDesignScheme = new mongoose.Schema({
     aboutHeading: {
       type: 'string',
       trim: true,
+      default: 'About Us',
     },
     aboutHeadingColor: { type: 'string', trim: true, default: '#ffffff' },
     aboutDescription: {
       type: 'string',
       trim: true,
+      default: 'Tell us more about you!',
     },
     aboutBgColor: { type: 'string', trim: true, default: '#000000' },
     aboutTextColor: { type: 'string', trim: true, default: '#ffffff' },

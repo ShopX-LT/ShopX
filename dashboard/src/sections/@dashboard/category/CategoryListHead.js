@@ -42,13 +42,13 @@ export default function CategoryListHead({
   return (
     <TableHead>
       <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
+        <TableCell padding="checkbox">
+          {/* <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-          />
-        </TableCell> */}
+          /> */}
+        </TableCell>
         {headLabel.map((headCell) => (
           <TableCell key={headCell.id} align={'left'} sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel

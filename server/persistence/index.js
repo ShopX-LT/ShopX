@@ -10,17 +10,21 @@
  * @property {function} createUser - creates a new user
  * @property {function} getUser - retrieves a user by email
  */
-const { createCategory, getManyCategories } = require('./CategoryPersistence');
+const { createCategory, getManyCategories, deleteCategory } = require('./CategoryPersistence');
 const { generateText } = require('./ChatGPTPersistence');
+const { getAllColorSchemes, selectColorScheme } = require('./ColorSchemeUtils');
 const {
   createItem,
   getItemById,
   getItemsBySearch,
   getItemsByQuery,
   getGroupedItems,
+  updateItemImages,
   updateItemById,
   deleteItemById,
   updateItemStatistics,
+  deleteImageFromItem,
+  removeCategoryFromItems,
 } = require('./ItemPersistence');
 
 const { createOrder, findOrderByReference, getAllStoreOrders, updateOrder } = require('./OrderPersistence');
@@ -41,6 +45,8 @@ const {
   editStoreWallet,
   addVisitToStore,
   updateStoreDeliveryFee,
+  addOptionToStore,
+  addOptionValueToStore,
 } = require('./StorePersistence');
 const {
   createUser,
@@ -58,6 +64,10 @@ module.exports = {
   // CHATGPT PERSISTENCE
   generateText,
 
+  // COLOR SCHEME
+  getAllColorSchemes,
+  selectColorScheme,
+
   // STORE PERSISTENCE
   createStore,
   getStoreByName,
@@ -69,7 +79,8 @@ module.exports = {
   editStoreWallet,
   addVisitToStore,
   updateStoreDeliveryFee,
-
+  addOptionToStore,
+  addOptionValueToStore,
   // USER PERSISTENCE
   createUser,
   getUser,
@@ -84,13 +95,17 @@ module.exports = {
   getItemsByQuery,
   getGroupedItems,
   getItemById,
+  updateItemImages,
   updateItemById,
   deleteItemById,
   updateItemStatistics,
+  deleteImageFromItem,
+  removeCategoryFromItems,
 
   // CATEGORY PERSISTENCE
   createCategory,
   getManyCategories,
+  deleteCategory,
 
   // ORDER PERSISTENCE
   createOrder,

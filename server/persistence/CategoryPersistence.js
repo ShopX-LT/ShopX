@@ -43,7 +43,17 @@ const getManyCategories = async ({ categories }) => {
   }
 };
 
+const deleteCategory = async ({ categoryId }) => {
+  try {
+    await Category.deleteOne({ _id: categoryId });
+  } catch (error) {
+    console.error('Category Persistence error in deleteCategory()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createCategory,
   getManyCategories,
+  deleteCategory,
 };

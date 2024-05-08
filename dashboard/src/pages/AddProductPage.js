@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import {
   Box,
   Stack,
@@ -11,26 +11,24 @@ import {
   Select,
   MenuItem,
   FormControl,
-  TextareaAutosize,
   Container,
   Grid,
   ListItemText,
   Checkbox,
-  IconButton,
-  OutlinedInput,
-  styled,
+  ListSubheader,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Dropzone from 'react-dropzone';
 import Iconify from '../components/iconify';
-import { AddField } from '../sections/@dashboard/products';
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { AddFieldDialog } from '../sections/@dashboard/products';
+import useCategory from '../hooks/useCategory';
+import useFeature from '../hooks/useFeature';
+import useFormikHandler from '../hooks/useFormikHandler';
 import { createItem } from '../services/ItemService';
-import { getCategories } from '../services/CategoryService';
-import { getFields, creatField } from '../services/FieldService';
+import ImageUploadBox from '../components/image-upload-box';
+import SingleValueTextFieldForm from '../components/singleValueTextFieldForm';
+import TextArea from '../components/textArea';
 
 // YUP DECLERACTIONS
 const itemShema = Yup.object().shape({
@@ -47,74 +45,25 @@ function capitalizeArrayStrings(arr) {
   return arr.map((str) => _.upperFirst(str));
 }
 
-const StyledTextarea = styled(TextareaAutosize)(
-  ({ theme }) => `
-    font-family: IBM Plex Sans, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 12px;
-    border-radius: 12px 12px 0 12px;
-    border: 1px solid grey;
-  `
-);
+const fixedTextFields = ['title', 'price', 'quantity', 'discount'];
 
 const AddProductPage = () => {
-  const axiosPrivate = useAxiosPrivate();
-  const [productImages, setProductImages] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [storeFields, setStoreFields] = useState([]);
-  const [field, setField] = useState('');
-  const [openFieldDialog, setOpenFieldDialog] = useState(false);
+  const { categories, submitNewCategoryForm } = useCategory();
+  const { createNewField, createNewFeatureValue, formikFields, itemCustomFields } = useFeature();
+  const { handleFormikSubmit } = useFormikHandler();
 
-  // GET ALL THE CATEGORIES
-  const retreiveCategories = async () => {
-    const response = await getCategories(axiosPrivate);
-    if (!response) {
-      setCategories([]);
-    } else {
-      setCategories(response);
-    }
-  };
+  const [productImages, setProductImages] = useState([]);
+  const [openNewFeatureDialog, setOpenNewFeatureDialog] = useState(false);
 
   // FIELD DIALOG CONTROLLER
-  const handleFieldClickOpen = () => {
-    setOpenFieldDialog(true);
+  const handleOpenNewFeatureDialog = () => {
+    setOpenNewFeatureDialog(true);
   };
   const handleFieldClose = () => {
-    setOpenFieldDialog(false);
+    setOpenNewFeatureDialog(false);
   };
-
-  // CREATING A FIELD
-  const handleFieldSave = async () => {
-    const newFields = await creatField(axiosPrivate, toast, field);
-    setStoreFields(newFields);
-    setOpenFieldDialog(false);
-  };
-  const handleFieldChange = (event) => {
-    setField(event.target.value);
-  };
-  // GET THE ITEM TEMPLATE
-  const retreiveTemplate = async () => {
-    const response = await getFields(axiosPrivate);
-    if (!response) {
-      setStoreFields([]);
-    } else {
-      setStoreFields(response);
-    }
-  };
-
-  // USE EFFECT
-  useEffect(() => {
-    retreiveCategories();
-    retreiveTemplate();
-  }, []);
 
   // Initial Values
-  const fields = storeFields.reduce((obj, key) => {
-    obj[key] = '';
-    return obj;
-  }, {});
   const initialValueItem = {
     title: '',
     category: [],
@@ -123,7 +72,7 @@ const AddProductPage = () => {
     price: '',
     quantity: '',
     discount: 0,
-    ...fields,
+    ...formikFields,
   };
   /**
    * Handle form submit event.
@@ -132,224 +81,155 @@ const AddProductPage = () => {
    * @param {object} onSubmitProps - Props passed to the form onSubmit handler.
    */
   const handleFormSubmit = async (values, onSubmitProps) => {
-    const formData = new FormData();
-    // Append each form value to the formData object.
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
-
-    // Append each image file to the formData object.
-    values.images.forEach((image) => {
-      formData.append('images', image);
-    });
-
-    // Send formData object to server to create item.
-    await createItem(axiosPrivate, toast, formData);
-    onSubmitProps.resetForm();
-    setProductImages((prevState) => {
-      const newState = [];
-      return newState;
-    });
+    try {
+      await handleFormikSubmit({
+        hasImages: true,
+        serviceFunction: createItem,
+        values,
+        onSubmitProps,
+        successMessage: 'Item Created',
+        errorMessage: 'An error occurred creating this item',
+      });
+      setProductImages(() => {
+        const newState = [];
+        return newState;
+      });
+    } catch (error) {
+      //
+    }
   };
 
   // RETURN
   return (
-    <Formik onSubmit={handleFormSubmit} initialValues={initialValueItem} validationSchema={itemShema}>
-      {({
-        values,
-        errors,
-        touched,
-        isValidating,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        setFieldValue,
-        resetForm,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <Container sx={{ my: 'auto', mx: 'auto' }}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-              <Typography variant="h4" gutterBottom>
-                New Product
-              </Typography>
-              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleFieldClickOpen}>
-                New Feature
-              </Button>
-            </Stack>
-            <AddField
-              open={openFieldDialog}
-              close={handleFieldClose}
-              save={handleFieldSave}
-              handleChange={handleFieldChange}
-            />
-            <Paper elevation={3} sx={{ p: 5, mb: 1 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Product Name"
-                    name="title"
-                    error={Boolean(touched.title) && Boolean(errors.title)}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.title}
-                    fullWidth
-                  />
-                </Grid>
+    <>
+      <Helmet>
+        <title> Add Product </title>
+      </Helmet>
+      <Formik onSubmit={handleFormSubmit} initialValues={initialValueItem} validationSchema={itemShema}>
+        {({ values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue }) => (
+          <form onSubmit={handleSubmit}>
+            <Container sx={{ my: 'auto', mx: 'auto' }}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h4" gutterBottom>
+                  New Product
+                </Typography>
+                <Button
+                  variant="contained"
+                  startIcon={<Iconify icon="eva:plus-fill" />}
+                  onClick={handleOpenNewFeatureDialog}
+                >
+                  New Feature
+                </Button>
+              </Stack>
+              <AddFieldDialog open={openNewFeatureDialog} close={handleFieldClose}>
+                <SingleValueTextFieldForm handleSubmitForm={createNewField} label="Feature Name" />
+              </AddFieldDialog>
+              <Paper elevation={3} sx={{ p: 5, mb: 1 }}>
+                <Grid container spacing={2}>
+                  {fixedTextFields.map((fieldName) => (
+                    <Grid key={fieldName} item xs={12} md={6}>
+                      <TextField
+                        label={_.upperFirst(fieldName)}
+                        name={fieldName}
+                        error={Boolean(touched[fieldName]) && Boolean(errors[fieldName])}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values[fieldName]}
+                        fullWidth
+                      />
+                    </Grid>
+                  ))}
 
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="category">Category</InputLabel>
-                    <Select
-                      labelId="Category"
-                      name="category"
-                      multiple
-                      renderValue={(selected) => capitalizeArrayStrings(selected).join(', ')}
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.category}
-                    >
-                      <MenuItem value="">
-                        <em>Select Category</em>
-                      </MenuItem>
-                      {categories.map((category) => {
-                        return (
+                  <Grid item xs={12} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel id="category">Category</InputLabel>
+                      <Select
+                        labelId="Category"
+                        name="category"
+                        multiple
+                        renderValue={(selected) => capitalizeArrayStrings(selected).join(', ')}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.category}
+                      >
+                        <ListSubheader>Select Category</ListSubheader>
+                        {categories.map((category) => (
                           <MenuItem key={category.name} value={category.name} sx={{ textTransform: 'capitalize' }}>
                             <Checkbox checked={values.category.indexOf(category.name) > -1} />
                             <ListItemText primary={category.name} />
                           </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Quantity"
-                    name="quantity"
-                    error={Boolean(touched.quantity) && Boolean(errors.quantity)}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.quantity}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Price"
-                    name="price"
-                    error={Boolean(touched.price) && Boolean(errors.price)}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.price}
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Discount"
-                    name="discount"
-                    error={Boolean(touched.discount) && Boolean(errors.discount)}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.discount}
-                    fullWidth
-                  />
-                </Grid>
-                {storeFields.map((val, index) => {
-                  return (
-                    <Grid key={val} item xs={12} md={6}>
-                      <TextField
-                        label={val}
-                        name={val}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values[val]}
-                        fullWidth
-                      />
-                    </Grid>
-                  );
-                })}
-                <Grid item xs={12}>
-                  <StyledTextarea
-                    label="Description"
-                    name="description"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.description}
-                    minRows={2}
-                    placeholder="Product description"
-                    style={{ width: '100%' }}
-                  />
-                </Grid>
-              </Grid>
-              {/* ************************** */}
-              <Box gridColumn="span 4" border={`1px solid black`} borderRadius="5px" p="1rem" m="1rem">
-                <Dropzone
-                  acceptedFiles=".jpg,.jpeg,.png"
-                  multiple
-                  onDrop={(newImages) => {
-                    setProductImages((prevState) => {
-                      const newState = [...prevState, ...newImages];
-                      return newState;
-                    });
-                    setFieldValue('images', [...productImages, ...newImages]);
-                  }}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <Box
-                      {...getRootProps()}
-                      border={`1px dashed black`}
-                      p="1rem"
-                      sx={{ '&:hover': { cursor: 'pointer' } }}
-                    >
-                      <input {...getInputProps()} />
-
-                      <p>Add Picture Here</p>
-                    </Box>
-                  )}
-                </Dropzone>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
-                  {values.images.map((image, index) => {
-                    return (
-                      <Box key={image.name}>
-                        <img src={URL.createObjectURL(image)} alt={image.name} width={200} height={200} />
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 1,
-                            alignItems: 'center',
-                          }}
+                        ))}
+                        <ListSubheader>Create Category</ListSubheader>
+                        <SingleValueTextFieldForm handleSubmitForm={submitNewCategoryForm} />
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  {itemCustomFields.map((option) => (
+                    <Grid key={option.feature} item xs={12} md={6}>
+                      {/* TODO move this to be a component */}
+                      <FormControl fullWidth>
+                        <InputLabel id={option.feature}>{_.upperFirst(option.feature)}</InputLabel>
+                        <Select
+                          labelId={_.upperFirst(option.feature)}
+                          name={option.feature}
+                          renderValue={(selected) => _.upperFirst(selected)}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values[option.feature]}
                         >
-                          <Typography>{image.name}</Typography>
-                          <IconButton
-                            onClick={() => {
-                              const newFiles = [...productImages];
-                              newFiles.splice(index, 1);
-                              setProductImages(newFiles);
-                              setTimeout(() => {
-                                setFieldValue('images', newFiles);
-                              }, 0);
+                          <ListSubheader>Select {option.feature}</ListSubheader>
+                          {option.values.map((value) => (
+                            <MenuItem
+                              key={`${option.feature}-${value}`}
+                              value={value}
+                              sx={{ textTransform: 'capitalize' }}
+                            >
+                              <ListItemText primary={value} />
+                            </MenuItem>
+                          ))}
+                          <ListSubheader>Create a new {option.feature} option</ListSubheader>
+                          <SingleValueTextFieldForm
+                            handleSubmitForm={(values, onSubmitProps) => {
+                              createNewFeatureValue(values, onSubmitProps, option.feature);
                             }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Box>
-                      </Box>
-                    );
-                  })}
+                            label="New option"
+                          />
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  ))}
+                  <Grid item xs={12}>
+                    <TextArea
+                      minRows={2}
+                      label="Description"
+                      name="description"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.description}
+                      placeholder="Product description"
+                    />
+                  </Grid>
+                </Grid>
+                {/* ************************** */}
+                <ImageUploadBox
+                  setImages={setProductImages}
+                  images={productImages}
+                  setFieldValue={setFieldValue}
+                  uploadedImages={values.images}
+                  field="images"
+                />
+
+                <Box sx={{ mx: 'auto' }}>
+                  <Button variant="contained" sx={{ mt: 4 }} type="submit" fullWidth>
+                    Save
+                  </Button>
                 </Box>
-              </Box>
-              <Box sx={{ mx: 'auto' }}>
-                <Button variant="contained" sx={{ mt: 4 }} type="submit" fullWidth>
-                  Save
-                </Button>
-              </Box>
-            </Paper>
-          </Container>
-        </form>
-      )}
-    </Formik>
+              </Paper>
+            </Container>
+          </form>
+        )}
+      </Formik>
+    </>
   );
 };
 

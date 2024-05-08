@@ -161,6 +161,39 @@ const validateStore = async (getStoreByName, store) => {
   return validStore;
 };
 
+const updateItemImagesInteractor = async ({ updateItemImages, saveImagesToS3Bucket }, { id, images }) => {
+  try {
+    const savedImages = await saveImagesToS3Bucket(images);
+    if (!savedImages) {
+      return Promise.reject(new Error('Error saving images'));
+    }
+
+    const item = await updateItemImages({
+      id,
+      images: savedImages,
+    });
+    const formattedItem = formatItemForStore(item);
+    return formattedItem;
+  } catch (error) {
+    console.log('Item Interact error in createItemInteractor()', error);
+    return null;
+  }
+};
+
+const deleteImageFromItemInteractor = async ({ deleteImageFromItem }, { itemId, imageId }) => {
+  // TODO remove from AWS bucket
+  try {
+    const item = await deleteImageFromItem({ itemId, imageId });
+    if (!item) {
+      console.log(`ImageId: ${imageId}, itemId: ${itemId}`);
+      return Promise.reject(new Error('Error deleting an image'));
+    }
+    return true;
+  } catch (error) {
+    console.log('Erorr on deleteImageFromItem', error);
+  }
+};
+
 const updateItemByIdInteractor = async (
   { updateItemById, getImagesUrlFromS3Buscket },
   { id, storeName, updatedItem }
@@ -200,6 +233,7 @@ const formatItemForStore = (item) => {
     amount: item?.amount, // amount is here for legacy support, delete it when project is ready for prod
     discount: item?.discount,
     quantity: item?.quantity,
+    description: item?.description,
     sales: item?.sales,
     displayPrice: item?.price * (1 - item.discount / 100),
   };
@@ -214,6 +248,7 @@ const formatItemForUser = (item) => {
     amount: item?.amount,
     discount: item?.discount,
     quantity: item?.quantity,
+    description: item?.description,
     displayPrice: item?.price * (1 - item.discount / 100),
   };
 };
@@ -232,6 +267,8 @@ module.exports = {
   getItemInteractor,
   getSearchItemsInteractor,
   getQueryItemsInteractor,
+  updateItemImagesInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
 };

@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-const AccountDetails = ({ accountType, email, password, verifyPassword, onChange, onAccountTypeChange }) => {
+const AccountDetails = ({ email, password, verifyPassword, onChange }) => {
   const checkPasswords = () => {
     if (!password || !verifyPassword || password !== verifyPassword) {
       return true;
@@ -25,18 +25,6 @@ const AccountDetails = ({ accountType, email, password, verifyPassword, onChange
         Account Details
       </Typography>
 
-      <FormControl>
-        <RadioGroup
-          aria-label="account type"
-          id="accountType"
-          name="accountType"
-          value={accountType}
-          onChange={onAccountTypeChange}
-        >
-          <FormControlLabel value="old" control={<Radio />} label="I am an existing user" />
-          <FormControlLabel value="new" control={<Radio />} size="small" label="I am a new user" />
-        </RadioGroup>
-      </FormControl>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -64,25 +52,23 @@ const AccountDetails = ({ accountType, email, password, verifyPassword, onChange
             type="password"
           />
         </Grid>
-        {accountType === 'new' && (
-          <Grid item xs={12}>
-            <TextField
-              id="verifyPassword"
-              required
-              name="verifyPassword"
-              label="Verify password"
-              fullWidth
-              onChange={(e) => {
-                onChange(e);
-                checkPasswords();
-              }}
-              variant="standard"
-              value={verifyPassword}
-              error={checkPasswords()}
-              type="password"
-            />
-          </Grid>
-        )}
+        <Grid item xs={12}>
+          <TextField
+            id="verifyPassword"
+            required
+            name="verifyPassword"
+            label="Verify password"
+            fullWidth
+            onChange={(e) => {
+              onChange(e);
+              checkPasswords();
+            }}
+            variant="standard"
+            value={verifyPassword}
+            error={checkPasswords()}
+            type="password"
+          />
+        </Grid>
       </Grid>
     </Box>
   );

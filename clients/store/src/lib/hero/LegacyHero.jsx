@@ -25,12 +25,14 @@ const LegacyHero = () => {
                   text={heroDesign.heroHeadline}
                   textColor={heroDesign.heroHeadlineColor}
                   weight="600"
+                  smTextFontSize="72px"
+                  xsTextFontSize="42px"
                   lineHeight={1}
                   marginTop={4}
                   marginBottom={2}
                 />
                 <Box sx={{ maxWidth: { xs: '300px', md: '650px' } }}>
-                  <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={5} />
+                  <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={4} />
                 </Box>
                 <GeneralButton
                   buttonstyle="action"

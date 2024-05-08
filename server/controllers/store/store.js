@@ -4,8 +4,9 @@
  */
 const {
   // STORE INTERACTORS
-  addFieldToStoreInteractor,
-  getFieldFromStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getStoreStatsInteractor,
   checkStoreNameInteractor,
   updateStoreDeliveryFeeInteractor,
@@ -20,9 +21,11 @@ const {
   // WEBDESIGN INTERACTORS
   getStoreDesignInteractor,
   updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
+// vvvvvvvvvvv TAKE THIS OUT WHEN OPTIONS FEATURE IS READY vvvvvvvv
 /**
  * Handles the addition of a new field to a store.
  * @param {Object} req - The request object.
@@ -53,6 +56,56 @@ const handleGetField = async (req, res) => {
     const { store } = req.auth;
     const fields = await getFieldFromStoreInteractor(persistence, { storeName: store });
     res.status(200).json({ fields });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+// ^^^^^^^^^^^^^^^^^ TAKE THIS OUT WHEN OPTIONS FEATURE IS READY ^^^^^^^^^^^^^^^^^
+
+/**
+ * Handles the addition of a new feature to a store.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns None
+ * @throws {Error} If there is an error adding the feature to the store.
+ */
+const handleAddFeature = async (req, res) => {
+  try {
+    const { store } = req.auth;
+    const newfeature = req.body.feature;
+    const options = await addOptionToStoreInteractor(persistence, { storeName: store, option: newfeature });
+    res.status(200).json({ options: options });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+/**
+ * Handles a GET request for the options from the store.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns None
+ */
+const handleGetOptions = async (req, res) => {
+  try {
+    const { store } = req.auth;
+    const options = await getOptionsForStoreInteractor(persistence, { storeName: store });
+    res.status(200).json({ options: options });
+  } catch (error) {
+    console.log(error);
+    handleErrorInteractor(error, res);
+  }
+};
+const handleAddFeatureValue = async (req, res) => {
+  try {
+    const { store } = req.auth;
+    const feature = req.body.feature;
+    const newValue = req.body.value;
+    const options = await addOptionsValueInteractor(persistence, { storeName: store, feature, value: newValue });
+    res.status(200).json({ options: options });
   } catch (error) {
     console.log(error);
     handleErrorInteractor(error, res);
@@ -127,6 +180,16 @@ const handleCheckStoreName = async (req, res) => {
   }
 };
 
+const handleGetStoreName = async (req, res) => {
+  try {
+    const storename = req.auth?.store;
+    return res.status(200).json({ storename });
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 const handleGetDesign = async (req, res) => {
   try {
     const storeName = req.auth?.store;
@@ -161,9 +224,23 @@ const handleSetDeliveryFee = async (req, res) => {
     handleErrorInteractor(error, res);
   }
 };
+
+const handleGetAllColorSchemes = async (req, res) => {
+  try {
+    const baseColor = req.params.baseColor;
+    const colorSchemes = await getAllColorSchemesInteractor(persistence, { baseColor });
+    return res.status(200).json(colorSchemes);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
 module.exports = {
   handleAddField,
   handleGetField,
+  handleAddFeatureValue,
+  handleAddFeature,
+  handleGetOptions,
   handleGetAllOrders,
   handleUpdateOrder,
   handlePayout,
@@ -173,4 +250,6 @@ module.exports = {
   handleGetDesign,
   handleUpdateDesign,
   handleSetDeliveryFee,
+  handleGetAllColorSchemes,
+  handleGetStoreName,
 };

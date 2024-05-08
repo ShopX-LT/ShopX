@@ -13,18 +13,20 @@ const ExtractStore = () => {
   const dispatch = useDispatch();
   const { store, setStore, isStoreValid, setIsStoreValid } = useStore();
   const [isLoading, setIsLoading] = useState(true);
-  const pathname = window.location.pathname;
-  const storeName = pathname.split('/')[1]; // Extract the 'name' parameter from the URL
+  const hostName = window.location.host;
+  const storeName = hostName.split('.')[0];
   const axios = useAxiosWithStore(storeName);
 
   const getDesign = async () => {
     try {
-      const design = await getStoreDesign(axios, storeName);
-      if (design && !design?.message) {
-        setIsStoreValid(true);
-        await updateStoreVisit();
+      if (storeName) {
+        const design = await getStoreDesign(axios, storeName);
+        if (design && !design?.message) {
+          setIsStoreValid(true);
+          // await updateStoreVisit();
+        }
+        dispatch(setupSite(design));
       }
-      dispatch(setupSite(design));
     } catch (error) {
       // console.log(error);
     }
@@ -45,10 +47,17 @@ const ExtractStore = () => {
   };
 
   useEffect(() => {
-    if (storeName !== 'home') setStore(storeName);
+    if (storeName === 'myshopx' || storeName === 'www') {
+      setStore('myshopx');
+    } else {
+      setStore(storeName);
+    }
   }, [storeName]);
   useEffect(() => {
-    getDesign();
+    if (storeName !== 'myshopx' && storeName !== 'www') {
+      getDesign();
+      updateStoreVisit();
+    }
     setIsLoading(false);
   }, [store]);
 

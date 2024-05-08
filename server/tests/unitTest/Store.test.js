@@ -20,13 +20,13 @@ describe('createStoreInteractor', () => {
     persistence.getStoreByName.mockResolvedValueOnce(null);
 
     // Mock the createStore function to return the newly created store object
-    const newStore = { id: 1, name: 'Example Store', email: 'example@store.com' };
+    const newStore = { id: 1, name: 'example store', email: 'example@store.com' };
     persistence.createStore.mockResolvedValueOnce(newStore);
     persistence.createWebDesign.mockResolvedValueOnce('design');
     persistence.generateText.mockResolvedValueOnce({ mainText: 'design', subTest: 'sub' });
 
     // Call the function with the appropriate arguments
-    const storeName = 'Example Store';
+    const storeName = 'example store';
     const email = 'example@store.com';
     const result = await createStoreInteractor(persistence, {
       storeName,
@@ -40,16 +40,16 @@ describe('createStoreInteractor', () => {
     expect(persistence.createStore).toHaveBeenCalledWith({ storeName, email });
 
     // Verify the returned value
-    expect(result.store).toHaveProperty('name', 'Example Store');
+    expect(result.store).toHaveProperty('name', 'example store');
   });
 
   it('should throw an error if the store already exists', async () => {
     // Mock the getStoreByName function to return an existing store object
-    const existingStore = { id: 1, storeName: 'Existing Store', email: 'existing@store.com' };
+    const existingStore = { id: 1, storeName: 'existing store', email: 'existing@store.com' };
     persistence.getStoreByName.mockResolvedValueOnce(existingStore);
 
     // Call the function with the appropriate arguments
-    const storeName = 'Existing Store';
+    const storeName = 'existing store';
     const email = 'existing@store.com';
     await expect(createStoreInteractor(persistence, { storeName, email })).rejects.toThrow('Store already exists');
 

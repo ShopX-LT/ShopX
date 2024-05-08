@@ -1,3 +1,4 @@
+const _ = require('lodash');
 /**
  * Creates a new store interactor with the given store name and email.
  * @param {Object} persistence.getStore - A function that retrieves a store object from the database.
@@ -12,11 +13,12 @@ const createStoreInteractor = async (
   { storeName, email, product, brandColor }
 ) => {
   // check if the store name already exists
-  const store = await getStoreByName({ storeName });
+  const lowerCaseStoreName = _.toLower(storeName);
+  const store = await getStoreByName({ storeName: lowerCaseStoreName });
 
   if (store) return Promise.reject(new Error('Store already exists'));
 
-  const newStore = await createStore({ storeName, email });
+  const newStore = await createStore({ storeName: lowerCaseStoreName, email });
   // create the website
   const { mainText, subText } = await generateText({ product });
   if (!mainText && !subText) {
@@ -28,7 +30,7 @@ const createStoreInteractor = async (
   }
 
   const formattedStore = formatStore(newStore);
-  return { store: formattedStore, url: `https://myshopx.net/${formattedStore.name}` };
+  return { store: formattedStore, url: `https://${formattedStore.name}.myshopx.net` };
 };
 
 const getStoreStatsInteractor = async ({ getStoreByName }, { storeName }) => {
@@ -48,7 +50,9 @@ const getStoreStatsInteractor = async ({ getStoreByName }, { storeName }) => {
  * @throws {Error} - If the store is invalid.
  */
 const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
-  const store = await getStoreByNameAndEmail({ storeName, email });
+  const lowerCaseStoreName = _.toLower(storeName);
+
+  const store = await getStoreByNameAndEmail({ storeName: lowerCaseStoreName, email });
   if (!store) {
     return Promise.reject(new Error('Invalid store'));
   }
@@ -57,21 +61,38 @@ const storeLogin = async ({ getStoreByNameAndEmail }, { storeName, email }) => {
 };
 
 /**
- * Adds a field to a store and returns the updated item template.
- * @param {Object} persistence.addFieldToStore - The function that adds a field to a store.
+ * Adds a option to a store and returns the updated item template.
+ * @param {Object} persistence.addoptionToStore - The function that adds a option to a store.
  * @param {Object} persistence.getStoreByName - The function that retrieves a store by name.
- * @param {string} persistence.storeName - The name of the store to add the field to.
- * @param {Object} persistence.field - The field to add to the store.
+ * @param {string} persistence.storeName - The name of the store to add the option to.
+ * @param {Object} persistence.option - The option to add to the store.
  * @returns {Object} The updated item template of the store.
  * @throws {Error} If the store name is invalid.
  */
-const addFieldToStoreInteractor = async ({ addFieldToStore, getStoreByName }, { storeName, field }) => {
+const addOptionToStoreInteractor = async ({ addOptionToStore, getStoreByName }, { storeName, option }) => {
   const store = await getStoreByName({ storeName });
+  const newFeature = _.toLower(option);
   if (!store) return Promise.reject(new Error('Invalid store'));
-  if (!store.itemTemplate.includes(field)) await addFieldToStore({ store, field });
-  return store.itemTemplate;
+  const doesFeatureAlreadyExist = store.options.some((optionElement) => optionElement.feature === newFeature);
+  if (!doesFeatureAlreadyExist) await addOptionToStore({ store, newFeature });
+  return store.options;
 };
 
+const getOptionsForStoreInteractor = async ({ getStoreByName }, { storeName }) => {
+  const store = await getStoreByName({ storeName });
+  if (!store) return Promise.reject(new Error('Invalid store'));
+  return store.options;
+};
+
+const addOptionsValueInteractor = async ({ addOptionValueToStore, getStoreByName }, { storeName, feature, value }) => {
+  const store = await getStoreByName({ storeName });
+  const newValue = _.toLower(value);
+  if (!store) return Promise.reject(new Error('Invalid store'));
+  await addOptionValueToStore({ store, feature, newValue });
+  return store.options;
+};
+
+// vvvvvvvvvvv TAKE THIS OUT WHEN OPTIONS FEATURE IS READY vvvvvvvv
 /**
  * Retrieves the item template field from the store with the given name.
  * @param {object} persistence - An object containing the getStoreByName function.
@@ -86,6 +107,7 @@ const getFieldFromStoreInteractor = async ({ getStoreByName }, { storeName }) =>
   if (!store) return Promise.reject(new Error('Invalid store'));
   return store.itemTemplate;
 };
+// ^^^^^^^^^^^^^^ TAKE THIS OUT WHEN OPTIONS FEATURE IS READY ^^^^^^^^^^^^^^
 
 const addVisitToStoreInteractor = async ({ addVisitToStore, getStoreByName }, { storeName, isNewVisitor }) => {
   const store = await getStoreByName({ storeName });
@@ -157,7 +179,9 @@ module.exports = {
   createStoreInteractor,
   getStoreStatsInteractor,
   storeLogin,
-  addFieldToStoreInteractor,
+  addOptionToStoreInteractor,
+  getOptionsForStoreInteractor,
+  addOptionsValueInteractor,
   getFieldFromStoreInteractor,
   checkStoreNameInteractor,
   addVisitToStoreInteractor,

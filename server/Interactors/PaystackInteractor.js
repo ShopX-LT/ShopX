@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const { sendNewOrderEmail } = require('../services/EmailService');
 
 const priceAfterDiscount = (price, discount) => {
@@ -64,8 +65,9 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
   const body = {
     email: email,
     amount: total,
-    callback_url: `https://myshopx.net/${storeName}/payment-success`,
-    // callback_url: `http://localhost:4000/${storeName}/payment-success`,
+    ref: uuidv4(),
+    callback_url: `https://${storeName}.myshopx.net/payment-success`,
+    // callback_url: `http://${storeName}.localhost:4000/payment-success`,
     metadata: {
       custom_fields: [
         {
@@ -88,13 +90,7 @@ const buildPayload = ({ userDetails, items, subTotal, deliveryFee, storeName }) 
 };
 
 const verifyUserDetails = (userDetails) => {
-  if (
-    userDetails.email === '' ||
-    userDetails.address1 === '' ||
-    userDetails.city === '' ||
-    userDetails.state === '' ||
-    userDetails.country === ''
-  ) {
+  if (!userDetails.email || !userDetails.address1 || !userDetails.city || !userDetails.state || !userDetails.country) {
     return false;
   }
   return true;
@@ -102,16 +98,30 @@ const verifyUserDetails = (userDetails) => {
 
 // @ TO-DO: Change function to accept storeName instead of using derefenced Items
 // @ TO-DO: Add delivery fee when ready
+/**
+ *
+ * @param {Array} items - { itemId, title, price, quantity, availableQuantity, store }
+ * @param {Object} userDetails
+ * @returns
+ */
 const initTransactionInteractor = async (
   { initiateTransaction, getGroupedItems, getStoreByName },
-  { items, userDetails }
+  { items, userDetails, storeName }
 ) => {
   if (items.length <= 0 || !verifyUserDetails(userDetails)) {
-    return 'https://myshopx.net';
+    return 'https://www.myshopx.net';
   }
-
+  const cartItemsFromCurrentStore = items.filter((item) => {
+    return item.store === storeName;
+  });
+  if (cartItemsFromCurrentStore.length <= 0) {
+    return 'https://www.myshopx.net';
+  }
   // get the items based of the ids and massage them
-  const dereferencedItems = await getGroupedItems(items);
+  const dereferencedItems = await getGroupedItems(cartItemsFromCurrentStore);
+  if (dereferencedItems === null) {
+    return Promise.reject(new Error('Invalid cart item'));
+  }
   const massagedItems = massageItems(dereferencedItems);
 
   // get the subtotal
@@ -122,6 +132,9 @@ const initTransactionInteractor = async (
   if (!store) {
     return Promise.reject(new Error('Invalid store'));
   }
+
+  // Create transaction with massagedItems and user details and subtotal and storename
+  // give transction a transaction Id
 
   const body = buildPayload({
     userDetails: userDetails,
@@ -140,24 +153,40 @@ const verifyPaymentInteractor = async (
   { createOrder, verifyPayment, findOrderByReference, getStoreByName, addOrderToStore, updateItemStatistics },
   { reference }
 ) => {
+  console.log(reference);
   const paymentDetails = await verifyPayment({ reference });
-  if (paymentDetails.status !== 'success') {
+  if (paymentDetails.status !== true) {
+    console.log('Failed payment for reference: ', reference);
     return Promise.reject(new Error('Payment failed'));
   }
   // Check if it is a duplicate verification
   const duplicate = await findOrderByReference({ reference });
   if (duplicate) return Promise.reject(new Error('Duplicate payment'));
 
+  console.log('Successful payment for reference: ', reference);
+
   // Create order
-  const orderDetails = paymentDetails['metadata']['custom_fields'][0];
-  orderDetails['reference'] = paymentDetails['reference'];
-  orderDetails['ip_address'] = paymentDetails['ip_address'];
-  orderDetails['fees'] = paymentDetails['fees'];
+  const orderDetails = paymentDetails['data']['metadata']['custom_fields'][0];
+  orderDetails['reference'] = paymentDetails['data']['reference'];
+  orderDetails['ip_address'] = paymentDetails['data']['ip_address'];
+  orderDetails['fees'] = paymentDetails['data']['fees'];
+  console.log(`Authorization for ${reference}: ${paymentDetails['data']['authorization']}`);
+  console.log(
+    `Creating order for reference: (from url ${reference})(from paystack ${orderDetails['reference']}), Fees: ${paymentDetails['data']['fees']}`
+  );
+
   const order = await createOrder({ details: orderDetails });
   if (!order) {
-    // reverse payment
+    // reverse payment & email me
+    console.log(
+      `Order Creation failed for reference: (from url ${reference})(from paystack ${orderDetails['reference']})`
+    );
     return Promise.reject(new Error('Failed to create order'));
   }
+
+  console.log(
+    `Created order successfully for reference: (from url ${reference})(from paystack ${orderDetails['reference']})`
+  );
 
   // Add order to store
   const store = await getStoreByName({ storeName: order.store });
@@ -205,8 +234,8 @@ const payoutInteractor = async (
   // do transfer --------
   const transferDetails = {
     source: 'balance',
-    amount: store.wallet * 100 * 0.01, // Collect service fee agreeded by store
-    // amount: 0, // Collect service fee agreeded by store
+    // amount: store.wallet * 100 * 0.01, // Collect service fee agreeded by store
+    amount: 0, // Collect service fee agreeded by store
     recipient: recipientCode,
   };
   const transferResponse = await transferOut({ transferDetails });

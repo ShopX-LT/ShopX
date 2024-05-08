@@ -82,6 +82,42 @@ const addCategoryToStore = async ({ store, categoryId }) => {
 };
 
 /**
+ * Creates a new item option for the store.
+ * @param {String} options - The option to be created.
+ * @param {Object} store - The store to add the option to.
+ * @returns {Object} store -  The updated store with the added option.
+ */
+const addOptionToStore = async ({ store, newFeature }) => {
+  try {
+    const newOption = { feature: newFeature, values: [] };
+    store.options.push(newOption);
+    await store.save();
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in addOptionToStore()', error);
+    return null;
+  }
+};
+
+const addOptionValueToStore = async ({ store, feature, newValue }) => {
+  try {
+    const indexOfFeature = store.options.findIndex((optionObject) => optionObject.feature === feature);
+
+    const doesFeatureValueAlreadyExist = store.options[indexOfFeature].values.includes(newValue);
+    if (!doesFeatureValueAlreadyExist) {
+      store.options[indexOfFeature].values.push(newValue);
+      store.markModified('options');
+      await store.save();
+    }
+    return store;
+  } catch (error) {
+    console.error('Store Persistence error in addOptionValueToStore()', error);
+    return null;
+  }
+};
+
+// vvvvvvvvvvv TAKE THIS OUT WHEN OPTIONS FEATURE IS READY vvvvvvvv
+/**
  * Adds a field to the store's item template and saves the store.
  * @param {Object} options - The options object.
  * @param {Object} options.store - The store to add the field to.
@@ -115,6 +151,8 @@ const addFieldValueToStore = async ({ store }) => {
     return null;
   }
 };
+
+// ^^^^^^^^^^ TAKE THIS OUT WHEN OPTIONS FEATURE IS READY ^^^^^^^^^^
 
 const addOrderToStore = async ({ store, order }) => {
   try {
@@ -190,4 +228,6 @@ module.exports = {
   editStoreWallet,
   addVisitToStore,
   updateStoreDeliveryFee,
+  addOptionToStore,
+  addOptionValueToStore,
 };

@@ -117,12 +117,34 @@ const getItemsByQuery = async ({ query, store }) => {
   }
 };
 
+const updateItemImages = async ({ id, images }) => {
+  try {
+    const item = await Item.findOne({ _id: id });
+    item.images.push(...images);
+    const savedItem = await item.save();
+    return savedItem;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemImages()', error);
+    return null;
+  }
+};
+
 const updateItemById = async ({ id, storeName, updatedItem }) => {
   try {
-    const item = Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, { new: true });
+    const item = await Item.findOneAndUpdate({ _id: id, store: storeName }, updatedItem, { new: true });
     return item;
   } catch (error) {
     console.error('Item Persistence error in updateItemById()', error);
+    return null;
+  }
+};
+
+const deleteImageFromItem = async ({ itemId, imageId }) => {
+  try {
+    const item = await Item.updateOne({ _id: itemId }, { $pull: { images: imageId } });
+    return item;
+  } catch (error) {
+    console.error('Item Persistence error in updateItemImages()', error);
     return null;
   }
 };
@@ -155,13 +177,28 @@ const updateItemStatistics = async ({ order }) => {
   }
 };
 
+const removeCategoryFromItems = async ({ storeName, category }) => {
+  try {
+    const categoryToDelete = category;
+    const filterItemsOptions = { store: storeName };
+    await Item.updateMany(filterItemsOptions, { $pull: { category: categoryToDelete } }, { new: true });
+    return;
+  } catch (error) {
+    console.error('Item Persistence error in removeCategoryFromItems()', error);
+    return null;
+  }
+};
+
 module.exports = {
   createItem,
   getItemsBySearch,
   getItemsByQuery,
   getGroupedItems,
   getItemById,
+  updateItemImages,
   updateItemById,
   updateItemStatistics,
   deleteItemById,
+  deleteImageFromItem,
+  removeCategoryFromItems,
 };

@@ -5,7 +5,7 @@ import useAxiosWithStore from '../../../api/apiHooks/useAxiosWithStore';
 const useCategory = () => {
   const axios = useAxiosWithStore();
   const [categories, setCategories] = useState([]);
-  const [customCategories, setCustomCategories] = useState({});
+  const [customCategories, setCustomCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCustomCategories, setSelectedCustomCategories] = useState([]);
 

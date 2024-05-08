@@ -4,11 +4,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const paystackKey = process.env.PAYSTACK_KEY;
-const headers = {
+const defaultHeaders = {
   headers: { Authorization: `Bearer ${paystackKey}` },
 };
 
-const initiateTransaction = async ({ body }) => {
+const initiateTransaction = async ({ body, headers = defaultHeaders }) => {
   try {
     const response = await axios.post('https://api.paystack.co/transaction/initialize', body, headers);
     const data = response.data.data;
@@ -20,17 +20,17 @@ const initiateTransaction = async ({ body }) => {
   }
 };
 
-const verifyPayment = async ({ reference }) => {
+const verifyPayment = async ({ reference, headers = defaultHeaders }) => {
   try {
     const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, headers);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error('Paystack Persistence error in verifyPayment()', error);
     return null;
   }
 };
 
-const getBanks = async () => {
+const getBanks = async (headers = defaultHeaders) => {
   try {
     const banks = {};
     const response = await axios.get(`https://api.paystack.co/bank?country=nigeria&currency=NGN&type=nuban`, {

@@ -23,16 +23,21 @@ const corsOptions = require('./config/corsOption');
 const credentials = require('./middleware/credentials');
 const { sendNewVisitEmail } = require('./services/EmailService');
 
-function makeApp(database) {
+function makeApp(database, databaseConnectionString = process.env.PROD_MONGO_URL) {
   dotenv.config();
   const app = express();
   app.use(credentials);
   app.use(cors(corsOptions));
   // app.use(cors());
   app.use(express.json());
+
   // log all requests to access.log
+  // Define a custom token for Morgan to access the client's IP address
+  morgan.token('client-ip', function (req, res) {
+    return req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  });
   app.use(
-    morgan('common', {
+    morgan(':client-ip - - [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms', {
       stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
     })
   );
@@ -42,7 +47,13 @@ function makeApp(database) {
   app.use(cookieParser());
   app.use(bodyParser.json({ limit: '30mb', extended: true }));
   app.use(xssClean());
-  app.use(mongoSanitize());
+  app.use(
+    mongoSanitize({
+      onSanitize: ({ req, key }) => {
+        console.warn(`This request[${key}] is sanitized`, req);
+      },
+    })
+  );
   app.use(compression());
 
   //ROUTES
@@ -71,7 +82,7 @@ function makeApp(database) {
   });
 
   //MONGOSSE SETUP
-  database.connect(process.env.MONGO_URL, {
+  database.connect(databaseConnectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

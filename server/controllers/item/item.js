@@ -6,8 +6,10 @@ const {
   getQueryItemsInteractor,
   updateItemByIdInteractor,
   deleteItemByIdInteractor,
+  deleteImageFromItemInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
+  updateItemImagesInteractor,
 } = require('../../Interactors/index');
 const persistence = require('../../persistence/index');
 
@@ -69,6 +71,29 @@ const handleSearch = async (req, res) => {
   }
 };
 
+const updateItemImages = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const item = await updateItemImagesInteractor(persistence, { id, images: req.files });
+    res.status(201).send(item);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
+const deleteItemImage = async (req, res) => {
+  try {
+    const itemId = req.params.itemId;
+    const imageId = req.params.imageId;
+    await deleteImageFromItemInteractor(persistence, { itemId, imageId });
+    res.sendStatus(201);
+  } catch (error) {
+    console.error(error);
+    handleErrorInteractor(error, res);
+  }
+};
+
 const updateItemById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -98,6 +123,8 @@ module.exports = {
   getAllItemsForStore,
   getItemForUser,
   handleSearch,
+  updateItemImages,
+  deleteItemImage,
   updateItemById,
   deleteById,
   getAllItemsForUser,

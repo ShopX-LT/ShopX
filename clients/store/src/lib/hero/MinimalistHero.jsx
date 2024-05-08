@@ -28,13 +28,13 @@ const MinimalistHero = () => {
         <BrandHeading
           text={heroDesign.heroHeadline}
           textColor={heroDesign.heroHeadlineColor}
-          weight="500"
-          xsTextFontSize="60px"
-          smTextFontSize="90px"
+          weight="700"
+          xsTextFontSize="52px"
+          smTextFontSize="72px"
           lineHeight={1}
           marginBottom={1}
         />
-        <Box sx={{ maxWidth: { xs: '300px', md: '400px' } }}>
+        <Box sx={{ maxWidth: { xs: '300px', md: '600px' } }}>
           <Body text={heroDesign.heroSubText} textColor={heroDesign.heroSubTextColor} marginBottom={4} />
         </Box>
         <GeneralButton

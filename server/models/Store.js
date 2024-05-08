@@ -24,11 +24,14 @@ const StoreSchema = new mongoose.Schema(
     startDate: Date,
     isActive: Boolean,
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    // Taking this out and replacing it with options
     itemTemplate: [String],
     itemTemplateValue: {
       type: Object,
       default: {},
     },
+    // --------------------------------------------
+    options: [Object], // {feature: String, values: [String]}
     deliveryFee: { type: Number, default: 1500 },
     isProMember: Boolean,
 

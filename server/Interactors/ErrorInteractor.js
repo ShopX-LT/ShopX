@@ -30,6 +30,9 @@ const handleErrorInteractor = (error, res) => {
     case 'Item not found':
       res.status(400).json({ message: error.message });
       break;
+    case 'Invalid cart item':
+      res.status(400).json({ message: error.message });
+      break;
     case 'Order not found':
       res.status(400).json({ message: error.message });
       break;
@@ -52,6 +55,9 @@ const handleErrorInteractor = (error, res) => {
       res.status(400).json({ message: error.message });
       break;
     case 'Failed to create order':
+      res.status(400).json({ message: error.message });
+      break;
+    case 'Error deleting an image':
       res.status(400).json({ message: error.message });
       break;
     case 'Invalid store creation details':

@@ -12,6 +12,8 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
+  Container,
+  Paper,
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -30,31 +32,133 @@ const ContactUsForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Contact</Typography>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="contact tabs">
-                <Tab label="Customize" value="1" />
-                {/* <Tab label="Layout" value="2" /> */}
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <CustomizeTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            {/* <TabPanel value="2">Layout</TabPanel> */}
-          </TabContext>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize Contact
+          </Typography>
+          <Box>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="contact tabs">
+                  <Tab label="Texts" value="1" />
+                  <Tab label="Colors" value="2" />
+                  <Tab label="Image" value="3" />
+                  <Tab label="Socials" value="4" />
+                  {/* <Tab label="Layout" value="2" /> */}
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <TextsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="2">
+                <ColorsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="3">
+                <ImageTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="4">
+                <SocialsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              {/* <TabPanel value="2">Layout</TabPanel> */}
+            </TabContext>
+          </Box>
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Container>
   );
 };
 
 export default ContactUsForm;
 
-function CustomizeTab({ design, handleInputChange }) {
+function TextsTab({ design, handleInputChange }) {
+  return (
+    <Box>
+      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle">Contact Info</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextArea
+            name="contactDescription"
+            onChange={handleInputChange}
+            value={design.contactDescription}
+            placeholder="Enter any extra description about your store"
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
+function ColorsTab({ design, handleInputChange }) {
+  return (
+    <Box>
+      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle">Background Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="contactBgColor"
+          name="contactBgColor"
+          label="Background Color"
+          onChange={handleInputChange}
+          value={design.contactBgColor}
+        />
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Heading Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="contactHeadingColor"
+          name="contactHeadingColor"
+          label="Heading Color"
+          onChange={handleInputChange}
+          value={design.contactHeadingColor}
+        />
+
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Subtext Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="contactTextColor"
+          name="contactTextColor"
+          label="Text Color"
+          onChange={handleInputChange}
+          value={design.contactTextColor}
+        />
+      </Grid>
+    </Box>
+  );
+}
+
+function ImageTab({ design, handleInputChange }) {
+  return (
+    <Box>
+      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
+        <Typography variant="subtitle1">Image URL</Typography>
+
+        <Grid item xs={12}>
+          <TextField
+            label="Image"
+            name="contactImage"
+            onChange={handleInputChange}
+            value={design.contactImage}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
+function SocialsTab({ design, handleInputChange }) {
   const socials = [
     {
       name: 'contactWhatsApp',
@@ -84,53 +188,7 @@ function CustomizeTab({ design, handleInputChange }) {
   return (
     <Box>
       <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle">Description</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <TextArea
-            name="contactDescription"
-            onChange={handleInputChange}
-            value={design.contactDescription}
-            placeholder="Enter any extra description about your store"
-          />
-        </Grid>
-
-        <ColorPicker
-          id="contactBgColor"
-          name="contactBgColor"
-          label="Background Color"
-          onChange={handleInputChange}
-          value={design.contactBgColor}
-        />
-        <ColorPicker
-          id="contactHeadingColor"
-          name="contactHeadingColor"
-          label="Heading Color"
-          onChange={handleInputChange}
-          value={design.contactHeadingColor}
-        />
-
-        <ColorPicker
-          id="contactTextColor"
-          name="contactTextColor"
-          label="Text Color"
-          onChange={handleInputChange}
-          value={design.contactTextColor}
-        />
-        <Grid item xs={12}>
-          <TextField
-            label="Image"
-            name="contactImage"
-            onChange={handleInputChange}
-            value={design.contactImage}
-            fullWidth
-          />
-        </Grid>
-
-        <Typography variant="subtitle1" marginTop={4}>
-          Socials URL
-        </Typography>
+        <Typography variant="subtitle1">Socials URL</Typography>
 
         {socials.map((social) => (
           <Grid item xs={12} key={social.name}>

@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import useProduct from '../../sections/products/hooks/useProduct';
 import useCategory from '../../sections/products/hooks/useCategory';
 import GeneralProductContainer from '../ProductContainer/GeneralProductContainer';
-
-const mock = { featuredSectionTextColor: 'white' };
+import { useSelector } from 'react-redux';
 
 const Default = () => {
   const navigate = useNavigate();
+  const heroDesign = useSelector((state) => state.webDesign.hero);
 
   const { customCategories, selectedCategory, selectedCustomCategories } = useCategory();
   const { items } = useProduct({
@@ -21,10 +21,10 @@ const Default = () => {
   const products = items.length > 3 ? items.slice(0, 3) : items;
 
   return (
-    <Container>
+    <Container sx={{ mt: 8 }}>
       <Typography
         variant="h2"
-        sx={{ fontWeight: 'bold', borderBottom: 1, borderColor: 'divider', color: mock.featuredSectionTextColor }}
+        sx={{ fontWeight: 'bold', borderBottom: 1, borderColor: 'divider', color: heroDesign.heroHeadlineColor }}
       >
         Top Sellers
       </Typography>
@@ -44,7 +44,7 @@ const Default = () => {
               alignItems: 'center',
               gap: 1,
               cursor: 'pointer',
-              color: mock.featuredSectionTextColor,
+              color: heroDesign.heroHeadlineColor,
             }}
           >
             <Typography variant="subtitle1" onClick={() => navigate('/products')}>

@@ -52,9 +52,9 @@ const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
-  const [email, setEmail] = useState('kg@shopx.com');
-  const [storeName, setStoreName] = useState('kg-watches');
-  const [password, setPassword] = useState('12345');
+  const [email, setEmail] = useState('');
+  const [storeName, setStoreName] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const togglePersist = () => {
@@ -84,28 +84,6 @@ const SignIn = () => {
       }
     }
   };
-
-  const setup = async () => {
-    // GET ORDERS
-    const ordersResponse = await getOrders(axiosPrivate);
-    if (!ordersResponse) {
-      dispatch(ordersError('Error getting orders'));
-      return;
-    }
-    dispatch(updateOrders(ordersResponse));
-    // GET STATS
-
-    const statsResponse = await getStoreStats(axiosPrivate);
-    if (!statsResponse) {
-      dispatch(ordersError('Error getting store details'));
-      return;
-    }
-    dispatch(setStoreStats(statsResponse));
-  };
-
-  useEffect(() => {
-    setup();
-  }, [auth.token, auth.admin, auth.store]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -178,10 +156,10 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox checked={persist} onChange={togglePersist} color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>

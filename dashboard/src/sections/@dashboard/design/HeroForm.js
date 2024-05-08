@@ -13,6 +13,8 @@ import {
   TextareaAutosize,
   Typography,
   Slider,
+  Container,
+  Paper,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -20,6 +22,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import minimal from './images/minimal.png';
 import legacy from './images/legacy.png';
 import leftText from './images/leftText.png';
+import bottomLeft from './images/bottomLeft.png';
 import ColorPicker from '../../../components/colorPicker';
 import ImageRadio from '../../../components/image-radio';
 import TextArea from '../../../components/textArea';
@@ -32,35 +35,45 @@ const HeroForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Hero</Typography>
-        <Box sx={{ maxWidth: '90%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-                <Tab label="Layout" value="1" />
-                <Tab label="Customize Text" value="2" />
-                <Tab label="Image" value="3" />
-                <Tab label="Action Button" value="4" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <StyleTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="2">
-              <CustomizeTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="3">
-              <ImageTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="4">
-              <ActionButtonTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-          </TabContext>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize Hero
+          </Typography>
+          <Box sx={{ typography: 'body1' }}>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+                  <Tab label="Layout" value="1" />
+                  <Tab label="Texts" value="2" />
+                  <Tab label="Colors" value="3" />
+                  <Tab label="Image" value="4" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <StyleTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="2">
+                <TextsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="3">
+                <ColorsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="4">
+                <ImageTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+            </TabContext>
+          </Box>
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Container>
   );
 };
 
@@ -80,8 +93,13 @@ function StyleTab({ design, handleInputChange }) {
     },
     {
       image: leftText,
-      label: 'LeftText',
+      label: 'Left Text',
       value: 'leftText',
+    },
+    {
+      image: bottomLeft,
+      label: 'Bottom Left',
+      value: 'bottomLeft',
     },
   ];
 
@@ -112,12 +130,12 @@ function StyleTab({ design, handleInputChange }) {
   );
 }
 
-function CustomizeTab({ design, handleInputChange }) {
+function TextsTab({ design, handleInputChange }) {
   return (
     <Box>
       <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
         <Grid item xs={12}>
-          <Typography variant="subtitle">Headline</Typography>
+          <Typography variant="subtitle">Headline Text</Typography>
         </Grid>
         <Grid item xs={12}>
           <TextArea
@@ -128,16 +146,8 @@ function CustomizeTab({ design, handleInputChange }) {
           />
         </Grid>
 
-        <ColorPicker
-          id="heroHeadlineColor"
-          name="heroHeadlineColor"
-          label="Headline Color"
-          onChange={handleInputChange}
-          value={design.heroHeadlineColor}
-        />
-
         <Grid item xs={12} mt={4}>
-          <Typography variant="subtitle">Sub text</Typography>
+          <Typography variant="subtitle">Sub Text</Typography>
         </Grid>
         <Grid item xs={12}>
           <TextArea
@@ -148,12 +158,80 @@ function CustomizeTab({ design, handleInputChange }) {
           />
         </Grid>
 
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Action Button</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="heroActionButtonText"
+            label="Text"
+            name="heroActionButtonText"
+            onChange={handleInputChange}
+            value={design.heroActionButtonText}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
+
+function ColorsTab({ design, handleInputChange }) {
+  return (
+    <Box>
+      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle">Main Background Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="mainBackgroundColor"
+          name="mainBackgroundColor"
+          label="Background Color"
+          onChange={handleInputChange}
+          value={design.mainBackgroundColor}
+        />
+
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Headline Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="heroHeadlineColor"
+          name="heroHeadlineColor"
+          label="Headline Color"
+          onChange={handleInputChange}
+          value={design.heroHeadlineColor}
+        />
+
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Sub Text Color</Typography>
+        </Grid>
         <ColorPicker
           id="heroSubTextColor"
           name="heroSubTextColor"
           label="Subtext Color"
           onChange={handleInputChange}
           value={design.heroSubTextColor}
+        />
+
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Action Button Text Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="heroActionButtonTextColor"
+          name="heroActionButtonTextColor"
+          label="Text color"
+          onChange={handleInputChange}
+          value={design.heroActionButtonTextColor}
+        />
+        <Grid item xs={12} mt={4}>
+          <Typography variant="subtitle">Action Button Background Color</Typography>
+        </Grid>
+        <ColorPicker
+          id="heroActionButtonColor"
+          name="heroActionButtonColor"
+          label="Background Color"
+          onChange={handleInputChange}
+          value={design.heroActionButtonColor}
         />
       </Grid>
     </Box>
@@ -215,42 +293,6 @@ function ImageTab({ design, handleInputChange }) {
             valueLabelDisplay="auto"
           />
         </Grid>
-      </Grid>
-    </Box>
-  );
-}
-
-function ActionButtonTab({ design, handleInputChange }) {
-  return (
-    <Box>
-      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle">Action Button</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="heroActionButtonText"
-            label="Text"
-            name="heroActionButtonText"
-            onChange={handleInputChange}
-            value={design.heroActionButtonText}
-            fullWidth
-          />
-        </Grid>
-        <ColorPicker
-          id="heroActionButtonTextColor"
-          name="heroActionButtonTextColor"
-          label="Text color"
-          onChange={handleInputChange}
-          value={design.heroActionButtonTextColor}
-        />
-        <ColorPicker
-          id="heroActionButtonColor"
-          name="heroActionButtonColor"
-          label="Background Color"
-          onChange={handleInputChange}
-          value={design.heroActionButtonColor}
-        />
       </Grid>
     </Box>
   );

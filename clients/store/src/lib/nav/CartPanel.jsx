@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -18,12 +18,18 @@ import { fCurrency } from '../../utils/formatNumber';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../hooks/useStore';
+import useCart from '../../sections/cart/hooks/useCart';
 
 const CartPanel = ({ isOpen, openCart, closeCart }) => {
   const { store } = useStore();
+  const { handleGetCartTotal } = useCart();
   const cartItems = useSelector((state) => state.cart.cart);
   const cartTotal = useSelector((state) => state.cart.total);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    handleGetCartTotal(store);
+  }, []);
   return (
     <div>
       <SwipeableDrawer

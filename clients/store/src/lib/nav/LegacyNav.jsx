@@ -8,12 +8,14 @@ import CartPanel from './CartPanel';
 import { useSelector } from 'react-redux';
 import useStore from '../../hooks/useStore';
 import { useNavigate } from 'react-router-dom';
+import useCart from '../../sections/cart/hooks/useCart';
 
 export default function LegacyNav() {
   const { store } = useStore();
   const navigate = useNavigate();
+  const { getItemsInCartCount } = useCart();
   const navDesign = useSelector((state) => state.webDesign.nav);
-  const cartItems = useSelector((state) => state.cart.cart);
+  const cartLength = getItemsInCartCount(store);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -42,7 +44,7 @@ export default function LegacyNav() {
             {_.upperCase(store)}
           </Typography>
           <IconButton color="inherit" aria-label="open cart" onClick={() => setIsCartOpen(true)}>
-            <Badge badgeContent={cartItems.length} color="primary">
+            <Badge badgeContent={cartLength} color="primary">
               <ShoppingBagIcon />
             </Badge>
           </IconButton>

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { capitalize } from 'lodash';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Drawer, Typography, Avatar, Stack } from '@mui/material';
@@ -14,6 +15,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import useStoreName from '../hooks/useStoreName';
 
 // ----------------------------------------------------------------------
 
@@ -35,10 +37,14 @@ Nav.propTypes = {
 };
 
 export default function Nav({ openNav, onCloseNav }) {
+  const { storeName, retrieveStoreName } = useStoreName();
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
 
+  useEffect(() => {
+    retrieveStoreName();
+  }, []);
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -64,7 +70,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                ShopX Admin
+                {capitalize(storeName)} Admin
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { Box, Container, Typography, Stack, Link, Button } from '@mui/material';
+import { Box, Container, Typography, Stack, Link, Button, Tooltip } from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import axios from 'axios';
 import './styles.css';
 
@@ -85,24 +87,20 @@ const Subscription = () => {
           }}
         >
           <Typography my={2} variant="h2" sx={{ fontSize: { xs: '32px', lg: '48', fontWeight: 'bold' } }}>
-            Get latest updates on features & promos
+            Get Latest Updates On Features Or Contact Us
           </Typography>
-          <div>
-            <form onSubmit={handleFormSubmit}>
-              <input
-                placeholder="Enter your email"
-                className="input"
-                name="email"
-                type="email"
-                value={email}
-                onChange={handleChange}
-              />
-              <Button variant="contained" sx={{ padding: '15px', marginLeft: '10px' }} type="submit">
-                Get Updates!
-              </Button>
-            </form>
-          </div>
-          {success && <Typography variant="caption"> You are subscribed to receive updates!</Typography>}
+          <Box sx={{ display: 'flex', gap: 5 }}>
+            <a href={`https://www.instagram.com/shopx_lt`} target="_blank" rel={'external'}>
+              <Tooltip title="Instagram" placement="top">
+                <InstagramIcon />
+              </Tooltip>
+            </a>
+            <a href={`mailto:myshopinfo@gmail.com`}>
+              <Tooltip title="email" placement="top">
+                <MailIcon />
+              </Tooltip>
+            </a>
+          </Box>
         </Box>
       </Box>
     </motion.div>

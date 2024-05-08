@@ -24,9 +24,10 @@ import {
 import Iconify from '../components/iconify';
 
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
-import { getCategories, createCategory } from '../services/CategoryService';
-import { AddCategory, CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
+import { getCategories, createCategory, deleteCategory } from '../services/CategoryService';
+import { CategoryListHead, CategoryListToolbar } from '../sections/@dashboard/category';
 import Scrollbar from '../components/scrollbar/Scrollbar';
+import SingleValueTextFieldForm from '../components/singleValueTextFieldForm';
 
 const TABLE_HEAD = [{ id: 'name', label: 'Name', alignRight: false }];
 
@@ -61,12 +62,21 @@ function applySortFilter(array, comparator, query) {
 
 const CategoriesPage = () => {
   const axiosPrivate = useAxiosPrivate();
+  const [open, setOpen] = useState(null);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [FilterCategory, setFilterCategory] = useState('');
   const [categoryList, setCategoryList] = useState([]);
+
+  const handleOpenMenu = (event) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -92,21 +102,6 @@ const CategoriesPage = () => {
 
   const isNotFound = !filteredCategory.length && !!FilterCategory;
 
-  // CREATING A NEW CATEGORY
-  const handleSubmitForm = async (values, onSubmitProps) => {
-    const formData = {};
-    // Append each form value to the formData object.
-    Object.keys(values).forEach((key) => {
-      formData[key] = values[key];
-    });
-    try {
-      const response = await createCategory(axiosPrivate, toast, formData);
-      onSubmitProps.resetForm();
-    } catch (error) {
-      // alert(error.message);
-    }
-  };
-
   // GET ALL THE CATEGORIES
   const retreiveCategories = async () => {
     const response = await getCategories(axiosPrivate);
@@ -114,6 +109,35 @@ const CategoriesPage = () => {
       setCategoryList([]);
     } else {
       setCategoryList(response);
+    }
+  };
+
+  // CREATING A NEW CATEGORY
+  const handleNewCategorySubmitForm = async (values, onSubmitProps) => {
+    const formData = {};
+    // Append each form value to the formData object.
+    Object.keys(values).forEach((key) => {
+      formData[key] = values[key];
+    });
+    try {
+      const response = await createCategory(axiosPrivate, toast, formData);
+      if (response) {
+        await retreiveCategories();
+      }
+      onSubmitProps.resetForm();
+    } catch (error) {
+      // alert(error.message);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId, categoryName) => {
+    try {
+      const response = await deleteCategory(axiosPrivate, toast, categoryId, categoryName);
+      if (response) {
+        await retreiveCategories();
+      }
+    } catch (error) {
+      // eslint-disable-next-line
     }
   };
 
@@ -128,16 +152,16 @@ const CategoriesPage = () => {
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h4" gutterBottom>
             Categories
           </Typography>
         </Stack>
 
         <Card>
-          <CategoryListToolbar FilterCategory={FilterCategory} onFilterCategory={handleFilterByName} />
+          {/* <CategoryListToolbar FilterCategory={FilterCategory} onFilterCategory={handleFilterByName} /> */}
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer>
               <Table>
                 <CategoryListHead
                   order={order}
@@ -148,11 +172,12 @@ const CategoriesPage = () => {
                 />
                 <TableBody>
                   {filteredCategory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id, name } = row;
+                    const { id, name } = row;
                     return (
-                      <TableRow hover key={name} tabIndex={-1}>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+                      <TableRow hover key={name} id={id} tabIndex={-1}>
+                        <TableCell padding="checkbox" />
+                        <TableCell component="th" scope="row">
+                          <Stack direction="row" alignItems="center" justifyContent="start">
                             <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>
                               {name}
                             </Typography>
@@ -160,8 +185,12 @@ const CategoriesPage = () => {
                         </TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit">
-                            <Iconify icon={'eva:more-vertical-fill'} />
+                          <IconButton
+                            size="large"
+                            sx={{ color: 'error.main' }}
+                            onClick={() => handleDeleteCategory(id, name)}
+                          >
+                            <Iconify icon={'eva:trash-2-outline'} />
                           </IconButton>
                         </TableCell>
                       </TableRow>
@@ -213,7 +242,7 @@ const CategoriesPage = () => {
           Add Category
         </Typography>
         <Card>
-          <AddCategory handleSubmitForm={handleSubmitForm} />
+          <SingleValueTextFieldForm label="Category Name" handleSubmitForm={handleNewCategorySubmitForm} />
         </Card>
       </Container>
     </>

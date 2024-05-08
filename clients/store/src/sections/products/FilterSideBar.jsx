@@ -86,25 +86,27 @@ const FilterSideBar = ({
               ))}
             </RadioGroup>
           </Box>
-          {Object.keys(customCategories).map((key) => (
-            <Box key={key}>
-              <Typography variant="subtitle1" gutterBottom>
-                {capitalize(key)}
-              </Typography>
-              <FormGroup>
-                {customCategories[key].map((option) => (
-                  <FormControlLabel
-                    key={option}
-                    control={<Checkbox />}
-                    label={capitalize(option)}
-                    value={option}
-                    checked={selectedCustomCategories.includes(option)}
-                    onChange={changeCustomCategory}
-                  />
-                ))}
-              </FormGroup>
-            </Box>
-          ))}
+          <Box>
+            {customCategories.map((option) => (
+              <Box key={option.feature}>
+                <Typography variant="subtitle1" gutterBottom>
+                  {capitalize(option.feature)}
+                </Typography>
+                <FormGroup>
+                  {option.values.map((value) => (
+                    <FormControlLabel
+                      key={value}
+                      control={<Checkbox />}
+                      label={capitalize(value)}
+                      value={value}
+                      checked={selectedCustomCategories.includes(value)}
+                      onChange={changeCustomCategory}
+                    />
+                  ))}
+                </FormGroup>
+              </Box>
+            ))}
+          </Box>
           {/* <div>
               <Typography variant="subtitle1" gutterBottom>
                 Price

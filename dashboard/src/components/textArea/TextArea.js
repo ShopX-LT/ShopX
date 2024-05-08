@@ -1,21 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Tab,
-  TextField,
-  TextareaAutosize,
-  Typography,
-} from '@mui/material';
+import { TextareaAutosize } from '@mui/material';
 
 const StyledTextarea = styled(TextareaAutosize)(
-  ({ theme }) => `
+  () => `
             font-family: IBM Plex Sans, sans-serif;
             font-size: 0.875rem;
             font-weight: 400;
@@ -26,19 +15,31 @@ const StyledTextarea = styled(TextareaAutosize)(
           `
 );
 
-const TextArea = ({ minRows = 4, name, onChange, value, placeholder }) => {
-  return (
-    <>
-      <StyledTextarea
-        minRows={minRows}
-        name={name}
-        onChange={onChange}
-        value={value}
-        placeholder={placeholder}
-        style={{ width: '100%' }}
-      />
-    </>
-  );
-};
+const TextArea = ({ minRows = 4, name, onChange, value, placeholder, label, onBlur }) => (
+  <>
+    <StyledTextarea
+      label={label}
+      minRows={minRows}
+      name={name}
+      onChange={onChange}
+      value={value}
+      onBlur={onBlur}
+      placeholder={placeholder}
+      style={{ width: '100%' }}
+    />
+  </>
+);
 
 export default TextArea;
+
+// ----------------------------------------------------------------------
+
+TextArea.propTypes = {
+  minRows: PropTypes.number,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  placeholder: PropTypes.string,
+  label: PropTypes.string,
+  onBlur: PropTypes.func,
+};
