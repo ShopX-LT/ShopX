@@ -11,14 +11,10 @@ const EDIT_CATEGORIES_URL = '/api/category';
  * If the request fails, null is returned.
  */
 export async function getCategories(axiosPrivate) {
-  try {
-    const response = await axiosPrivate.get(GET_CATEGORIES_URL);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    // alert(error.message);
-    return null;
-  }
+  const response = await axiosPrivate.get(GET_CATEGORIES_URL);
+  const categories = response.data;
+  if (!categories) throw new Error("Sorry, I wasn't able to retrieve your categories.");
+  return categories;
 }
 
 /**
@@ -28,16 +24,11 @@ export async function getCategories(axiosPrivate) {
  * @returns {Promise<Object|null>} - A Promise that resolves to the created category object or null if there was an error.
  * @throws {Error} - If there was an error creating the category.
  */
-export async function createCategory(axiosPrivate, toast, category) {
-  try {
-    const response = await axiosPrivate.post(POST_CATEGORIES_URL, category);
-    toast.success('Category Created');
-    return response.data;
-  } catch (error) {
-    toast.error('Error Creating Category, wait a moment and try again');
-
-    return null;
-  }
+export async function createCategory(axiosPrivate, category) {
+  const response = await axiosPrivate.post(POST_CATEGORIES_URL, category);
+  const categories = response.data;
+  if (!categories) throw new Error('Failed to create field');
+  return categories;
 }
 
 export async function deleteCategory(axiosPrivate, toast, categoryId, categoryName) {
