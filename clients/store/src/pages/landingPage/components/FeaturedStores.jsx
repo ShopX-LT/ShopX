@@ -22,7 +22,7 @@ const FeaturedStores = () => {
       </Box>
       <Box sx={{ display: { md: 'none' }, width: '100%' }}>
         <Swiper
-          style={{ maxHeight: '300px' }}
+          style={{ height: '280px' }}
           loop={true}
           pagination={{
             dynamicBullets: true,

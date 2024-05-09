@@ -32,7 +32,7 @@ const Hero = () => {
         </Box>
         <ActionButton
           variant="contained"
-          sx={{ background: 'rgb( 31, 110, 38 )', marginY: 4 }}
+          sx={{ background: 'rgb( 31, 110, 38 )', marginY: 4, px: 4, py: 1 }}
           href="https://admin.myshopx.net/signup"
         >
           Sign me up!

@@ -34,7 +34,7 @@ const Features = () => {
   }, [controls, isVisible]);
   return (
     <motion.div initial={{ opacity: 0, y: 200 }} animate={controls} transition={{ duration: 1 }}>
-      <Grid container sx={{ justifyContent: 'center', gap: { xs: 8, sm: 2 } }}>
+      <Grid container mt={2} sx={{ justifyContent: 'center', gap: { xs: 8, sm: 2 } }}>
         <Grid item xs={12} sx={{ textAlign: 'center' }}>
           <Typography variant="body">Here's what you get with ShopX:</Typography>
         </Grid>

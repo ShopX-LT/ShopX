@@ -8,6 +8,7 @@ export const GroupContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   height: '250px',
   width: '250px',
+  margin: 'auto',
 }));
 
 export const ItemContainer = styled(Box)(({ theme }) => ({
