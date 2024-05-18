@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Box, Typography } from '@mui/material';
 import './styles.css';
 import { floatIn } from './animations';
 import { ActionButton, HeroContainer } from './styles';
-import FeaturedStores from './components/FeaturedStores';
+
+const FeaturedStores = React.lazy(() => import('./components/FeaturedStores'));
 
 const Hero = () => {
   return (
@@ -37,7 +38,9 @@ const Hero = () => {
         >
           Sign me up!
         </ActionButton>
-        <FeaturedStores />
+        <Suspense fallback={<div></div>}>
+          <FeaturedStores />
+        </Suspense>
       </HeroContainer>
     </motion.div>
   );
