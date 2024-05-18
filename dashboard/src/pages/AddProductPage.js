@@ -17,7 +17,7 @@ import {
   Checkbox,
   ListSubheader,
 } from '@mui/material';
-import _ from 'lodash';
+import { upperFirst } from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Iconify from '../components/iconify';
@@ -42,7 +42,7 @@ const itemShema = Yup.object().shape({
 });
 
 function capitalizeArrayStrings(arr) {
-  return arr.map((str) => _.upperFirst(str));
+  return arr.map((str) => upperFirst(str));
 }
 
 const fixedTextFields = ['title', 'price', 'quantity', 'discount'];
@@ -129,7 +129,7 @@ const AddProductPage = () => {
                   {fixedTextFields.map((fieldName) => (
                     <Grid key={fieldName} item xs={12} md={6}>
                       <TextField
-                        label={_.upperFirst(fieldName)}
+                        label={upperFirst(fieldName)}
                         name={fieldName}
                         error={Boolean(touched[fieldName]) && Boolean(errors[fieldName])}
                         onBlur={handleBlur}
@@ -168,11 +168,11 @@ const AddProductPage = () => {
                     <Grid key={option.feature} item xs={12} md={6}>
                       {/* TODO move this to be a component */}
                       <FormControl fullWidth>
-                        <InputLabel id={option.feature}>{_.upperFirst(option.feature)}</InputLabel>
+                        <InputLabel id={option.feature}>{upperFirst(option.feature)}</InputLabel>
                         <Select
-                          labelId={_.upperFirst(option.feature)}
+                          labelId={upperFirst(option.feature)}
                           name={option.feature}
-                          renderValue={(selected) => _.upperFirst(selected)}
+                          renderValue={(selected) => upperFirst(selected)}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           value={values[option.feature]}

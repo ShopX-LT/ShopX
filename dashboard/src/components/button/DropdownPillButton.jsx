@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
+import { capitalize, map } from 'lodash';
 import { Button, Menu, MenuItem, styled } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -48,13 +48,13 @@ const PillDropdownButton = ({ order, updateFunction, setUpdatedOrder }) => {
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        {_.capitalize(OPTIONS[selected].name)}
+        {capitalize(OPTIONS[selected].name)}
       </StyledButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {_.map(OPTIONS, (value, key) => {
+        {map(OPTIONS, (value, key) => {
           return (
             <MenuItem key={key} onClick={(event) => handleMenuItemClick(event, key)}>
-              {_.capitalize(value.name)}
+              {capitalize(value.name)}
             </MenuItem>
           );
         })}

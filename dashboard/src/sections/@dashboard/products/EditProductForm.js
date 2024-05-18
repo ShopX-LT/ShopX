@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import * as _ from 'lodash';
-import { AppBar, Button, Box, IconButton, Toolbar, Typography, Container, Badge } from '@mui/material';
+import { upperCase } from 'lodash';
+import { AppBar, Box, IconButton, Toolbar, Typography, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import NavItemDrawer from './NavItemDrawer';
@@ -41,7 +41,7 @@ export default function LegacyNav() {
               navigate('/home');
             }}
           >
-            {_.upperCase(store)}
+            {upperCase(store)}
           </Typography>
           <IconButton color="inherit" aria-label="open cart" onClick={() => setIsCartOpen(true)}>
             <Badge badgeContent={cartLength} color="primary">

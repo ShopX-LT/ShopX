@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
-import { StyledDescriptionPageAppBar } from '../pages/styles';
+import { StyledDescriptionPageAppBar } from '../pages/styles.js';
 import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 
 const DescriptiveAppBar = ({ design, handleClosePage, productTitle }) => {

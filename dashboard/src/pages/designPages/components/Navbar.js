@@ -1,5 +1,5 @@
 import React from 'react';
-import * as _ from 'lodash';
+import { upperCase } from 'lodash';
 import { AppBar, Button, Box, IconButton, Toolbar, Typography, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -13,7 +13,7 @@ export default function LegacyNav({ design }) {
         <Toolbar>
           <MenuIcon sx={{ mr: 2 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align="left">
-            {_.upperCase('store')}
+            {upperCase('store')}
           </Typography>
           <ShoppingBagIcon />
         </Toolbar>
