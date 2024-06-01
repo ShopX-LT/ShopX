@@ -33,6 +33,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
+    "express-winston": "^4.2.0",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
@@ -45,6 +46,7 @@
     "stripe": "^14.3.0",
     "tinycolor2": "^1.6.0",
     "uuid": "^9.0.0",
+    "winston": "^3.13.0",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {

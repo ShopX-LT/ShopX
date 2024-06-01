@@ -29,7 +29,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage, // Allow the Authorization header
   fileFilter: fileFilter, // only accept images
-  limits: { fieldSize: 25 * 1024 * 1024 }, //25mb max
+  limits: { fieldSize: 40 * 1024 * 1024 }, //40mb max
 });
 
 // ROUTES
