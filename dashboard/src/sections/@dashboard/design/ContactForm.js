@@ -64,9 +64,6 @@ const ContactUsForm = ({ design, handleInputChange }) => {
               <TabPanel value="3">
                 <ImageTab design={design} handleInputChange={handleInputChange} />
               </TabPanel>
-              <TabPanel value="4">
-                <SocialsTab design={design} handleInputChange={handleInputChange} />
-              </TabPanel>
               {/* <TabPanel value="2">Layout</TabPanel> */}
             </TabContext>
           </Box>
@@ -81,7 +78,7 @@ export default ContactUsForm;
 function TextsTab({ design, handleInputChange }) {
   return (
     <Box>
-      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
+      <Grid container spacing={1} mb={4} sx={{ display: 'flex', alignItems: 'center' }}>
         <Grid item xs={12}>
           <Typography variant="subtitle">Contact Info</Typography>
         </Grid>
@@ -91,9 +88,11 @@ function TextsTab({ design, handleInputChange }) {
             onChange={handleInputChange}
             value={design.contactDescription}
             placeholder="Enter any extra description about your store"
+            tips={'Specify how your customers can reach you, hours of operations, etc.'}
           />
         </Grid>
       </Grid>
+      <SocialsTab design={design} handleInputChange={handleInputChange} />
     </Box>
   );
 }
@@ -187,9 +186,8 @@ function SocialsTab({ design, handleInputChange }) {
   ];
   return (
     <Box>
-      <Grid container spacing={1} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
-        <Typography variant="subtitle1">Socials URL</Typography>
-
+      <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center', width: '400px' }}>
+        <Typography variant="subtitle">Socials</Typography>
         {socials.map((social) => (
           <Grid item xs={12} key={social.name}>
             <TextField

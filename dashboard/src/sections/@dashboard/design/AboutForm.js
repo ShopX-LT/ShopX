@@ -20,6 +20,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import ColorPicker from '../../../components/colorPicker';
 import TextArea from '../../../components/textArea';
+import CustomTooltip from '../../../components/tooltip';
 
 const AboutForm = ({ design, handleInputChange }) => {
   const [tabValue, setTabValue] = useState('1');
@@ -78,12 +79,16 @@ function TextsTab({ design, handleInputChange }) {
           <Typography variant="subtitle">Heading</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextArea
-            name="aboutHeading"
-            onChange={handleInputChange}
-            value={design.aboutHeading}
-            placeholder="Enter what you want the about section heading to be"
-          />
+          <CustomTooltip title="The title of the first section of you website. For Example 'About Us', 'Who Are We?', 'How did I Get Here?' ">
+            <TextField
+              id="aboutHeading"
+              name="aboutHeading"
+              onChange={handleInputChange}
+              value={design.aboutHeading}
+              fullWidth
+              placeholder="Enter what you want the about section heading to be"
+            />
+          </CustomTooltip>
         </Grid>
         <Grid item xs={12} marginTop={4}>
           <Typography variant="subtitle">Description</Typography>
@@ -94,6 +99,7 @@ function TextsTab({ design, handleInputChange }) {
             onChange={handleInputChange}
             value={design.aboutDescription}
             placeholder="Enter what you want to be displayed in the about section"
+            tips={'Give more details about your heading'}
           />
         </Grid>
       </Grid>

@@ -15,6 +15,7 @@ import {
   Slider,
   Container,
   Paper,
+  Tooltip,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -26,6 +27,7 @@ import bottomLeft from './images/bottomLeft.png';
 import ColorPicker from '../../../components/colorPicker';
 import ImageRadio from '../../../components/image-radio';
 import TextArea from '../../../components/textArea';
+import CustomTooltip from '../../../components/tooltip';
 
 const HeroForm = ({ design, handleInputChange }) => {
   const [tabValue, setTabValue] = useState('1');
@@ -138,38 +140,53 @@ function TextsTab({ design, handleInputChange }) {
           <Typography variant="subtitle">Headline Text</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextArea
-            name="heroHeadline"
-            onChange={handleInputChange}
-            value={design.heroHeadline}
-            placeholder="Enter Headline text here"
-          />
+          <CustomTooltip
+            title="The largest text displayed on your home page.
+            Keep this short and sweet.
+            The main is to capture your customers attention"
+          >
+            <TextField
+              name="heroHeadline"
+              onChange={handleInputChange}
+              value={design.heroHeadline}
+              placeholder="Enter Headline text here"
+              fullWidth
+            />
+          </CustomTooltip>
         </Grid>
 
         <Grid item xs={12} mt={4}>
           <Typography variant="subtitle">Sub Text</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextArea
-            name="heroSubText"
-            onChange={handleInputChange}
-            value={design.heroSubText}
-            placeholder="Enter paragraph text here"
-          />
+          <CustomTooltip title="Give more details about your store.">
+            <TextArea
+              name="heroSubText"
+              onChange={handleInputChange}
+              value={design.heroSubText}
+              placeholder="Enter paragraph text here"
+              tips="Give more details about your store."
+            />
+          </CustomTooltip>
         </Grid>
 
         <Grid item xs={12} mt={4}>
           <Typography variant="subtitle">Action Button</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            id="heroActionButtonText"
-            label="Text"
-            name="heroActionButtonText"
-            onChange={handleInputChange}
-            value={design.heroActionButtonText}
-            fullWidth
-          />
+          <CustomTooltip
+            title="
+          Creatively prompt the user to checkout you store. For Example 'Shop Now!"
+          >
+            <TextField
+              id="heroActionButtonText"
+              label="Text"
+              name="heroActionButtonText"
+              onChange={handleInputChange}
+              value={design.heroActionButtonText}
+              fullWidth
+            />
+          </CustomTooltip>
         </Grid>
       </Grid>
     </Box>

@@ -1,24 +1,24 @@
-import os
+"""Routes for sending email"""
+
 import json
+import os
 import smtplib
-from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formataddr
-from pathlib import Path
+from dotenv import load_dotenv
 from flask import Blueprint, render_template, request
-
 
 views = Blueprint(__name__, "views")
 
 load_dotenv()  # take environment variables from .env.
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
-PASSWORD = os.environ.get("PASSWORD")
-STORE_NAME = "ShopX"
+shopx_email = os.environ.get("SENDER_EMAIL")
+password = os.environ.get("PASSWORD")
+SHOPX = "ShopX"
 PORT = 587
 EMAIL_SERVER = "smtp.gmail.com"
 
-default_body = f"""\
+DEFAULT_BODY = """\
     <html>
       <body>
         <h1>Hi ,</h1>
@@ -33,22 +33,30 @@ default_body = f"""\
 
 
 def send_email(
-    receiver_email, header=STORE_NAME, subject="", html_body=default_body, plain_body=""
+    receiver_email, header=SHOPX, subject="", html_body=DEFAULT_BODY, plain_body=""
 ):
-    # Create the base text message.
+    """Sends an email with a plain text and HTML version.
+
+    Args:
+    header(str): The header of the email
+    subject (str): The email subject.
+    receiver_email (str): The recipient's email address.
+    plain_body (str): The plain text content of the email.
+    html_body (str): The HTML content of the email.
+    """
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"] = formataddr((header, f"{SENDER_EMAIL}"))
+    msg["From"] = formataddr((header, f"{shopx_email}"))
     msg["To"] = receiver_email
-    msg["BCC"] = SENDER_EMAIL
 
     msg.attach(MIMEText(plain_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
     with smtplib.SMTP(EMAIL_SERVER, PORT) as server:
         server.starttls()
-        server.login(SENDER_EMAIL, PASSWORD)
-        server.sendmail(SENDER_EMAIL, receiver_email, msg.as_string())
+        server.login(shopx_email, password)
+        server.sendmail(shopx_email, receiver_email, msg.as_string())
 
 
 # ___Welcome Email___
@@ -57,7 +65,7 @@ def send_welcome_email(receiver_email):
     SUBJECT = "Your Journey To Greatness Has Begun"
 
     # Read the HTML template file
-    email_template = render_template("signup_template.html")
+    email_template = render_template("signup_template.jinja.html")
     email_content_plain = """Hello,
         
         Congratulations and a warm welcome to ShopX! We are thrilled to have you on board as our newest user.
@@ -83,10 +91,10 @@ def send_welcome_email(receiver_email):
 # ___Subscription Email___
 def send_subscription_email(receiver_email):
     EMAIL_HEADER = "Welcome to ShopX"
-    SUBJECT = "Thank you for joining our mailing list"
+    subject = "Thank you for joining our mailing list"
 
     # Read the HTML template file
-    email_template = render_template("subscription_template.html")
+    email_template = render_template("subscription_template.jinja.html")
     email_content_plain = """Hello,
         
         Congratulations and a warm welcome to ShopX! We are thrilled to have you on board as our newest user.
@@ -108,33 +116,60 @@ def send_subscription_email(receiver_email):
         Website: https://myshopx.net
     """
     send_email(
-        receiver_email, EMAIL_HEADER, SUBJECT, email_template, email_content_plain
+        receiver_email, EMAIL_HEADER, subject, email_template, email_content_plain
     )
 
 
-def send_new_order_email(orderData):
-    EMAIL_HEADER = f"ShopX -New Order Received"
-    SUBJECT = (
-        f'{orderData["storeName"]} has a new order for  ₦{orderData["totalPrice"]}'
-    )
+def store_send_new_order_email(orderData):
+    """Notify a store that they have a new order."""
+    EMAIL_HEADER = "ShopX"
+    subject = f'{orderData["storeName"]} Has A New Order For  ₦{orderData["subTotal"]}'
     receiver_email = orderData["receiver"]
+    orderData["isAdmin"] = 1
 
-    email_template = render_template("new_order_template.html", orderData=orderData)
-    send_email(receiver_email, EMAIL_HEADER, SUBJECT, email_template)
+    email_template = render_template(
+        "new_order_template.jinja.html", orderData=orderData
+    )
+    send_email(receiver_email, EMAIL_HEADER, subject, email_template)
+
+
+def user_send_new_order_email(orderData):
+    """Send confirmation email to the user that placed an order."""
+    EMAIL_HEADER = f'ShopX - {orderData["storeName"]}'
+    subject = f'Your Order Has Been Sent To {orderData["storeName"]}'
+    receiver_email = orderData["orderedBy"]
+    orderData["isAdmin"] = 0
+
+    email_template = render_template(
+        "new_order_template.jinja.html", orderData=orderData
+    )
+    send_email(receiver_email, EMAIL_HEADER, subject, email_template)
+
+
+def update_order_email(orderData):
+    """Send update email to the user that placed an order."""
+    EMAIL_HEADER = f'ShopX - {orderData["storeName"]}'
+    subject = "An Update On Your Order!"
+    receiver_email = orderData["orderedBy"]
+
+    email_template = render_template(
+        "update_order_template.jinja.html", orderData=orderData
+    )
+    send_email(receiver_email, EMAIL_HEADER, subject, email_template)
 
 
 def send_new_visit_email():
     receiver_email = "myshopxinfo@gmail.com"
     EMAIL_HEADER = "New Visit"
-    SUBJECT = "New Visit"
-    send_email(receiver_email, EMAIL_HEADER, SUBJECT)
+    subject = "New Visit"
+    send_email(receiver_email, EMAIL_HEADER, subject)
 
 
 """************************Views*************************************"""
 
 
 @views.route("/signup", methods=["POST"])
-def signup():
+def signup() -> None:
     try:
         data = request.get_json()
         receiver = data["receiver"]
@@ -169,13 +204,24 @@ def subscription():
 def new_order():
     try:
         orderData = request.get_json()
-        # print(orderData)
-        ## {receiver:, totalPrice:, storeName:, items:[{title:, quantity, price,}]}
-        # totalPrice = orderData['totalPrice']
-        # storeName = orderData['storeName']
-        # items = orderData['items']
 
-        send_new_order_email(orderData)
+        user_send_new_order_email(orderData)
+        store_send_new_order_email(orderData)
+        response = {"success": True}
+        json_obj = json.dumps(response)
+
+    except Exception as e:
+        print("Error sending new order email:", e)
+        response = {"success": False}
+        json_obj = json.dumps(response)
+    return json_obj
+
+
+@views.route("/update-order", methods=["POST"])
+def update_order():
+    try:
+        orderData = request.get_json()
+        update_order_email(orderData)
         response = {"success": True}
         json_obj = json.dumps(response)
 

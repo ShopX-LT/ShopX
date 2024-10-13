@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
-import { TextareaAutosize } from '@mui/material';
+import { TextareaAutosize, Typography } from '@mui/material';
 
 const StyledTextarea = styled(TextareaAutosize)(
   () => `
@@ -15,7 +15,7 @@ const StyledTextarea = styled(TextareaAutosize)(
           `
 );
 
-const TextArea = ({ minRows = 4, name, onChange, value, placeholder, label, onBlur }) => (
+const TextArea = ({ minRows = 4, name, onChange, value, placeholder, label, onBlur, tips }) => (
   <>
     <StyledTextarea
       label={label}
@@ -27,6 +27,9 @@ const TextArea = ({ minRows = 4, name, onChange, value, placeholder, label, onBl
       placeholder={placeholder}
       style={{ width: '100%' }}
     />
+    <Typography variant="caption" sx={{ marginTop: -1 }}>
+      {tips}
+    </Typography>
   </>
 );
 
