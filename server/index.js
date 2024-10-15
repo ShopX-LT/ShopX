@@ -10,6 +10,8 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const xssClean = require('xss-clean');
 const helmet = require('helmet');
+const expressWinston = require('express-winston');
+const logger = require('./middleware/logger');
 
 // ROUTES
 const adminRoutes = require('./routes/admin');
@@ -30,17 +32,30 @@ function makeApp(database, databaseConnectionString = process.env.PROD_MONGO_URL
   app.use(cors(corsOptions));
   // app.use(cors());
   app.use(express.json());
+
   // log all requests to access.log
+  // Define a custom token for Morgan to access the client's IP address
+  morgan.token('client-ip', function (req, res) {
+    return req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  });
   app.use(
-    morgan('common', {
+    morgan(':client-ip - - [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms', {
       stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
     })
   );
-  app.use(express.urlencoded({ limit: '30mb', extended: true }));
+
+  app.use(
+    expressWinston.logger({
+      winstonInstance: logger,
+      statusLevels: true,
+    })
+  );
+
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
   app.use(helmet());
 
   app.use(cookieParser());
-  app.use(bodyParser.json({ limit: '30mb', extended: true }));
+  app.use(bodyParser.json({ limit: '50mb', extended: true }));
   app.use(xssClean());
   app.use(
     mongoSanitize({
@@ -70,10 +85,10 @@ function makeApp(database, databaseConnectionString = process.env.PROD_MONGO_URL
   });
 
   app.use('/api', (req, res) => {
-    res.status(200).json({ message: 'Hello' });
+    res.status(200).json();
   });
   app.use('/', (req, res) => {
-    res.status(200).json({ message: 'Hello' });
+    res.status(200).json();
   });
 
   //MONGOSSE SETUP

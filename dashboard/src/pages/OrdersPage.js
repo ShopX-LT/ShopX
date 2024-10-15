@@ -4,13 +4,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { murmur3 } from 'murmurhash-js';
 
-import { Container, Card, Stack, Table, TableBody, TableContainer, Typography } from '@mui/material';
+import { Container, Card, Stack, Typography } from '@mui/material';
 
 import { ordersError, updateOrders } from '../redux';
+import SortableTable from '../components/sortableTable';
+
 import { getOrders, updateOrder } from '../services/OrderService';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 // components
-import { OrderCard, OrderListHead } from '../sections/@dashboard/orders';
+import { OrderCard } from '../sections/@dashboard/orders';
+
+const TABLE_HEAD = [
+  { id: 'icon', label: '', align: 'left', width: 100 },
+  { id: 'dateOrdered', label: 'Date', align: 'left' },
+  { id: 'orderedBy', label: 'Customer', align: 'left' },
+  { id: 'total', label: 'Total', align: 'left' },
+  { id: 'status', label: 'Status', align: 'left' },
+];
 
 function hashArrayOfOrders(arr) {
   const concatenatedString = arr.reduce((acc, obj) => acc + JSON.stringify(obj), '');
@@ -24,7 +34,6 @@ const OrdersPage = () => {
 
   const orders = useSelector((state) => state.orders.orders);
 
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [arrayHash, setArrayHash] = useState('');
   const [updatedOrder, setUpdatedOrder] = useState();
   const [firstRender, setFirstRender] = useState(true);
@@ -36,48 +45,6 @@ const OrdersPage = () => {
     }
     setArrayHash(newArrayHash);
   };
-
-  const handleSort = (key) => {
-    let direction = 'asc';
-
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-
-    setSortConfig({ key, direction });
-  };
-
-  const statusSort = {
-    pending: 4,
-    ready: 3,
-    'in transit': 2,
-    delivered: 1,
-    cancelled: 0,
-  };
-
-  const sortedOrders = [...orders].sort((a, b) => {
-    if (sortConfig.key === 'status') {
-      const statusA = statusSort[a[sortConfig.key]];
-      const statusB = statusSort[b[sortConfig.key]];
-
-      if (statusA < statusB) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (statusA > statusB) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-      return 0;
-    }
-
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-
-    return 0;
-  });
 
   useEffect(() => {
     if (!firstRender) {
@@ -114,23 +81,18 @@ const OrdersPage = () => {
           </Typography>
         </Stack>
         <Card>
-          <TableContainer sx={{ minWidth: 400 }} aria-label="Orders table">
-            <Table>
-              <OrderListHead handleSort={handleSort} />
-              <TableBody>
-                {sortedOrders.map((order) => {
-                  return (
-                    <OrderCard
-                      key={order.id}
-                      order={order}
-                      updateFunction={checkForUpdate}
-                      setUpdatedOrder={setUpdatedOrder}
-                    />
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <SortableTable
+            headerArray={TABLE_HEAD}
+            listItems={orders}
+            bodyComponent={(order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                updateFunction={checkForUpdate}
+                setUpdatedOrder={setUpdatedOrder}
+              />
+            )}
+          />
         </Card>
       </Container>
     </div>

@@ -30,7 +30,7 @@ const verifyPayment = async ({ reference, headers = defaultHeaders }) => {
   }
 };
 
-const getBanks = async () => {
+const getBanks = async (headers = defaultHeaders) => {
   try {
     const banks = {};
     const response = await axios.get(`https://api.paystack.co/bank?country=nigeria&currency=NGN&type=nuban`, {

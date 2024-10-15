@@ -7,6 +7,7 @@ import NavForm from '../../sections/@dashboard/design/NavForm';
 import HeroForm from '../../sections/@dashboard/design/HeroForm';
 import ContactForm from '../../sections/@dashboard/design/ContactForm';
 import AboutForm from '../../sections/@dashboard/design/AboutForm';
+import GeneralForm from '../../sections/@dashboard/design/GeneralForm';
 
 const FrontPage = () => {
   const { design, handleInputChange, handleFormSubmit } = useDesign();
@@ -21,16 +22,57 @@ const FrontPage = () => {
   };
 
   return (
-    <>
+    <Container maxWidth="xl">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4" gutterBottom>
           Front Page
         </Typography>
-        <Button variant="contained" onClick={handleOpenStorePreview} sx={{ display: 'flex', gap: 1 }}>
+        <Button onClick={handleOpenStorePreview} sx={{ display: 'flex', gap: 1 }}>
           Preview <VisibilityIcon />
         </Button>
       </Stack>
-      <Paper
+      <Box>
+        <Tabs
+          orientation="horizontal"
+          variant="fullWidth"
+          visibleScrollbar
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label="front page tab"
+          // sx={{ borderRight: 1, borderColor: 'divider' }}
+          TabIndicatorProps={{
+            style: {
+              height: '10%', // Adjust the height of the indicator
+              borderRadius: 4, // Apply border radius to the indicator
+            },
+          }}
+        >
+          <Tab label="Nav bar" />
+          <Tab label="Hero" />
+          <Tab label="About Us" />
+          <Tab label="Contact" />
+          {/* <Tab label="General" /> */}
+        </Tabs>
+        <TabPanel value={tabValue} index={0}>
+          <NavForm design={design} handleInputChange={handleInputChange} />
+        </TabPanel>
+        <TabPanel value={tabValue} index={1}>
+          <HeroForm design={design} handleInputChange={handleInputChange} />
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
+          <AboutForm design={design} handleInputChange={handleInputChange} />
+        </TabPanel>
+        <TabPanel value={tabValue} index={3}>
+          <ContactForm design={design} handleInputChange={handleInputChange} />
+        </TabPanel>
+        {/* <TabPanel value={tabValue} index={4}>
+          <GeneralForm design={design} handleInputChange={handleInputChange} />
+        </TabPanel> */}
+      </Box>
+      <Button sx={{ marginTop: 5 }} variant="contained" onClick={handleFormSubmit}>
+        Save
+      </Button>
+      {/* <Paper
         elevation={3}
         sx={{
           p: 2,
@@ -38,37 +80,8 @@ const FrontPage = () => {
           overflowX: 'scroll',
         }}
       >
-        <Box sx={{ flexGrow: 1, display: 'flex' }}>
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={tabValue}
-            onChange={handleTabChange}
-            aria-label="front page tab"
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
-            <Tab label="Nav bar" />
-            <Tab label="Hero" />
-            <Tab label="About Us" />
-            <Tab label="Contact" />
-          </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            <NavForm design={design} handleInputChange={handleInputChange} />
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            <HeroForm design={design} handleInputChange={handleInputChange} />
-          </TabPanel>
-          <TabPanel value={tabValue} index={2}>
-            <AboutForm design={design} handleInputChange={handleInputChange} />
-          </TabPanel>
-          <TabPanel value={tabValue} index={3}>
-            <ContactForm design={design} handleInputChange={handleInputChange} />
-          </TabPanel>
-        </Box>
-        <Button sx={{ marginLeft: 1 }} variant="contained" onClick={handleFormSubmit}>
-          Save
-        </Button>
-      </Paper>
+        
+      </Paper> */}
       <Modal
         open={openStorePreview}
         onClose={handleCloseStorePreview}
@@ -91,10 +104,10 @@ const FrontPage = () => {
           <Button variant="contained" onClick={handleCloseStorePreview}>
             Close
           </Button>
-          <iframe width="900" height="500" src="https://myshopx.net/laprisa" title="Store Site" />
+          <iframe width="900" height="500" src="https://laprisa.myshopx.net" title="Store Site" />
         </Box>
       </Modal>
-    </>
+    </Container>
   );
 };
 

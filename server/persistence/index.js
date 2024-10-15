@@ -12,6 +12,7 @@
  */
 const { createCategory, getManyCategories, deleteCategory } = require('./CategoryPersistence');
 const { generateText } = require('./ChatGPTPersistence');
+const { getAllColorSchemes, selectColorScheme } = require('./ColorSchemeUtils');
 const {
   createItem,
   getItemById,
@@ -62,6 +63,10 @@ const { encryptPassword, verifyPassword } = require('./EncryptionPersistence');
 module.exports = {
   // CHATGPT PERSISTENCE
   generateText,
+
+  // COLOR SCHEME
+  getAllColorSchemes,
+  selectColorScheme,
 
   // STORE PERSISTENCE
   createStore,

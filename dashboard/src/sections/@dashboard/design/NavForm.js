@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Tab, TextField, Typography } from '@mui/material';
+import { Box, Container, Grid, Paper, Tab, TextField, Typography } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -13,25 +13,35 @@ const NavForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Customize Navbar</Typography>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="nav tabs">
-                <Tab label="Colors" value="1" />
-                {/* <Tab label="Layout" value="2" /> */}
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <ColorTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            {/* <TabPanel value="2">Layout</TabPanel> */}
-          </TabContext>
-        </Box>
-      </Box>
-    </>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize Navbar
+          </Typography>
+          <Box>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList variant="scrollable" scrollButtons="auto" onChange={handleTabChange} aria-label="nav tabs">
+                  <Tab label="Colors" value="1" />
+                  {/* <Tab label="Layout" value="2" /> */}
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <ColorTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              {/* <TabPanel value="2">Layout</TabPanel> */}
+            </TabContext>
+          </Box>
+        </>
+      </Paper>
+    </Container>
   );
 };
 

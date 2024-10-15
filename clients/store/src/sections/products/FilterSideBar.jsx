@@ -16,7 +16,6 @@ import {
 import TuneIcon from '@mui/icons-material/Tune';
 import CloseIcon from '@mui/icons-material/Close';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
-import useCategory from './hooks/useCategory';
 import { capitalize } from 'lodash';
 import { useSelector } from 'react-redux';
 

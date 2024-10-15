@@ -49,7 +49,11 @@ const {
 } = require('./StoreInteractor');
 const { generateTokensInteractor, adminRefreshTokenInteractor, logoutInteractor } = require('./TokenInteractor');
 const { createUserInteractor, userLogin, subscribeToStoreInteractor } = require('./UserInteractor');
-const { getStoreDesignInteractor, updateStoreDesignInteractor } = require('./WebDesignInteractor');
+const {
+  getStoreDesignInteractor,
+  updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
+} = require('./WebDesignInteractor');
 
 module.exports = {
   // STORE INTERACRORS
@@ -101,6 +105,7 @@ module.exports = {
   // WEBDESIGN INTERACTOR
   getStoreDesignInteractor,
   updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
   // ERROR INTERACTORS
   handleErrorInteractor,
 };

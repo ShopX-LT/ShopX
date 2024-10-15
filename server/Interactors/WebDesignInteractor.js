@@ -19,7 +19,13 @@ const updateStoreDesignInteractor = async ({ updateStoreDesign }, { storeName, u
   return newDesign;
 };
 
+const getAllColorSchemesInteractor = ({ getAllColorSchemes }, { baseColor }) => {
+  const colorSchemes = getAllColorSchemes(baseColor);
+  return colorSchemes;
+};
+
 module.exports = {
   getStoreDesignInteractor,
   updateStoreDesignInteractor,
+  getAllColorSchemesInteractor,
 };

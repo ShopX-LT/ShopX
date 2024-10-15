@@ -13,6 +13,9 @@ import {
   TextareaAutosize,
   Typography,
   Slider,
+  Container,
+  Paper,
+  Tooltip,
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -24,6 +27,7 @@ import bottomLeft from './images/bottomLeft.png';
 import ColorPicker from '../../../components/colorPicker';
 import ImageRadio from '../../../components/image-radio';
 import TextArea from '../../../components/textArea';
+import CustomTooltip from '../../../components/tooltip';
 
 const HeroForm = ({ design, handleInputChange }) => {
   const [tabValue, setTabValue] = useState('1');
@@ -33,35 +37,45 @@ const HeroForm = ({ design, handleInputChange }) => {
   };
 
   return (
-    <>
-      <Box>
-        <Typography variant="h6">Customize Hero</Typography>
-        <Box sx={{ maxWidth: '90%', typography: 'body1' }}>
-          <TabContext value={tabValue}>
-            <Box>
-              <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-                <Tab label="Layout" value="1" />
-                <Tab label="Texts" value="2" />
-                <Tab label="Colors" value="3" />
-                <Tab label="Image" value="4" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">
-              <StyleTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="2">
-              <TextsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="3">
-              <ColorsTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-            <TabPanel value="4">
-              <ImageTab design={design} handleInputChange={handleInputChange} />
-            </TabPanel>
-          </TabContext>
+    <Container>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 2,
+          mt: 5,
+        }}
+      >
+        <Box>
+          <Typography variant="body1" fontWeight={'bold'} my={1}>
+            Customize Hero
+          </Typography>
+          <Box sx={{ typography: 'body1' }}>
+            <TabContext value={tabValue}>
+              <Box>
+                <TabList aria-label="nav tabs" onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+                  <Tab label="Layout" value="1" />
+                  <Tab label="Texts" value="2" />
+                  <Tab label="Colors" value="3" />
+                  <Tab label="Image" value="4" />
+                </TabList>
+              </Box>
+              <TabPanel value="1">
+                <StyleTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="2">
+                <TextsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="3">
+                <ColorsTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+              <TabPanel value="4">
+                <ImageTab design={design} handleInputChange={handleInputChange} />
+              </TabPanel>
+            </TabContext>
+          </Box>
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Container>
   );
 };
 
@@ -126,38 +140,53 @@ function TextsTab({ design, handleInputChange }) {
           <Typography variant="subtitle">Headline Text</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextArea
-            name="heroHeadline"
-            onChange={handleInputChange}
-            value={design.heroHeadline}
-            placeholder="Enter Headline text here"
-          />
+          <CustomTooltip
+            title="The largest text displayed on your home page.
+            Keep this short and sweet.
+            The main is to capture your customers attention"
+          >
+            <TextField
+              name="heroHeadline"
+              onChange={handleInputChange}
+              value={design.heroHeadline}
+              placeholder="Enter Headline text here"
+              fullWidth
+            />
+          </CustomTooltip>
         </Grid>
 
         <Grid item xs={12} mt={4}>
           <Typography variant="subtitle">Sub Text</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextArea
-            name="heroSubText"
-            onChange={handleInputChange}
-            value={design.heroSubText}
-            placeholder="Enter paragraph text here"
-          />
+          <CustomTooltip title="Give more details about your store.">
+            <TextArea
+              name="heroSubText"
+              onChange={handleInputChange}
+              value={design.heroSubText}
+              placeholder="Enter paragraph text here"
+              tips="Give more details about your store."
+            />
+          </CustomTooltip>
         </Grid>
 
         <Grid item xs={12} mt={4}>
           <Typography variant="subtitle">Action Button</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            id="heroActionButtonText"
-            label="Text"
-            name="heroActionButtonText"
-            onChange={handleInputChange}
-            value={design.heroActionButtonText}
-            fullWidth
-          />
+          <CustomTooltip
+            title="
+          Creatively prompt the user to checkout you store. For Example 'Shop Now!"
+          >
+            <TextField
+              id="heroActionButtonText"
+              label="Text"
+              name="heroActionButtonText"
+              onChange={handleInputChange}
+              value={design.heroActionButtonText}
+              fullWidth
+            />
+          </CustomTooltip>
         </Grid>
       </Grid>
     </Box>

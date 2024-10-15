@@ -6,6 +6,7 @@ const OrderSchema = new mongoose.Schema(
     orderedBy: {
       type: String,
       trim: true,
+      required: true,
     },
     itemsOrdered: [
       {

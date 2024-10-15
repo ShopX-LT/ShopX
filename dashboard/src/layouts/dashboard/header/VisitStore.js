@@ -1,15 +1,14 @@
 import { Button } from '@mui/material';
-import React from 'react';
 import { getStoreName } from '../../../services/UtilityService';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import useStoreName from '../hooks/useStoreName';
 
 const VisitStore = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { storeName, retrieveStoreName } = useStoreName();
   const handleVisitMyStoreClicked = async () => {
-    const storeName = await getStoreName(axiosPrivate);
-    if (storeName) {
-      window.open(`https://myshopx.net/${storeName}`);
-    }
+    await retrieveStoreName();
+    window.open(`https://${storeName}.myshopx.net`);
   };
   return (
     <div>

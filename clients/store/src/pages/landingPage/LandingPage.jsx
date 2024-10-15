@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import './styles.css';
-import axios from 'axios';
-import StarsAnimated from './components/StarsAnimated';
+import React, { useEffect, Suspense } from 'react';
 import Main from './Main';
+const SpaceBackground = React.lazy(() => import('./components/canvas/SpaceBackground'));
 
 const LandingPage = () => {
   useEffect(() => {
@@ -12,17 +8,12 @@ const LandingPage = () => {
       axios.get('https://myshopx.net/api/newvisit');
     } catch (error) {}
   }, []);
-  const bgColor = ({ gl }) => {
-    gl.setClearColor('#000000', 1);
-  };
+
   return (
     <>
-      <Canvas id="canvas" style={{ position: 'fixed' }} camera={{ position: [20, 3, 5], fov: 25 }} onCreated={bgColor}>
-        <pointLight intensity={2} color={0x61dbfb} position={[0, 5, 5]} />
-        <spotLight intensity={1} color={0x61dbfb} position={(-20, 50, 10)} />
-        <OrbitControls />
-        <StarsAnimated />
-      </Canvas>
+      <Suspense>
+        <SpaceBackground fallback={<div style={{ background: 'black' }}></div>} />
+      </Suspense>
       <Main />
     </>
   );

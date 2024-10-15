@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { Fragment, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
   CssBaseline,
-  FormControlLabel,
-  Grid,
+  AppBar,
+  Box,
+  Container,
+  Toolbar,
+  Paper,
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
   Link,
-  TextField,
   Typography,
 } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import APIHandler from '../api/APIHandler';
-import ErrorSnackbar from '../components/errorSnackbar';
-import useAuth from '../hooks/useAuth';
+import useCreateStore from '../sections/auth/signup/hooks/useCreateStore';
 import SelectStoreNameForm from '../sections/auth/signup/SelectStoreNameForm';
 import AccountDetails from '../sections/auth/signup/AccountDetails';
 import Review from '../sections/auth/signup/Review';
+import ErrorSnackbar from '../components/errorSnackbar';
+import { AppBarStyled, BackgroundStyle, BackgroundTintOverlay } from '../sections/auth/signup/styles';
 
-const theme = createTheme();
-
-const steps = ['Name your store', 'Account details', 'Review settings'];
-
-function Copyright(props) {
+function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://myshopx.net/">
         ShopX
       </Link>{' '}
       {new Date().getFullYear()}
@@ -39,141 +34,162 @@ function Copyright(props) {
   );
 }
 
-function getStepContent(step, { setDisableNextButton, setStoreName, setEmail, setPassword }) {
-  switch (step) {
-    case 0:
-      return <SelectStoreNameForm setDisableNextButton={setDisableNextButton} setStoreName={setStoreName} />;
-    case 1:
-      return <AccountDetails setEmail={setEmail} setPassword={setPassword} />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
-
-export default function SignUp() {
-  const apiHandler = new APIHandler();
-  const { setAuth } = useAuth();
+const SignUp = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  // const from = location.state?.from?.pathname || '/dashboard';
   const navigateTo = '/signin';
-  const [email, setEmail] = useState('');
-  const [storeName, setStoreName] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const {
+    brandColor,
+    email,
+    errorMessage,
+    isStoreNameValid,
+    product,
+    password,
+    setErrorMessage,
+    storeName,
+    storeUrl,
+    verifyPassword,
+    handleOnChange,
+    handleCheckStoreName,
+    handleSubmit,
+  } = useCreateStore();
   const [activeStep, setActiveStep] = useState(0);
-  const [disableNextButton, setDisableNextButton] = useState(true);
+  const steps = ['Name your Store', 'Account Details', 'Review'];
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  //   @TODO move to helper function
+
+  const isDisabled = () => {
+    switch (activeStep) {
+      case 0:
+        if (!isStoreNameValid || !product || !brandColor) {
+          return true;
+        }
+        return false;
+      case 1:
+        if (!email || errorMessage) {
+          return true;
+        }
+        return false;
+      case 2:
+        return false;
+      default:
+        return true;
+    }
+  };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <SelectStoreNameForm
+            storeName={storeName}
+            product={product}
+            brandColor={brandColor}
+            isStoreNameValid={isStoreNameValid}
+            onChange={handleOnChange}
+            checkStoreName={handleCheckStoreName}
+          />
+        );
+      case 1:
+        return (
+          <AccountDetails email={email} password={password} verifyPassword={verifyPassword} onChange={handleOnChange} />
+        );
+      case 2:
+        return <Review storeUrl={storeUrl} />;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
+
+  const handleNext = async () => {
+    if (activeStep === 0) {
+      await handleCheckStoreName();
+      if (isStoreNameValid) setActiveStep(activeStep + 1);
+    }
+    if (activeStep === 1) {
+      const isValid = await handleSubmit();
+      if (isValid) setActiveStep(activeStep + 1);
+    }
+    if (activeStep === 2) {
+      setActiveStep(activeStep + 1);
+      navigate(navigateTo);
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const formValidation = () => {
-    if (email.includes('<') || email.includes('>') || !email.includes('@')) {
-      setErrorMessage('Invalid email');
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (formValidation()) {
-      const { token, admin, store, error } = await apiHandler.signup({ email, password, storeName });
-
-      if (token) {
-        navigate(navigateTo);
-      } else {
-        setErrorMessage(error);
-      }
-    }
-  };
-
   return (
-    <ThemeProvider theme={theme}>
+    <Box
+      sx={{
+        position: 'relative',
+        height: '100vh',
+      }}
+    >
+      <BackgroundStyle />
+      <BackgroundTintOverlay />
       <CssBaseline />
-      <Container component="main" maxWidth="xs" sx={{ mb: 4 }}>
-        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
+      <AppBarStyled position="absolute" color="transparent" elevation={3}>
+        <Toolbar>
+          <Typography
+            variant="h2"
+            sx={{ color: '#000000' }}
+            noWrap
+            tabIndex={0}
+            role="button"
+            onClick={() => navigate('/signin')}
+          >
+            SHOPX
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="storeName"
-                  label="Store Name"
-                  name="storeName"
-                  value={storeName}
-                  onChange={(e) => setStoreName(e.target.value)}
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
+        </Toolbar>
+      </AppBarStyled>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        {errorMessage && <ErrorSnackbar error={errorMessage} setError={setErrorMessage} />}
+        <Paper elevation={3} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <Typography component="h1" variant="h4" align="center">
+            Create A New Store
+          </Typography>
+
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length ? (
+            <></>
+          ) : (
+            <>
+              {getStepContent(activeStep)}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                {activeStep === 1 && (
+                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                    Back
+                  </Button>
+                )}
+
+                <Button
+                  variant="contained"
+                  disabled={isDisabled()}
+                  //   onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                  onClick={handleNext}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  {activeStep === steps.length - 1
+                    ? 'Login'
+                    : activeStep === steps.length - 2
+                    ? 'Create Store'
+                    : 'Next'}
+                </Button>
+              </Box>
+            </>
+          )}
+        </Paper>
+        <Copyright />
       </Container>
-    </ThemeProvider>
+    </Box>
   );
-}
+};
+
+export default SignUp;

@@ -1,3 +1,4 @@
+const { updateOrderEmail } = require('../services/EmailService');
 /**
  * Retrieves all orders for a given store and formats them using the formatOrder function.
  * @param {Object} getAllStoreOrders - The function that retrieves all orders for a given store.
@@ -18,6 +19,7 @@ const updateOrderInteractor = async ({ updateOrder }, { id, storeName, updatedOr
     return Promise.reject(new Error('Order not found'));
   }
   const formattedOrder = formatOrder(newOrder);
+  await updateOrderEmail(order);
 
   return formattedOrder;
 };
